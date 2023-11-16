@@ -73,6 +73,7 @@
                             //data = obj['data'];
                             LimpiarCamposModal();
                             toastr["success"](msg, "Gestión Clientes")
+                            location.reload();
                             $('#modal-15').modal('hide');
                         }
                     },

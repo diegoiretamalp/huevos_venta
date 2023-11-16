@@ -1,9 +1,110 @@
 <div class="ms-content-wrapper">
-    <div class="ms-card">
+    <div class="row">
+        <div class="col-12">
+            <div class="ms-card">
+                <div class="ms-card-body">
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <h1 style="font-size: 32px;">Resumen de Ruta</h1>
+                            <br>
+                            <br>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="ms-card card-success ms-widget ms-infographics-widget">
+                                        <div class="ms-card-body media text-center">
+                                            <div class="media-body">
+                                                <h1 class="text-white">Total Venta</h1>
+                                                <p class="ms-card-change"><?= !empty($ruta->total_venta) ? formatear_numero($ruta->total_venta) : '$0' ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="ms-card card-primary ms-widget ms-infographics-widget">
+                                        <div class="ms-card-body media text-center">
+                                            <div class="media-body">
+                                                <h1 class="text-white">Total Pagado</h1>
+                                                <p class="ms-card-change"><?= !empty($ruta->total_pagado) ? formatear_numero($ruta->total_pagado) : '$0' ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-        <div class="ms-card-body">
-            <div class="row">
-                <div class="col-xl-12">
+                                <div class="col-4">
+                                    <div class="ms-card card-warning ms-widget ms-infographics-widget">
+                                        <div class="ms-card-body media text-center">
+                                            <div class="media-body">
+                                                <h1 class="text-white">Total Gastos</h1>
+                                                <p class="ms-card-change"><?= !empty($ruta->total_gastos) ? formatear_numero($ruta->total_gastos) : '$0' ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="ms-card card-warning ms-widget ms-infographics-widget">
+                                        <div class="ms-card-body media text-center">
+                                            <div class="media-body">
+                                                <h1 class="text-white">Total Efectivo</h1>
+                                                <p class="ms-card-change"><?= !empty($ruta->total_efectivo) ? formatear_numero($ruta->total_efectivo) : '$0' ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="ms-card card-warning ms-widget ms-infographics-widget">
+                                        <div class="ms-card-body media text-center">
+                                            <div class="media-body">
+                                                <h1 class="text-white">Total Fiado</h1>
+                                                <p class="ms-card-change"><?= !empty($ruta->total_fiado) ? formatear_numero($ruta->total_fiado) : '$0' ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="ms-card card-warning ms-widget ms-infographics-widget">
+                                        <div class="ms-card-body media text-center">
+                                            <div class="media-body">
+                                                <h1 class="text-white">Total Transferencia</h1>
+                                                <p class="ms-card-change"><?= !empty($ruta->total_transferencia) ? formatear_numero($ruta->total_transferencia) : '$0' ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Gasto</th>
+                                        <th>Monto</th>
+                                        <th>Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="ms-card">
+                <div class="ms-card-body">
                     <ul class="ms-activity-log">
                         <?php if (!empty($clientes_ruta)) : ?>
                             <?php foreach ($clientes_ruta as $cliente) : ?>

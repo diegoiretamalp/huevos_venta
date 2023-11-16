@@ -302,17 +302,17 @@ class VentasController extends BaseController
                         ];
 
                         if ($post['check_pago_total'] == true) {
-                            if($metodo_pago_id != 1){
+                            if ($metodo_pago_id != 1) {
                                 $new_pago['monto_pago_actual'] = $post['data']['costoTotal'];
-                            }else{
+                            } else {
                                 $new_pago['monto_pago_actual'] = 0;
                             }
                             $new_pago['monto_total'] = $post['data']['costoTotal'];
                             $new_pago['monto_pagado'] = $post['data']['costoTotal'];
                         } else {
-                            if($metodo_pago_id != 1){
+                            if ($metodo_pago_id != 1) {
                                 $new_pago['monto_pago_actual'] = $post['monto_pagado'];
-                            }else{
+                            } else {
                                 $new_pago['monto_pago_actual'] = 0;
                             }
                             $new_pago['monto_total'] = $post['data']['costoTotal'];
