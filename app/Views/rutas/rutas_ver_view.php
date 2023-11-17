@@ -116,8 +116,10 @@
                                     </div>
                                     <br>
                                     <br>
-                                    <h6><?= !empty($cliente->nombre_completo) ? $cliente->nombre_completo : 'Sin información' ?> <span class="badge badge-<?= $cliente->estado_cliente_ruta_id == 1 ? 'success' : ($cliente->estado_cliente_ruta_id == 2 ? 'warning' : 'secondary') ?>"><?= $cliente->estado_cliente_ruta_id == 1 ? 'FINALIZADO' : ($cliente->estado_cliente_ruta_id == 2 ? 'PENDIENTE' : 'SECONDARY') ?></span>
+                                    <h6><?= !empty($cliente->nombre_completo) ? $cliente->nombre_completo : 'Sin información' ?>
+                                        <span class="badge badge-<?= $cliente->estado_cliente_ruta_id == 1 ? 'success' : ($cliente->estado_cliente_ruta_id == 2 ? 'warning' : 'secondary') ?>"><?= $cliente->estado_cliente_ruta_id == 1 ? 'FINALIZADO' : ($cliente->estado_cliente_ruta_id == 2 ? 'PENDIENTE' : 'SECONDARY') ?></span>
                                         <span role="button" onclick="VerDeudasCliente(<?= $cliente->cliente_id ?>)" id="btn_ver_deuda" style="cursor: pointer;" class="badge badge-danger">Ver Deuda</span>
+                                        <span class="badge badge-info" role="button" onclick="CargarCliente(<?= $cliente->cliente_id ?>)" id="btn_venta_<?= $cliente->cliente_id ?>" style="cursor: pointer;" hidden data-toggle="modal" data-target="#modal-15">Nueva Venta</span>
                                     </h6>
                                     <span> <i class="material-icons">event</i>ULTIMA COMPRA: <?= !empty($cliente->fecha_ultima_compra) ? $cliente->fecha_ultima_compra : 'Sin Información...' ?></span>
                                     <div class="row">
@@ -132,16 +134,19 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12 d-flex justify-content-start">
-                                            <button class="btn btn-sm btn-secondary btn_nueva_venta" type="button" id="<?= $cliente->cliente_id ?>" name="nueva_venta" data-toggle="modal" data-target="#modal-15">Nueva Venta</button>
+                                            <button class="btn btn-sm btn-secondary" type="button" onclick="CargarCliente(<?= $cliente->cliente_id ?>)" id="<?= $cliente->cliente_id ?>" name="nueva_venta" data-toggle="modal" data-target="#modal-15">Nueva Venta</button>
                                             <div class="row table-responsive">
                                                 <div class="col-md-12">
                                                     <table class="table table-hover w-100 dataTable no-footer" id="table_ventas_<?= $cliente->cliente_id ?>">
                                                         <thead>
                                                             <tr>
-                                                                <th>#</th>
-                                                                <th>Producto</th>
-                                                                <th>Total Venta</th>
-                                                                <th>Pagado</th>
+                                                                <th class="text-center">#</th>
+                                                                <th class="text-center">Producto</th>
+                                                                <th class="text-center">Cantidad</th>
+                                                                <th class="text-center">Precio</th>
+                                                                <th class="text-center">Total Venta</th>
+                                                                <th class="text-center">Metodo Pago</th>
+                                                                <th class="text-center">Pagado</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody id="tbody_ventas_<?= $cliente->cliente_id ?>">

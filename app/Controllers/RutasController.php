@@ -558,16 +558,17 @@ class RutasController extends BaseController
             ];
             $ventas = $this->Ventas_model->getVentasJoin($where_venta);
             if (!empty($ventas)) {
-                foreach ($ventas as $key) {
-                    $productos_venta = GetObjectByWhere('productos_venta', ['venta_id' => $key->venta_id, 'ruta_id' => $key->ruta_id]);
-                    if (!empty($productos_venta)) {
-                        foreach ($productos_venta as $p) {
-                            $producto = $this->Productos_model->getProducto($p->producto_id);
-                            $p->producto_data = !empty($producto) ? $producto : [];
-                        }
-                    }
-                    $key->productos_venta_data = !empty($productos_venta) ? $productos_venta : [];
-                }
+                // foreach ($ventas as $key) {
+                //     $productos_venta = GetObjectByWhere('productos_venta', ['venta_id' => $key->venta_id, 'ruta_id' => $key->ruta_id]);
+                //     if (!empty($productos_venta)) {
+                //         foreach ($productos_venta as $p) {
+                //             $producto = $this->Productos_model->getProducto($p->producto_id);
+                //             $p->producto_data = !empty($producto) ? $producto : [];
+                //         }
+                //     }
+                //     $key->productos_venta_data = !empty($productos_venta) ? $productos_venta : [];
+                // }
+                //pre_die($ventas);
                 $rsp = [
                     'tipo' => 'success',
                     'msg' => 'Ventas cargadas con éxito',

@@ -137,6 +137,7 @@
     }
 
     function CargarCliente(cliente_id) {
+        cliente_id_venta = cliente_id
         $.ajax({
             url: '<?= base_url('clientes/cargar-cliente-venta/') ?>' + cliente_id, // Nombre de tu archivo PHP
             method: 'post',
@@ -373,23 +374,36 @@
         // Construir el cuerpo de la tabla
         let tbody = '';
         let count = 1;
-
+        let badge = '';
+        console.log('data');
+        console.log(data);
+        console.log('data');
         data.forEach(d => {
+            badge = '';
             tbody += `
             <tr>
-                <td>${count}</td><td>`;
-            console.log(d);
-            d.productos_venta_data.forEach(e => {
-                console.log(e.producto_data.nombre);
-                tbody += "" + e.producto_data.nombre + ", ";
-            });
-            tbody += `</td>
-                <td>${d.total_venta}</td>
-                <td>${d.pagado}</td>
-            </tr>`;
+                <td class="text-center">${count}</td>
+                <td class="text-center">${d.nombre_producto}</td>
+                <td class="text-center">${d.cantidad}</td>
+                <td class="text-center">${d.precio}</td>
+                <td class="text-center">${d.precio * d.cantidad}</td>
+                <td class="text-center">${d.metodo_pago}</td>`;
+            if (d.pagado == 0) {
+                badge += `
+                    <span class="badge badge-warning">No</span>
+                `;
+            } else {
+                badge += `
+                    <span class="badge badge-success">Si</span>
+                `;
+            }
+            tbody += `
+                    <td class="text-center">${badge}</td>
+                </tr>
+            `;
             count++;
         });
-
+        $('#btn_venta_' + cliente_id).removeAttr('hidden');
         $('#tbody_ventas_' + cliente_id).html(tbody);
 
         // Inicializar DataTable solo si aún no ha sido inicializado
