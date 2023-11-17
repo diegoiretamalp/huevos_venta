@@ -105,7 +105,8 @@ $routes->get('sectores/editar/(:num)', 'SectoresController::EditarSector/$1');
 $routes->post('sectores/editar/(:num)', 'SectoresController::EditarSector/$1');
 $routes->post('sectores/eliminar', 'SectoresController::EliminarSector');
 
-
+#RUTAS DE GASTOS
+$routes->post('gastos/nuevo-gasto-ruta', 'GastosController::NuevoGastoRuta');
 
 
 

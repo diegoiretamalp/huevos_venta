@@ -121,6 +121,48 @@
             }
         });
 
+        $('#nuevo_gasto').click(function() {
+            $('#modal_gasto').modal('show');
+        });
+        $('#confirmar_gasto').click(function() {
+            let nombre = $('#nombre_gasto').val();
+            let monto = $('#monto_gasto').val();
+            if (nombre != '' && monto != '' && monto > 0) {
+                $.ajax({
+                    url: '<?= base_url('gastos/nuevo-gasto-ruta') ?>',
+                    method: 'post',
+                    data: {
+                        nombre: nombre,
+                        monto: monto,
+                        ruta_id: ruta_id
+                    },
+                    dataType: 'json',
+                    success: function(resp) {
+                        let respuesta = JSON.stringify(resp);
+                        let obj = $.parseJSON(respuesta);
+                        let tipo = obj['tipo'];
+                        let msg = obj['msg'];
+                        if (tipo != 'success') {
+                            toastr[tipo](msg, "Gestión de Gastos")
+                        } else {
+                            //data = obj['data'];
+                            //CargarDatosClienteModal(data);
+                            toastr["success"](msg, "Gestión Clientes")
+                        }
+                    },
+                    error: function(error) {
+                        console.log(JSON.stringify(error));
+                        console.log('Error al obtener los clientes: ' + error);
+                    }
+                });
+            } else {
+                toastr['warning']('1 o más campos son requeridos, completalos para continuar por favor.', "Gestión de Gastos")
+            }
+
+        });
+
+
+
     });
 
     function EliminarProducto(id_unico) {
@@ -357,6 +399,9 @@
                     console.log(msg);
                 } else {
                     data = obj['data'];
+                    console.log('data');
+                    console.log(data);
+                    console.log('data');
                     CargarDatosPrimeraVenta(data, cliente_id);
                 }
             },

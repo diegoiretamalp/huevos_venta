@@ -53,7 +53,6 @@ class RutasController extends BaseController
                 $gastos = GetObjectByWhere('gastos', ['ruta_id' => $ruta->id, 'estado' => true]);
                 $total_gastos = 0;
                 if (!empty($gastos)) {
-                    pre_die($gastos);
                     $total_gastos += SumaGeneralRow($gastos, 'monto');
                 }
                 $ruta->gastos_ruta = $total_gastos;
@@ -214,25 +213,33 @@ class RutasController extends BaseController
             $total_pagado = 0;
             $total_efectivo = 0;
             $total_fiado = 0;
+            $total_transferencia = 0;
+            $pagos_venta = [];
             foreach ($ventas as $venta) {
                 $total_venta += $venta->total_venta;
 
                 $pagos_venta = GetObjectByWhere('pagos_venta', ['venta_id' => $venta->id]);
+
                 if (!empty($pagos_venta)) {
                     $total_pagado += SumaGeneralRow($pagos_venta, 'monto_pago_actual');
                     foreach ($pagos_venta as $pago) {
                         if ($pago->metodo_pago_id == 2) {
                             $total_efectivo += $pago->monto_pago_actual;
                         } elseif ($pago->metodo_pago_id == 1) {
-                            $total_fiado += $pago->monto_pago_actual;
+                            $total_fiado += $pago->monto_total;
+                        } elseif ($pago->metodo_pago_id == 3) {
+                            $total_transferencia += $pago->monto_pago_actual;
                         }
                     }
+                    //pre_die($pagos_venta);
                 }
             }
+            //pre_die($pagos_venta);
             $ruta->total_venta = $total_venta;
             $ruta->total_pagado = $total_pagado;
             $ruta->total_efectivo = $total_efectivo;
             $ruta->total_fiado = $total_fiado;
+            $ruta->total_transferencia = $total_transferencia;
         }
 
         $gastos = GetObjectByWhere('gastos', ['ruta_id' => $ruta->id, 'estado' => true]);
@@ -245,6 +252,7 @@ class RutasController extends BaseController
             'title' => 'Ver Ruta',
             'main_view' => 'rutas/rutas_ver_view',
             'productos' => !empty($productos) ? $productos : [],
+            'gastos' => !empty($gastos) ? $gastos : [],
             'ruta' => !empty($ruta) ? $ruta : [],
             'clientes_ruta' => !empty($clientes_ruta) ? $clientes_ruta : [],
             'ruta_id' => !empty($id) ? $id : '',
@@ -558,17 +566,17 @@ class RutasController extends BaseController
             ];
             $ventas = $this->Ventas_model->getVentasJoin($where_venta);
             if (!empty($ventas)) {
-                // foreach ($ventas as $key) {
-                //     $productos_venta = GetObjectByWhere('productos_venta', ['venta_id' => $key->venta_id, 'ruta_id' => $key->ruta_id]);
-                //     if (!empty($productos_venta)) {
-                //         foreach ($productos_venta as $p) {
-                //             $producto = $this->Productos_model->getProducto($p->producto_id);
-                //             $p->producto_data = !empty($producto) ? $producto : [];
-                //         }
-                //     }
-                //     $key->productos_venta_data = !empty($productos_venta) ? $productos_venta : [];
-                // }
-                //pre_die($ventas);
+
+                foreach ($ventas as $key) {
+                    $productos_venta = GetObjectByWhere('productos_venta', ['venta_id' => $key->venta_id, 'ruta_id' => $key->ruta_id]);
+                    if (!empty($productos_venta)) {
+                        foreach ($productos_venta as $p) {
+                            $producto = $this->Productos_model->getProducto($p->producto_id);
+                            $p->producto_data = !empty($producto) ? $producto : [];
+                        }
+                    }
+                    $key->productos_venta_data = !empty($productos_venta) ? $productos_venta : [];
+                }
                 $rsp = [
                     'tipo' => 'success',
                     'msg' => 'Ventas cargadas con éxito',
