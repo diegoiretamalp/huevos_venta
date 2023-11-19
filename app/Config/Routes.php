@@ -105,18 +105,8 @@ $routes->get('sectores/editar/(:num)', 'SectoresController::EditarSector/$1');
 $routes->post('sectores/editar/(:num)', 'SectoresController::EditarSector/$1');
 $routes->post('sectores/eliminar', 'SectoresController::EliminarSector');
 
-
-//LOGIN 
-$routes->get('login/inicio', 'LoginController::index');
-$routes->get('login/restablecer-password', 'LoginController::restablecer_password');
-$routes->post('login/restablecer-password', 'LoginController::restablecer_password');
-$routes->get('login/cambiar-password', 'LoginController::cambiar_password');
-$routes->post('login/cambiar-password', 'LoginController::cambiar_password');
-
-
 #RUTAS DE GASTOS
 $routes->post('gastos/nuevo-gasto-ruta', 'GastosController::NuevoGastoRuta');
-
 
 
 
