@@ -1,0 +1,461 @@
+-- --------------------------------------------------------
+-- Host:                         127.0.0.1
+-- Versión del servidor:         10.4.28-MariaDB - mariadb.org binary distribution
+-- SO del servidor:              Win64
+-- HeidiSQL Versión:             12.6.0.6765
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+-- Volcando estructura para tabla ventas_inventario.vi_clientes
+CREATE TABLE IF NOT EXISTS `vi_clientes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(250) DEFAULT NULL,
+  `apellido_paterno` varchar(250) DEFAULT NULL,
+  `apellido_materno` varchar(250) DEFAULT NULL,
+  `rut_factura` varchar(50) DEFAULT NULL,
+  `celular` varchar(50) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `precio_favorito` varchar(50) DEFAULT NULL,
+  `producto_id` int(11) unsigned DEFAULT NULL,
+  `tipo_huevo` varchar(250) DEFAULT NULL,
+  `region_id` int(11) DEFAULT NULL,
+  `comuna_id` int(11) DEFAULT NULL,
+  `sector_id` int(11) DEFAULT NULL,
+  `direccion` varchar(250) DEFAULT NULL,
+  `estado` tinyint(4) DEFAULT NULL,
+  `eliminado` tinyint(4) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `eliminado_at` timestamp NULL DEFAULT NULL,
+  `nombre_negocio` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla ventas_inventario.vi_clientes: ~8 rows (aproximadamente)
+INSERT INTO `vi_clientes` (`id`, `nombre`, `apellido_paterno`, `apellido_materno`, `rut_factura`, `celular`, `email`, `precio_favorito`, `producto_id`, `tipo_huevo`, `region_id`, `comuna_id`, `sector_id`, `direccion`, `estado`, `eliminado`, `created_at`, `updated_at`, `eliminado_at`, `nombre_negocio`) VALUES
+	(1, 'fsdfsdf', 'sdfsdf', 'sdfsdfsdf', '202026672', '56975424380', 'sdfsdfsd@correo.cl', '10000', 1, NULL, NULL, 1, 1, 'dasdasd', 1, 1, '2023-10-10 05:31:02', NULL, NULL, NULL),
+	(2, 'PEDRO', 'PORRO', 'REYES', '33374854-1', '56975412245', 'PEDROPORRO@GMAIL.COM', '420', 1, 'c', NULL, 1, 6, 'PORRO #420', 1, 0, '2023-10-11 07:10:01', '2023-11-11 16:12:45', NULL, 'PEDRO PORRO SA'),
+	(3, 'FELIPE', 'KANE', 'KILL', '43064881-0', '56975412245', 'FELIPEKANE@GMAIL.COM', '9000', 2, 'b', NULL, 1, 6, 'KILL CASA #76', 1, 0, '2023-10-11 07:10:39', '2023-11-11 16:10:13', NULL, 'FELIPE KANE SA'),
+	(4, 'EMERSON', 'LEMINA', 'ZUMA', '48299592-6', '56975412245', 'EMERSON@GMAIL.COM', '10000', 1, 'c', NULL, 1, 6, 'ZUMACASA #44', 1, 0, '2023-10-11 07:11:09', '2023-11-11 16:08:53', NULL, 'EMERSON LEMINA SA'),
+	(8, 'ERIC', 'BICARIO', 'DAVIS', '31499401-9', '56975412245', 'ERICBICARIO@GMAIL.COM', '12000', 3, 'c', NULL, 1, 6, 'DAVIS CASA #11', 1, 0, '2023-10-12 06:54:32', '2023-11-11 16:11:37', NULL, 'ERIC BICARIO SA'),
+	(9, 'JUAN', 'PEREZ', 'Reyes', '51595500-3', '56975412245', 'JUANPEREZCALVO@GMAIL.COM', '7000', 3, 'c', 1, 1, 6, 'SALVO CASA#98', 1, 0, '2023-11-11 16:07:53', NULL, NULL, 'JUAN CALVO SA'),
+	(10, 'Antonio', 'Pacheco', 'RETAMAL', '202026672', '56975412245', 'yugitomatabi@gmail.com', '4000', 3, 'c', 1, 1, 6, 'RETAMAL CASA #12', 1, 0, '2023-11-11 16:10:51', NULL, NULL, 'ANTONIO PACHECO SA'),
+	(11, 'Hugo', 'Apellido1', 'Apellido 2', '205198016', '+56987654324', 'hugo@gmail.com', '10000', 4, 'b', NULL, NULL, 6, 'millantu ', 1, 0, '2023-11-11 17:50:58', '2023-11-11 17:52:24', NULL, 'Ventas huigito');
+
+-- Volcando estructura para tabla ventas_inventario.vi_clientes_ruta
+CREATE TABLE IF NOT EXISTS `vi_clientes_ruta` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cliente_id` int(11) DEFAULT NULL,
+  `ruta_id` int(11) DEFAULT NULL,
+  `posicion` int(11) DEFAULT NULL,
+  `venta` tinyint(4) DEFAULT NULL,
+  `estado_cliente_ruta_id` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla ventas_inventario.vi_clientes_ruta: ~24 rows (aproximadamente)
+INSERT INTO `vi_clientes_ruta` (`id`, `cliente_id`, `ruta_id`, `posicion`, `venta`, `estado_cliente_ruta_id`, `created_at`) VALUES
+	(43, 2, 10, 1, 0, 2, NULL),
+	(44, 3, 10, 2, 0, 2, NULL),
+	(45, 4, 10, 3, 0, 2, NULL),
+	(46, 8, 10, 4, 0, 2, NULL),
+	(47, 9, 10, 5, 0, 1, NULL),
+	(48, 10, 10, 6, 0, 1, NULL),
+	(49, 2, 11, 1, 0, 1, NULL),
+	(50, 3, 11, 2, 0, 1, NULL),
+	(51, 4, 11, 3, 0, 1, NULL),
+	(52, 8, 11, 4, 0, 2, NULL),
+	(53, 9, 11, 5, 0, 2, NULL),
+	(54, 10, 11, 6, 0, 2, NULL),
+	(55, 2, 12, 1, 0, 1, NULL),
+	(56, 3, 12, 2, 0, 1, NULL),
+	(57, 4, 12, 3, 0, 1, NULL),
+	(58, 8, 12, 4, 0, 2, NULL),
+	(59, 9, 12, 5, 0, 2, NULL),
+	(60, 10, 12, 6, 0, 2, NULL),
+	(61, 2, 13, 1, 0, 1, NULL),
+	(62, 3, 13, 2, 0, 1, NULL),
+	(63, 4, 13, 3, 0, 1, NULL),
+	(64, 8, 13, 4, 0, 2, NULL),
+	(65, 9, 13, 5, 0, 2, NULL),
+	(66, 10, 13, 6, 0, 2, NULL);
+
+-- Volcando estructura para tabla ventas_inventario.vi_comunas
+CREATE TABLE IF NOT EXISTS `vi_comunas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(250) DEFAULT NULL,
+  `region_id` int(11) DEFAULT NULL,
+  `estado` tinyint(4) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla ventas_inventario.vi_comunas: ~30 rows (aproximadamente)
+INSERT INTO `vi_comunas` (`id`, `nombre`, `region_id`, `estado`, `created_at`) VALUES
+	(1, 'LINARES', 1, 1, '2023-10-16 16:31:58'),
+	(2, 'TALCA', 1, 1, '2023-10-16 16:32:13'),
+	(3, 'CURICÓ', 1, 1, '2023-10-16 16:32:21'),
+	(4, 'Cauquenes', 1, 1, '2023-10-16 16:37:23'),
+	(5, 'Chanco', 1, 1, '2023-10-16 16:37:32'),
+	(6, 'Pelluhue', 1, 1, '2023-10-16 16:37:38'),
+	(7, 'Hualañé', 1, 1, '2023-10-16 16:37:46'),
+	(8, 'Licantén', 1, 1, '2023-10-16 16:37:54'),
+	(9, 'Molina', 1, 1, '2023-10-16 16:38:00'),
+	(10, 'Rauco', 1, 1, '2023-10-16 16:38:07'),
+	(11, 'Romeral', 1, 1, '2023-10-16 16:38:14'),
+	(12, 'Sagrada Familia', 1, 1, '2023-10-16 16:38:20'),
+	(13, 'Teno', 1, 1, '2023-10-16 16:38:39'),
+	(14, 'Vichuquén', 1, 1, '2023-10-16 16:38:47'),
+	(15, 'Colbún', 1, 1, '2023-10-16 16:38:55'),
+	(16, 'Longaví', 1, 1, '2023-10-16 16:39:09'),
+	(17, 'Parral', 1, 1, '2023-10-16 16:39:16'),
+	(18, 'Retiro', 1, 1, '2023-10-16 16:39:32'),
+	(19, 'San Javier', 1, 1, '2023-10-16 16:39:41'),
+	(20, 'Villa Alegre', 1, 1, '2023-10-16 16:39:50'),
+	(21, 'Yerbas Buenas', 1, 1, '2023-10-16 16:39:59'),
+	(22, 'Constitución', 1, 1, '2023-10-16 16:40:05'),
+	(23, 'Curepto', 1, 1, '2023-10-16 16:40:11'),
+	(24, 'Empedrado', 1, 1, '2023-10-16 16:40:18'),
+	(25, 'Maule', 1, 1, '2023-10-16 16:40:25'),
+	(26, 'Pelarco', 1, 1, '2023-10-16 16:40:31'),
+	(27, 'Pencahue', 1, 1, '2023-10-16 16:40:38'),
+	(28, 'Río Claro', 1, 1, '2023-10-16 16:40:46'),
+	(29, 'San Clemente', 1, 1, '2023-10-16 16:40:56'),
+	(30, 'San Rafael', 1, 1, '2023-10-16 16:41:09');
+
+-- Volcando estructura para tabla ventas_inventario.vi_estados_ruta
+CREATE TABLE IF NOT EXISTS `vi_estados_ruta` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(250) NOT NULL DEFAULT '',
+  `estado` tinyint(4) DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla ventas_inventario.vi_estados_ruta: ~4 rows (aproximadamente)
+INSERT INTO `vi_estados_ruta` (`id`, `nombre`, `estado`, `created_at`) VALUES
+	(1, 'Completada', 1, '2023-11-14 05:05:21'),
+	(2, 'En Ruta', 1, '2023-11-14 05:05:23'),
+	(3, 'Cancelada', 1, '2023-11-14 05:05:24'),
+	(4, 'Pendiente', 1, '2023-11-14 05:05:25');
+
+-- Volcando estructura para tabla ventas_inventario.vi_estado_cliente_ruta
+CREATE TABLE IF NOT EXISTS `vi_estado_cliente_ruta` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) DEFAULT NULL,
+  `estado` int(11) DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla ventas_inventario.vi_estado_cliente_ruta: ~3 rows (aproximadamente)
+INSERT INTO `vi_estado_cliente_ruta` (`id`, `nombre`, `estado`, `created_at`) VALUES
+	(1, 'FINALIZADO', 1, '2023-10-13 15:44:18'),
+	(2, 'PENDIENTE', 1, '2023-10-13 15:44:55'),
+	(3, 'SIN VENTA', 1, '2023-10-13 15:44:55');
+
+-- Volcando estructura para tabla ventas_inventario.vi_gastos
+CREATE TABLE IF NOT EXISTS `vi_gastos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(250) DEFAULT NULL,
+  `monto` int(50) DEFAULT NULL,
+  `ruta_id` int(11) DEFAULT NULL,
+  `estado` tinyint(4) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla ventas_inventario.vi_gastos: ~0 rows (aproximadamente)
+
+-- Volcando estructura para tabla ventas_inventario.vi_metodos_pago
+CREATE TABLE IF NOT EXISTS `vi_metodos_pago` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(250) DEFAULT NULL,
+  `estado` tinyint(4) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla ventas_inventario.vi_metodos_pago: ~4 rows (aproximadamente)
+INSERT INTO `vi_metodos_pago` (`id`, `nombre`, `estado`, `created_at`) VALUES
+	(1, 'FIADO', 1, '2023-10-20 18:44:09'),
+	(2, 'EFECTIVO', 1, '2023-10-20 18:44:18'),
+	(3, 'TRANSFERENCIA', 1, '2023-10-20 18:44:29'),
+	(4, 'DEPOSITO', 1, '2023-10-20 18:44:37');
+
+-- Volcando estructura para tabla ventas_inventario.vi_monedero
+CREATE TABLE IF NOT EXISTS `vi_monedero` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cliente_id` int(11) DEFAULT NULL,
+  `saldo` varchar(50) DEFAULT NULL,
+  `total_comprado` varchar(50) DEFAULT NULL,
+  `total_deuda` varchar(50) DEFAULT NULL,
+  `total_pagado` varchar(50) DEFAULT NULL,
+  `total_transferencia` varchar(50) DEFAULT NULL,
+  `total_deposito` varchar(50) DEFAULT NULL,
+  `total_efectivo` varchar(50) DEFAULT NULL,
+  `total_fiado` varchar(50) DEFAULT NULL,
+  `estado` tinyint(4) DEFAULT NULL,
+  `eliminado` tinyint(4) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla ventas_inventario.vi_monedero: ~15 rows (aproximadamente)
+INSERT INTO `vi_monedero` (`id`, `cliente_id`, `saldo`, `total_comprado`, `total_deuda`, `total_pagado`, `total_transferencia`, `total_deposito`, `total_efectivo`, `total_fiado`, `estado`, `eliminado`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 1, '0', NULL, '0', '0', '0', '0', '0', '0', 1, 0, '2023-10-10 05:31:02', NULL, NULL),
+	(2, 1, '0', NULL, '0', '0', '0', '0', '0', '0', 1, 0, '2023-10-11 07:10:02', NULL, NULL),
+	(3, 1, '0', NULL, '0', '0', '0', '0', '0', '0', 1, 0, '2023-10-11 07:10:39', NULL, NULL),
+	(4, 1, '0', NULL, '0', '0', '0', '0', '0', '0', 1, 0, '2023-10-11 07:11:09', NULL, NULL),
+	(5, 1, '0', NULL, '0', '0', '0', '0', '0', '0', 1, 0, '2023-10-12 06:52:21', NULL, NULL),
+	(6, 1, '0', NULL, '0', '0', '0', '0', '0', '0', 1, 0, '2023-10-12 06:52:52', NULL, NULL),
+	(7, 8, '0', '0', '0', '0', '0', '0', '0', '0', 1, 0, '2023-10-12 06:54:32', '2023-11-11 17:13:47', NULL),
+	(8, 3, '-98000', '376000', '98000', '278000', '0', '0', '180000', '98000', 1, 0, '2023-11-11 12:04:46', '2023-11-16 07:29:59', NULL),
+	(9, 1, '0', NULL, '0', '0', '0', '0', '0', '0', 1, 0, '2023-11-11 16:07:53', NULL, NULL),
+	(10, 1, '0', NULL, '0', '0', '0', '0', '0', '0', 1, 0, '2023-11-11 16:10:51', NULL, NULL),
+	(11, 2, '-4620', '13860', '4620', '9240', '0', '0', '4620', '4620', 1, 0, '2023-11-11 16:41:41', '2023-11-16 07:23:04', NULL),
+	(12, 4, '-110000', '230000', '110000', '120000', '0', '0', '10000', '110000', 1, 0, '2023-11-11 16:51:12', '2023-11-16 07:30:10', NULL),
+	(13, 10, '-4000', '8000', '4000', '4000', '0', '0', '0', '4000', 1, 0, '2023-11-11 16:52:06', '2023-11-11 17:20:13', NULL),
+	(14, 9, '-70000', '140000', '70000', '70000', '0', '0', '0', '70000', 1, 0, '2023-11-11 16:56:29', '2023-11-11 17:26:05', NULL),
+	(15, 1, '0', NULL, '0', '0', '0', '0', '0', '0', 1, 0, '2023-11-11 17:50:58', NULL, NULL);
+
+-- Volcando estructura para tabla ventas_inventario.vi_pagos_venta
+CREATE TABLE IF NOT EXISTS `vi_pagos_venta` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `venta_id` int(11) DEFAULT NULL,
+  `metodo_pago_id` int(11) DEFAULT NULL,
+  `monto_total` varchar(50) DEFAULT NULL,
+  `monto_pago_actual` varchar(50) DEFAULT NULL,
+  `monto_pagado` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla ventas_inventario.vi_pagos_venta: ~6 rows (aproximadamente)
+INSERT INTO `vi_pagos_venta` (`id`, `venta_id`, `metodo_pago_id`, `monto_total`, `monto_pago_actual`, `monto_pagado`, `created_at`) VALUES
+	(19, 19, 1, '4000', '4000', '4000', '2023-11-11 17:20:13'),
+	(20, 20, 1, '70000', '70000', '70000', '2023-11-11 17:26:05'),
+	(21, 21, 1, '4200', '0', '4200', '2023-11-11 17:30:41'),
+	(22, 22, 2, '180000', '180000', '180000', '2023-11-11 17:34:41'),
+	(23, 23, 1, '100000', '0', '100000', '2023-11-11 17:35:12'),
+	(24, 24, 2, '4620', '4620', '4620', '2023-11-11 17:42:04'),
+	(25, 25, 1, '80000', '0', '80000', '2023-11-11 17:43:41'),
+	(26, 26, 1, '10000', '0', '10000', '2023-11-13 06:12:38'),
+	(27, 27, 1, '420', '0', '420', '2023-11-16 07:23:04'),
+	(28, 28, 1, '9000', '0', '9000', '2023-11-16 07:28:16'),
+	(29, 29, 1, '9000', '0', '9000', '2023-11-16 07:29:59'),
+	(30, 30, 2, '10000', '10000', '10000', '2023-11-16 07:30:10');
+
+-- Volcando estructura para tabla ventas_inventario.vi_perfiles
+CREATE TABLE IF NOT EXISTS `vi_perfiles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(50) DEFAULT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `estado` tinyint(4) DEFAULT NULL,
+  `mostrar` tinyint(4) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla ventas_inventario.vi_perfiles: ~4 rows (aproximadamente)
+INSERT INTO `vi_perfiles` (`id`, `codigo`, `nombre`, `estado`, `mostrar`, `created_at`, `updated_at`) VALUES
+	(1, '000', 'SUPER ADMINISTRADOR', 1, 0, '2023-10-11 19:33:25', NULL),
+	(2, '111', 'ADMINISTRADOR', 1, 1, '2023-10-11 19:33:43', NULL),
+	(3, '222', 'CLIENTE', 1, 0, '2023-10-11 19:33:56', NULL),
+	(4, '333', 'REPARTIDOR', 1, 1, '2023-10-11 19:34:11', NULL);
+
+-- Volcando estructura para tabla ventas_inventario.vi_productos
+CREATE TABLE IF NOT EXISTS `vi_productos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(250) DEFAULT NULL,
+  `descripcion` varchar(250) DEFAULT NULL,
+  `stock` int(11) DEFAULT NULL,
+  `precio` int(11) DEFAULT NULL,
+  `categoria_id` int(11) DEFAULT NULL,
+  `estado` tinyint(4) DEFAULT NULL,
+  `eliminado` tinyint(4) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla ventas_inventario.vi_productos: ~4 rows (aproximadamente)
+INSERT INTO `vi_productos` (`id`, `nombre`, `descripcion`, `stock`, `precio`, `categoria_id`, `estado`, `eliminado`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 'Primera', 'Primera', 150, 6000, NULL, 1, 0, '2023-10-10 06:47:39', NULL, NULL),
+	(2, 'Segunda', 'Segunda', 200, 8000, NULL, 1, 0, '2023-10-10 06:52:27', NULL, NULL),
+	(3, 'Huevos Extra', 'Huevos Extra', 100, 10000, NULL, 1, 0, '2023-10-10 06:56:12', NULL, NULL),
+	(4, 'Huevos Super Extra', 'Huevos Super Extra', 300, 12000, NULL, 1, 0, '2023-10-10 06:56:37', NULL, NULL);
+
+-- Volcando estructura para tabla ventas_inventario.vi_productos_venta
+CREATE TABLE IF NOT EXISTS `vi_productos_venta` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tipo_huevo` varchar(50) DEFAULT NULL,
+  `formato_huevo` varchar(50) DEFAULT NULL,
+  `precio` varchar(50) DEFAULT NULL,
+  `cantidad` int(11) DEFAULT NULL,
+  `producto_id` int(11) NOT NULL,
+  `ruta_id` int(11) DEFAULT NULL,
+  `venta_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla ventas_inventario.vi_productos_venta: ~6 rows (aproximadamente)
+INSERT INTO `vi_productos_venta` (`id`, `tipo_huevo`, `formato_huevo`, `precio`, `cantidad`, `producto_id`, `ruta_id`, `venta_id`, `created_at`, `updated_at`) VALUES
+	(22, 'b', 'c', '4000', 1, 4, 10, 19, '2023-11-11 17:20:13', NULL),
+	(23, 'b', 'c', '7000', 10, 4, 10, 20, '2023-11-11 17:26:05', NULL),
+	(24, 'b', 'c', '420', 10, 2, 11, 21, '2023-11-11 17:30:41', NULL),
+	(25, 'b', 'c', '9000', 20, 1, 11, 22, '2023-11-11 17:34:41', NULL),
+	(26, 'b', 'c', '10000', 10, 2, 11, 23, '2023-11-11 17:35:12', NULL),
+	(27, 'b', 'c', '420', 11, 2, 12, 24, '2023-11-11 17:42:04', NULL),
+	(28, 'b', 'c', '8000', 10, 3, 12, 25, '2023-11-11 17:43:41', NULL),
+	(29, 'b', 'c', '10000', 1, 2, 12, 26, '2023-11-13 06:12:38', NULL),
+	(30, 'b', 'c', '420', 1, 2, 13, 27, '2023-11-16 07:23:04', NULL),
+	(31, 'b', 'c', '9000', 1, 3, 13, 28, '2023-11-16 07:28:16', NULL),
+	(32, 'b', 'c', '9000', 1, 3, 13, 29, '2023-11-16 07:29:59', NULL),
+	(33, 'b', 'c', '10000', 1, 2, 13, 30, '2023-11-16 07:30:10', NULL);
+
+-- Volcando estructura para tabla ventas_inventario.vi_regiones
+CREATE TABLE IF NOT EXISTS `vi_regiones` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(50) DEFAULT NULL,
+  `nombre` varchar(250) DEFAULT NULL,
+  `estado` tinyint(4) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla ventas_inventario.vi_regiones: ~0 rows (aproximadamente)
+INSERT INTO `vi_regiones` (`id`, `codigo`, `nombre`, `estado`, `created_at`) VALUES
+	(1, '07', 'REGION DEL MAULE', 1, '2023-10-16 16:31:38');
+
+-- Volcando estructura para tabla ventas_inventario.vi_rutas
+CREATE TABLE IF NOT EXISTS `vi_rutas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `repartidor_id` int(11) DEFAULT NULL,
+  `cajas_total` int(11) DEFAULT NULL,
+  `cajas_vendidas` int(11) DEFAULT NULL,
+  `fecha_ruta` timestamp NULL DEFAULT NULL,
+  `estado_ruta_id` int(11) DEFAULT NULL,
+  `observacion_ruta` varchar(255) DEFAULT NULL,
+  `comuna_id` int(11) DEFAULT NULL,
+  `fecha_inicio` timestamp NULL DEFAULT NULL,
+  `fecha_termino` timestamp NULL DEFAULT NULL,
+  `cantidad_clientes` int(11) DEFAULT NULL,
+  `estado` tinyint(4) DEFAULT NULL,
+  `eliminado` tinyint(4) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla ventas_inventario.vi_rutas: ~3 rows (aproximadamente)
+INSERT INTO `vi_rutas` (`id`, `repartidor_id`, `cajas_total`, `cajas_vendidas`, `fecha_ruta`, `estado_ruta_id`, `observacion_ruta`, `comuna_id`, `fecha_inicio`, `fecha_termino`, `cantidad_clientes`, `estado`, `eliminado`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(10, 1, 40, 10, '2023-11-01 03:00:00', NULL, NULL, NULL, NULL, NULL, 6, 1, 0, '2023-11-11 17:19:56', '2023-11-11 17:26:05', NULL),
+	(11, 1, 25, 10, '2023-11-12 03:00:00', NULL, NULL, NULL, NULL, NULL, 6, 1, 0, '2023-11-11 17:30:17', '2023-11-11 17:35:12', NULL),
+	(12, 1, 20, 1, '2023-11-01 03:00:00', NULL, NULL, NULL, NULL, NULL, 6, 1, 0, '2023-11-11 17:40:48', '2023-11-13 06:12:38', NULL),
+	(13, 1, 40, 1, '2023-11-01 03:00:00', NULL, NULL, 1, NULL, NULL, 6, 1, 0, '2023-11-16 06:52:47', '2023-11-16 07:30:10', NULL);
+
+-- Volcando estructura para tabla ventas_inventario.vi_sectores
+CREATE TABLE IF NOT EXISTS `vi_sectores` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(250) DEFAULT NULL,
+  `comuna_id` int(11) DEFAULT NULL,
+  `estado` tinyint(4) DEFAULT 1,
+  `eliminado` tinyint(4) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla ventas_inventario.vi_sectores: ~6 rows (aproximadamente)
+INSERT INTO `vi_sectores` (`id`, `nombre`, `comuna_id`, `estado`, `eliminado`, `created_at`, `deleted_at`, `updated_at`) VALUES
+	(1, 'los alamos', 2, 1, 1, '2023-10-27 10:43:28', '2023-11-08 11:16:42', '2023-11-08 10:13:55'),
+	(2, 'vara gruesa', 1, 1, 1, '2023-10-27 10:43:53', '2023-11-08 11:15:33', NULL),
+	(3, 'vara gruesa', 1, 1, 1, '2023-10-27 10:47:42', '2023-11-08 11:14:11', NULL),
+	(4, 'vara gruesa', 1, 1, 1, '2023-10-27 10:49:06', '2023-11-08 11:12:43', NULL),
+	(5, 'las lomas ', 2, 1, 1, '2023-11-08 10:22:51', '2023-11-08 11:17:02', NULL),
+	(6, 'Huapi', 1, 1, 0, '2023-11-08 10:23:59', NULL, NULL);
+
+-- Volcando estructura para tabla ventas_inventario.vi_usuarios
+CREATE TABLE IF NOT EXISTS `vi_usuarios` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(250) DEFAULT NULL,
+  `username` varchar(250) DEFAULT NULL,
+  `email` varchar(250) DEFAULT NULL,
+  `rut` varchar(250) DEFAULT NULL,
+  `celular` varchar(50) DEFAULT NULL,
+  `perfil_id` int(11) DEFAULT NULL,
+  `direccion` varchar(250) DEFAULT NULL,
+  `estado` tinyint(4) DEFAULT NULL,
+  `eliminado` tinyint(4) DEFAULT 0,
+  `password` varchar(50) DEFAULT NULL,
+  `validate_password` tinyint(4) DEFAULT NULL,
+  `token` varchar(250) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla ventas_inventario.vi_usuarios: ~0 rows (aproximadamente)
+INSERT INTO `vi_usuarios` (`id`, `nombre`, `username`, `email`, `rut`, `celular`, `perfil_id`, `direccion`, `estado`, `eliminado`, `password`, `validate_password`, `token`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 'Diego', NULL, 'diegoiretamalp@gmail.com', '20.202.667-2', '56975412245', 4, '0270 Millantu Puente Alto', 1, 0, '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 1, NULL, '2023-10-12 00:18:49', NULL, NULL);
+
+-- Volcando estructura para tabla ventas_inventario.vi_ventas
+CREATE TABLE IF NOT EXISTS `vi_ventas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pagado` tinyint(4) DEFAULT NULL,
+  `estado` tinyint(4) DEFAULT NULL,
+  `eliminado` tinyint(4) DEFAULT 0,
+  `repartidor_id` int(11) DEFAULT NULL,
+  `cliente_id` int(11) DEFAULT NULL,
+  `ruta_id` int(11) DEFAULT NULL,
+  `direccion_despacho` varchar(255) DEFAULT NULL,
+  `total_venta` varchar(50) DEFAULT NULL,
+  `total_pagado` varchar(50) DEFAULT NULL,
+  `nota_despacho` text DEFAULT NULL,
+  `fecha_despacho` date DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `cajas_total` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla ventas_inventario.vi_ventas: ~7 rows (aproximadamente)
+INSERT INTO `vi_ventas` (`id`, `pagado`, `estado`, `eliminado`, `repartidor_id`, `cliente_id`, `ruta_id`, `direccion_despacho`, `total_venta`, `total_pagado`, `nota_despacho`, `fecha_despacho`, `created_at`, `updated_at`, `deleted_at`, `cajas_total`) VALUES
+	(19, 0, 1, 0, 1, 10, 10, NULL, '4000', '4000', NULL, NULL, '2023-11-11 17:20:13', '2023-11-11 17:20:13', NULL, 1),
+	(20, 0, 1, 0, 1, 9, 10, NULL, '70000', '70000', NULL, NULL, '2023-11-11 17:26:05', '2023-11-11 17:26:05', NULL, 10),
+	(21, 0, 1, 0, 1, 2, 11, NULL, '4200', '4200', NULL, NULL, '2023-11-11 17:30:41', '2023-11-11 17:30:41', NULL, 10),
+	(22, 1, 1, 0, 1, 3, 11, NULL, '180000', '180000', NULL, NULL, '2023-11-11 17:34:41', '2023-11-11 17:34:41', NULL, 20),
+	(23, 0, 1, 0, 1, 4, 11, NULL, '100000', '100000', NULL, NULL, '2023-11-11 17:35:12', '2023-11-11 17:35:12', NULL, 10),
+	(24, 1, 1, 0, 1, 2, 12, NULL, '4620', '4620', NULL, NULL, '2023-11-11 17:42:04', '2023-11-11 17:42:04', NULL, 11),
+	(25, 0, 1, 0, 1, 3, 12, NULL, '80000', '80000', NULL, NULL, '2023-11-11 17:43:41', '2023-11-11 17:43:41', NULL, 10),
+	(26, 0, 1, 0, 1, 4, 12, NULL, '10000', '10000', NULL, NULL, '2023-11-13 06:12:38', '2023-11-13 06:12:38', NULL, 1),
+	(27, 0, 1, 0, 1, 2, 13, NULL, '420', '420', NULL, NULL, '2023-11-16 07:23:04', '2023-11-16 07:23:04', NULL, 1),
+	(28, 0, 1, 0, 1, 3, 13, NULL, '9000', '9000', NULL, NULL, '2023-11-16 07:28:16', '2023-11-16 07:28:16', NULL, 1),
+	(29, 0, 1, 0, 1, 3, 13, NULL, '9000', '9000', NULL, NULL, '2023-11-16 07:29:59', '2023-11-16 07:29:59', NULL, 1),
+	(30, 1, 1, 0, 1, 4, 13, NULL, '10000', '10000', NULL, NULL, '2023-11-16 07:30:10', '2023-11-16 07:30:10', NULL, 1);
+
+/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;

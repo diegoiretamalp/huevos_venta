@@ -121,6 +121,48 @@
             }
         });
 
+        $('#nuevo_gasto').click(function() {
+            $('#modal_gasto').modal('show');
+        });
+        $('#confirmar_gasto').click(function() {
+            let nombre = $('#nombre_gasto').val();
+            let monto = $('#monto_gasto').val();
+            if (nombre != '' && monto != '' && monto > 0) {
+                $.ajax({
+                    url: '<?= base_url('gastos/nuevo-gasto-ruta') ?>',
+                    method: 'post',
+                    data: {
+                        nombre: nombre,
+                        monto: monto,
+                        ruta_id: ruta_id
+                    },
+                    dataType: 'json',
+                    success: function(resp) {
+                        let respuesta = JSON.stringify(resp);
+                        let obj = $.parseJSON(respuesta);
+                        let tipo = obj['tipo'];
+                        let msg = obj['msg'];
+                        if (tipo != 'success') {
+                            toastr[tipo](msg, "Gestión de Gastos")
+                        } else {
+                            //data = obj['data'];
+                            //CargarDatosClienteModal(data);
+                            toastr["success"](msg, "Gestión Clientes")
+                        }
+                    },
+                    error: function(error) {
+                        console.log(JSON.stringify(error));
+                        console.log('Error al obtener los clientes: ' + error);
+                    }
+                });
+            } else {
+                toastr['warning']('1 o más campos son requeridos, completalos para continuar por favor.', "Gestión de Gastos")
+            }
+
+        });
+
+
+
     });
 
     function EliminarProducto(id_unico) {
@@ -137,6 +179,7 @@
     }
 
     function CargarCliente(cliente_id) {
+        cliente_id_venta = cliente_id
         $.ajax({
             url: '<?= base_url('clientes/cargar-cliente-venta/') ?>' + cliente_id, // Nombre de tu archivo PHP
             method: 'post',
@@ -356,6 +399,9 @@
                     console.log(msg);
                 } else {
                     data = obj['data'];
+                    console.log('data');
+                    console.log(data);
+                    console.log('data');
                     CargarDatosPrimeraVenta(data, cliente_id);
                 }
             },
@@ -373,23 +419,36 @@
         // Construir el cuerpo de la tabla
         let tbody = '';
         let count = 1;
-
+        let badge = '';
+        console.log('data');
+        console.log(data);
+        console.log('data');
         data.forEach(d => {
+            badge = '';
             tbody += `
             <tr>
-                <td>${count}</td><td>`;
-            console.log(d);
-            d.productos_venta_data.forEach(e => {
-                console.log(e.producto_data.nombre);
-                tbody += "" + e.producto_data.nombre + ", ";
-            });
-            tbody += `</td>
-                <td>${d.total_venta}</td>
-                <td>${d.pagado}</td>
-            </tr>`;
+                <td class="text-center">${count}</td>
+                <td class="text-center">${d.nombre_producto}</td>
+                <td class="text-center">${d.cantidad}</td>
+                <td class="text-center">${d.precio}</td>
+                <td class="text-center">${d.precio * d.cantidad}</td>
+                <td class="text-center">${d.metodo_pago}</td>`;
+            if (d.pagado == 0) {
+                badge += `
+                    <span class="badge badge-warning">No</span>
+                `;
+            } else {
+                badge += `
+                    <span class="badge badge-success">Si</span>
+                `;
+            }
+            tbody += `
+                    <td class="text-center">${badge}</td>
+                </tr>
+            `;
             count++;
         });
-
+        $('#btn_venta_' + cliente_id).removeAttr('hidden');
         $('#tbody_ventas_' + cliente_id).html(tbody);
 
         // Inicializar DataTable solo si aún no ha sido inicializado

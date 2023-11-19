@@ -38,15 +38,18 @@ class Ventas_model extends Model
 
         $select = trim($select);
         $ventas->join("productos_venta pv", 'pv.venta_id = v.id', 'left');
+        $ventas->join("productos p", 'p.id = pv.producto_id', 'left');
+        $ventas->join("pagos_venta pave", 'pave.venta_id = v.id', 'left');
+        $ventas->join("metodos_pago mp", 'mp.id = pave.metodo_pago_id', 'left');
         if (empty($select)) {
-            $ventas->select('v.*, pv.*');
+            $ventas->select('v.*, pv.*, p.nombre as nombre_producto, mp.nombre as metodo_pago');
         } else {
             $ventas->select($select);
         }
         if (!empty($where)) {
             $ventas->where($where);
         } else {
-            $ventas->where("eliminado", false);
+            $ventas->where("v.eliminado", false);
         }
 
         return $ventas->get()->getResultObject();

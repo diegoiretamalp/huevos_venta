@@ -1,14 +1,14 @@
 <div class="ms-content-wrapper">
     <div class="row">
-        <div class="col-12">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="ms-card">
-                        <div class="ms-card-header">
-                            Información de La Ruta
-                        </div>
-                        <div class="card-body">
-                            <form action="<?= base_url('rutas/nueva') ?>" method="post" id="formulario">
+        <form class="w-100" action="<?= base_url('rutas/nueva') ?>" method="post" id="formulario">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="ms-card">
+                            <div class="ms-card-header">
+                                Información de La Ruta
+                            </div>
+                            <div class="card-body">
                                 <input type="hidden" name="clientes_ruta" id="clientes_ruta">
                                 <div class="row d-flex justify-content-center">
                                     <div class="col-12 col-md-6">
@@ -48,68 +48,66 @@
                                 <div class="row d-flex justify-content-center">
                                     <button type="button" class="btn btn-success" id="btn_finalizar">Finalizar</button>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
 
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <hr>
-        <br>
-        <br>
-        <br>
+            <hr>
 
-        <div class="col-12">
-            <div class="row">
-                <div class="col-12">
-                    <div class="ms-card">
-                        <div class="ms-card-body">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="ms-card">
+                            <div class="ms-card-body">
+                                <div class="row">
+                                    <div class="col-xl-4 pb-3">
+                                        <label for="comuna_id">Comuna</label>
+                                        <select class="form-control" name="comuna_id" id="comuna_id">
+                                            <option value="0">Todas</option>
+                                            <?php if (!empty($comunas)) : ?>
+                                                <?php foreach ($comunas as $comuna) : ?>
+                                                    <option value="<?= $comuna->id ?>"><?= $comuna->nombre ?></option>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-xl-2 d-flex justify-content-center align-content-center">
+                                        <button type="button" id="btn_cargar_clientes" class="btn btn-sm btn-secondary">Cargar</button>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <label for="cliente_id">Seleccionar Clientes</label>
+                                        <select class="form-control" name="cliente_id" id="cliente_id">
+                                            <option value="0">Seleccionar</option>
+                                            <?php if (!empty($clientes)) : ?>
+                                                <?php foreach ($clientes as $cliente) : ?>
+                                                    <option value="<?= $cliente->id ?>"><?= $cliente->nombre . ' ' . $cliente->apellido_paterno . ' ' . $cliente->apellido_materno ?></option>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-xl-2 d-flex justify-content-center align-content-center">
+                                        <button type="button" id="btn_cargar_cliente" class="btn btn-sm btn-secondary">Cargar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
                             <div class="row">
-                                <div class="col-xl-4 pb-3">
-                                    <label for="comuna_id">Comuna</label>
-                                    <select class="form-control" name="comuna_id" id="comuna_id">
-                                        <option value="0">Todas</option>
-                                        <?php if (!empty($comunas)) : ?>
-                                            <?php foreach ($comunas as $comuna) : ?>
-                                                <option value="<?= $comuna->id ?>"><?= $comuna->nombre ?></option>
-                                            <?php endforeach; ?>
-                                        <?php endif; ?>
-                                    </select>
-                                </div>
-                                <div class="col-xl-2 d-flex justify-content-center align-content-center">
-                                    <button type="button" id="btn_cargar_clientes" class="btn btn-sm btn-secondary">Cargar</button>
-                                </div>
-                                <div class="col-xl-4">
-                                    <label for="cliente_id">Seleccionar Clientes</label>
-                                    <select class="form-control" name="cliente_id" id="cliente_id">
-                                        <option value="0">Seleccionar</option>
-                                        <?php if (!empty($clientes)) : ?>
-                                            <?php foreach ($clientes as $cliente) : ?>
-                                                <option value="<?= $cliente->id ?>"><?= $cliente->nombre . ' ' . $cliente->apellido_paterno . ' ' . $cliente->apellido_materno ?></option>
-                                            <?php endforeach; ?>
-                                        <?php endif; ?>
-                                    </select>
-                                </div>
-
-                                <div class="col-xl-2 d-flex justify-content-center align-content-center">
-                                    <button type="button" id="btn_cargar_cliente" class="btn btn-sm btn-secondary">Cargar</button>
+                                <div class="col-xl-12">
+                                    <ul class="ms-activity-log">
+                                    </ul>
                                 </div>
                             </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-xl-12">
-                                <ul class="ms-activity-log">
-                                </ul>
-                            </div>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
+
     </div>
 
 </div>
