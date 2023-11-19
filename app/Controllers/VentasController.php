@@ -323,7 +323,6 @@ class VentasController extends BaseController
                         if (!empty($rsp)) {
                             UpdateRowTableByWhere('clientes_ruta', ['estado_cliente_ruta_id' => 1], ['cliente_id' => $post['cliente_id'], 'ruta_id' => $ruta->id]);
                             UpdateRowTableByWhere('rutas', ['cajas_vendidas' => $cajas_total, 'updated_at' => getTimestamp()], ['id' => $ruta->id]);
-                            return redirect('rutas/ver/'.$ruta->id);
                             $rsp = [
                                 'tipo' => 'success',
                                 'msg' => 'Venta registrada con éxito'
