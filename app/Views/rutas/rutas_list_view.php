@@ -22,6 +22,7 @@
                 <thead>
                     <tr role="row">
                         <th class="text-center">#</th>
+                        <th class="text-center">Comuna</th>
                         <th class="text-center">Venta Total</th>
                         <th class="text-center">Total Pagado</th>
                         <th class="text-center">Total Fiado</th>
@@ -41,6 +42,7 @@
                         <?php foreach ($rutas as $ruta) : $count++; ?>
                             <tr>
                                 <td class="text-center"><?= $count ?></td>
+                                <td class="text-center"><?= !empty($ruta->nombre_comuna) ? $ruta->nombre_comuna : 'Sin Información' ?></td>
                                 <td class="text-center"><?= !empty($ruta->total_venta) ? $ruta->total_venta : 'Sin Información' ?></td>
                                 <td class="text-center"><?= !empty($ruta->total_pagado) ? $ruta->total_pagado : 'Sin Información' ?></td>
                                 <td class="text-center"><?= !empty($ruta->total_fiado) ? $ruta->total_fiado : 'Sin Información' ?></td>

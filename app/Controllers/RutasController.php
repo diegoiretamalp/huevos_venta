@@ -17,8 +17,8 @@ class RutasController extends BaseController
     public function index()
     {
         $rutas_where = [
-            'estado' => true,
-            'eliminado' => false,
+            'r.estado' => true,
+            'r.eliminado' => false,
         ];
         $rutas = $this->Rutas_model->getRutas($rutas_where);
         if (!empty($rutas)) {
@@ -80,6 +80,7 @@ class RutasController extends BaseController
                 'repartidor_id' => !empty($post['repartidor_id']) ? $post['repartidor_id'] : NULL,
                 'cajas_total' => !empty($post['total_cajas']) ? $post['total_cajas'] : NULL,
                 'fecha_ruta' => !empty($post['fecha_ruta']) ? ordenar_fechaServidor($post['fecha_ruta']) : NULL,
+                'estado_ruta_id' => 1,
                 'estado' => 1,
                 'created_at' => getTimestamp(),
             ];
