@@ -21,25 +21,7 @@ function formatearFechaFiltro($fecha) {
 
     return $fechaFormateada;
 }
-function Conectar()
-{
-	$host = SERVER;
-	$dbname = BD;
-	$username = USER;
-	$password = PASS;
-	$puerto = 1433;
 
-	$conn = false;
-	try {
-		$conn = new PDO("dblib:host=$host;dbname=$dbname", $username, $password);
-		// Configura opciones para PDO
-		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$conn->setAttribute(PDO::ATTR_TIMEOUT, 0);
-	} catch (PDOException $exp) {
-		echo ("No se logró conectar correctamente con la base de datos: $dbname, error: $exp");
-	}
-	return $conn;
-}
 
 function consulta($query, $conn)
 {
@@ -54,112 +36,6 @@ function consulta($query, $conn)
 	}
 }
 
-function consultaPaginada($query, $conn, $pageSize = 1000)
-{
-	ini_set('memory_limit', '-1');
-	$results = array();
-	$page = 1;
-	print('<br>FechaHora de inicio: ' . date("d-m-Y H:i:s"));
-	try {
-		do {
-			// Calcula el OFFSET para la paginación
-			$offset = ($page - 1) * $pageSize;
-
-			// Modifica la consulta SQL para incluir la paginación con ROW_NUMBER
-			$paginatedQuery = "SELECT * FROM (
-                SELECT *, ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS rownum
-                FROM ($query) subquery
-            ) AS numbered
-            WHERE rownum > $offset AND rownum <= " . ($offset + $pageSize);
-
-			$stmt = $conn->prepare($paginatedQuery);
-			$stmt->execute();
-			$pageResults = $stmt->fetchAll(PDO::FETCH_OBJ);
-
-			// Combina los resultados de la página actual en el conjunto de resultados
-			$results = array_merge($results, $pageResults);
-			$page++;
-			print('<br>FechaHora de vuelta N°' . $page . ': ' . date("d-m-Y H:i:s"));
-			print("<br>Cantidad:" . count($results));
-		} while (count($pageResults) > 0 && count($results) < 15000); // Límite de 10,000 registros
-
-		print('<br>FechaHora de Fin: ' . date("d-m-Y H:i:s"));
-		return $results;
-	} catch (PDOException $exp) {
-		echo 'Error en la consulta SQL ejecutada: ' . $exp->getMessage();
-		return false;
-	}
-}
-
-function crear_carpeta_upload_empresas($empresa_id, $carpetas = '')
-{
-	if (!empty($carpetas)) {
-		$ruta_contenido = ROOT_PATH_BASE . "/docs/empresas/empresa_$empresa_id/$carpetas/";
-	} else {
-		$ruta_contenido = ROOT_PATH_BASE . "/docs/empresas/empresa_$empresa_id/";
-	}
-
-
-	if (is_dir($ruta_contenido)) {
-		return $ruta_contenido;
-	} else {
-		mkdir($ruta_contenido, 0777, TRUE);
-		return $ruta_contenido;
-	}
-}
-
-function agregarCols($columna)
-{
-	$cols = '';
-	switch ($columna) {
-		case '3':
-			$cols = 'col-12 col-sm-12 col-lg-6 col-xl-3';
-			break;
-		case '4':
-			$cols = 'col-12 col-sm-12 col-lg-4 col-xl-4';
-			break;
-		case '6':
-			$cols = 'col-12 col-sm-12 col-lg-6 col-xl-6';
-			break;
-		case '9':
-			$cols = 'col-12 col-sm-12 col-lg-9 col-xl-9';
-			break;
-		case '12':
-			$cols = 'col-12 col-sm-12 col-lg-12 col-xl-12';
-			break;
-		default:
-			$cols = 'col-12 col-sm-12 col-lg-12';
-			break;
-	}
-	return $cols;
-}
-
-function getFileIconClass($extension)
-{
-	// Aquí puedes definir las extensiones y las clases de los iconos correspondientes
-	switch ($extension) {
-		case 'csv':
-			return 'fa-file-csv';
-		case 'pdf':
-			return 'fa-file-pdf';
-		case 'doc':
-		case 'docx':
-			return 'fa-file-word';
-		case 'xls':
-		case 'xlsx':
-			return 'fa-file-excel';
-		case 'ppt':
-		case 'pptx':
-			return 'fa-file-powerpoint';
-		case 'jpg':
-		case 'jpeg':
-		case 'png':
-		case 'gif':
-			return 'fa-file-image';
-		default:
-			return 'fa-file'; // Icono genérico para otros tipos de archivos
-	}
-}
 function sumaGeneralRow($data, $where)
 {
 	$sumaGeneral = 0;

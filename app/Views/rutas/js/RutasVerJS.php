@@ -88,34 +88,39 @@
 
         $('.metodo_pago').click(function() {
             let metodo_pago = (this).value;
-            $('#metodo_pago_seleccionado').html(metodo_pago);
 
+            console.log('metodo_pago');
+            console.log(metodo_pago);
+            console.log('metodo_pago');
             switch (metodo_pago) {
-                case 'fiado':
+                case '1':
+                    $('#metodo_pago_seleccionado').html('Fiado');
                     $('#monto_pagado').val(0);
                     $('#monto_pagado').attr('disabled', true);
                     $('#check_pago_total').attr('disabled', true);
                     $('#check_pago_total').attr('checked', false);
                     break;
-                case 'efectivo':
+                case '2':
+                    $('#metodo_pago_seleccionado').html('Efectivo');
                     $('#monto_pagado').val(carrito.costoTotal);
                     $('#monto_pagado').attr('disabled', false);
                     $('#check_pago_total').attr('disabled', false);
                     $('#check_pago_total').attr('checked', true);
                     break;
-                case 'transferencia':
+                case '3':
+                    $('#metodo_pago_seleccionado').html('Transferencia');
                     $('#monto_pagado').val(carrito.costoTotal);
                     $('#monto_pagado').attr('disabled', false);
                     $('#check_pago_total').attr('disabled', false);
                     $('#check_pago_total').attr('checked', true);
                     break;
-                case 'deposito':
+                case '4':
+                    $('#metodo_pago_seleccionado').html('Deposito');
                     $('#monto_pagado').val(carrito.costoTotal);
                     $('#monto_pagado').attr('disabled', false);
                     $('#check_pago_total').attr('disabled', false);
                     $('#check_pago_total').attr('checked', true);
                     break;
-
                 default:
                     break;
             }
@@ -161,6 +166,27 @@
 
         });
 
+        $('#cerrar_ruta').click(function(){
+            $('#modal_cerrar_ruta').modal('show');
+        });
+
+        $('#buscar_cliente').keyup(function () {
+    let lista = document.querySelectorAll('#lista li');
+    let valor = $(this).val().trim().toLowerCase();
+
+    lista.forEach(element => {
+        let h1Element = element.querySelector('h6');
+        if (h1Element) {
+            let nombre = h1Element.textContent.trim().toLowerCase();
+
+            if (nombre.includes(valor)) {
+                element.style.display = '';
+            } else {
+                element.style.display = 'none';
+            }
+        }
+    });
+});
 
 
     });
@@ -433,17 +459,17 @@
                 <td class="text-center">${d.precio}</td>
                 <td class="text-center">${d.precio * d.cantidad}</td>
                 <td class="text-center">${d.metodo_pago}</td>`;
-            if (d.pagado == 0) {
-                badge += `
-                    <span class="badge badge-warning">No</span>
-                `;
-            } else {
-                badge += `
-                    <span class="badge badge-success">Si</span>
-                `;
-            }
+            // if (d.pagado == 0) {
+            //     badge += `
+            //         <span class="badge badge-warning">No</span>
+            //     `;
+            // } else {
+            //     badge += `
+            //         <span class="badge badge-success">Si</span>
+            //     `;
+            // }
+            // <td class="text-center">${badge}</td>
             tbody += `
-                    <td class="text-center">${badge}</td>
                 </tr>
             `;
             count++;
@@ -490,14 +516,15 @@
         let count = 1;
         console.log(data);
         data.forEach(d => {
+            created_at = ordenarFechaHoraHumano(d.created_at);
             tbody += `
             <tr>
                 <td>${count}</td>
+                <td>${d.ruta_id}</td>
                 <td>${d.total_venta}</td>
                 <td>${d.total_pagado}</td>
-                <td>${d.created_at}</td>
-            </tr>
-            `;
+                <td>${created_at}</td>
+            </tr>`;
 
             count++;
         });

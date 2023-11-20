@@ -11,11 +11,19 @@ class VentasController extends BaseController
         $this->Clientes_model = model('App\Models\Clientes_model');
         $this->Monedero_model = model('App\Models\Monedero_model');
         $this->Rutas_model = model('App\Models\Rutas_model');
+        $this->Ventas_model = model('App\Models\Ventas_model');
     }
     public function index()
     {
+        $where = [
+            'v.estado' => true,
+            'v.eliminado' => false,
+        ];
+        $ventas = $this->Ventas_model->getVentasJoin($where);
         $data = [
+            'title' => 'Listado de Ventas',
             'main_view' => 'ventas/ventas_list_view',
+            'ventas' => !empty($ventas) ? $ventas : [],
             'js_content' => [
                 '0' => 'layout/js/generalJS'
             ]

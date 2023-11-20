@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use stdClass;
+
 class ClientesController extends BaseController
 {
     public function __construct()
@@ -39,24 +41,59 @@ class ClientesController extends BaseController
             return redirect('clientes/listado');
         }
         $cliente = $this->Clientes_model->getCliente($id);
-        $monedero = NULL;
+        // $monedero = NULL;
 
-        if (!empty($cliente)) {
-            $where_monedero = [
-                'cliente_id' => $cliente->id,
-                'estado' => true,
-                'eliminado' => false
-            ];
-            $monedero = $this->Monedero_model->getMonederoWhere($where_monedero);
-        }
+        // if (!empty($cliente)) {
+        //     $where_monedero = [
+        //         'cliente_id' => $cliente->id,
+        //         'estado' => true,
+        //         'eliminado' => false
+        //     ];
+        //     $monedero = $this->Monedero_model->getMonederoWhere($where_monedero);
+        // }
         //pre_die($monedero);
         $where_ventas = [
             'estado' => true,
             'eliminado' => false,
+            'pagado' => false,
             'cliente_id' => $id
         ];
         $ventas = $this->Ventas_model->getVentas($where_ventas);
 
+        $monedero = new stdClass();
+        if (!empty($ventas)) {
+            $total_venta = 0;
+            $total_pagado = 0;
+            $total_efectivo = 0;
+            $total_deuda = 0;
+            $total_transferencia = 0;
+            foreach ($ventas as $venta) {
+                $total_venta += $venta->total_venta;
+                if ($venta->total_venta > $venta->total_pagado) {
+                    $total_deuda += $venta->total_venta - $venta->total_pagado;
+                }
+                $total_pagado += $venta->total_pagado;
+                // pre_die($ventas);
+                // $pagos_venta = GetObjectByWhere('pagos_venta', ['venta_id' => $venta->id]);
+                // if (!empty($pagos_venta)) {
+                //     $total_pagado += SumaGeneralRow($pagos_venta, 'monto_pago_actual');
+                //     foreach ($pagos_venta as $pago) {
+                //         if ($pago->metodo_pago_id == 2) {
+                //             $total_efectivo += $pago->monto_pago_actual;
+                //         } elseif ($pago->metodo_pago_id == 1) {
+                //             $total_fiado += $pago->monto_total;
+                //         } elseif ($pago->metodo_pago_id == 3) {
+                //             $total_transferencia += $pago->monto_pago_actual;
+                //         }
+                //     }
+                // }
+            }
+            $monedero->total_deuda = $total_deuda;
+            $monedero->total_venta = $total_venta;
+            $monedero->total_pagado = $total_pagado;
+            // $monedero->total_efectivo = $total_efectivo;
+            // $monedero->total_transferencia = $total_transferencia;
+        }
         $data = [
             'title' => 'Ver Cliente',
             'main_view' => 'clientes/clientes_ver_view',
@@ -147,6 +184,7 @@ class ClientesController extends BaseController
         $productos = GetObjectByWhere('productos', ['estado' => true, 'eliminado' => false]);
         $comunas = GetObjectByWhere('comunas', ['estado' => true]);
         $sectores = GetObjectByWhere('sectores', ['estado' => true, 'eliminado' => false]);
+
         $data = [
             'title' => 'Formulario de Nuevo Cliente',
             'productos' => !empty($productos) ? $productos : [],
@@ -155,7 +193,11 @@ class ClientesController extends BaseController
             'sectores' => !empty($sectores) ? $sectores : [],
             'main_view' => 'clientes/clientes_new_view',
             'action' => base_url('clientes/nuevo'),
-
+            'js_content' => [
+                '0' => 'layout/js/generalJS',
+                '1' => 'login/js/validate_rut',
+                '2' => 'clientes/js/ClientesNewJS'
+            ]
         ];
         return view('layout/layout_main_view', $data);
     }
@@ -183,7 +225,7 @@ class ClientesController extends BaseController
                     'email' => !empty($post['email']) ? $post['email'] : NULL,
                     'precio_favorito' => !empty($post['precio_favorito']) ? $post['precio_favorito'] : NULL,
                     'producto_id' => !empty($post['producto_id']) ? $post['producto_id'] : NULL,
-                    'estado' => true,
+                    'estado' => !empty($post['estado']) ? ($post['estado'] == '1' ? true : false) : FALSE,
                     'region_id' => !empty($comuna) ? $comuna->region_id : NULL,
                     'comuna_id' => !empty($comuna) ? $comuna->id : NULL,
                     'sector_id' => !empty($post['sector_id']) ? $post['sector_id'] : NULL,
@@ -276,17 +318,23 @@ class ClientesController extends BaseController
 
 
 
-        if (validateText(trim($data['apellido_paterno']))) {
-            $error_flag = true;
-            $error['apellido_paterno'] = 'Apellido Paterno';
+        if (!empty($data['apellido_paterno'])) {
+            if (validateText(trim($data['apellido_paterno']))) {
+                $error_flag = true;
+                $error['apellido_paterno'] = 'Apellido Paterno';
+            }
         }
-        if (validateText(trim($data['apellido_materno']))) {
-            $error_flag = true;
-            $error['apellido_materno'] = 'Apellido Materno';
+        if (!empty($data['apellido_materno'])) {
+            if (validateText(trim($data['apellido_materno']))) {
+                $error_flag = true;
+                $error['apellido_materno'] = 'Apellido Materno';
+            }
         }
-        if (validateEmail(trim($data['email']))) {
-            $error_flag = true;
-            $error['email'] = 'Correo electrónico';
+        if (!empty($data['email'])) {
+            if (validateEmail(trim($data['email']))) {
+                $error_flag = true;
+                $error['email'] = 'Correo electrónico';
+            }
         }
 
         if (!validateRut(trim($data['rut_factura']))) {

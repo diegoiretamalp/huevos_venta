@@ -1,4 +1,25 @@
 <div class="ms-content-wrapper">
+    <!--------breadcrumb-------->
+
+    <div class="row">
+        <div class="col-md-12 col-xl-6">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-0">
+                    <li class="breadcrumb-item"><a href="<?= base_url('/') ?>"><i class="material-icons">home</i> Menu</a></li>
+                    <li class="breadcrumb-item"><a href="<?= base_url('rutas/listado') ?>">Listado Rutas</a></li>
+                    <li class="breadcrumb-item"><a href="#">Ver Ruta</a></li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-12 col-xl-6 d-flex justify-content-end">
+            <a class="btn btn-pill btn-info has-icon d-flex align-items-center" href="<?= base_url('rutas/nueva') ?>">
+                <i class="fas fa-user-circle" style="font-size: 24px;"></i>
+                Nueva Ruta
+            </a>
+        </div>
+    </div>
+    <br>
+    <!--------breadcrumb-------->
     <div class="row">
         <div class="col-12">
             <div class="ms-card">
@@ -10,6 +31,7 @@
                             <br>
                         </div>
                         <div class="col-md-12 text-right">
+                            <a class="btn btn-sm btn-success" href="<?= base_url('rutas/cerrar-ruta/' . $ruta->id) ?>"><i class="fas fa-check"></i> Cerrar Ruta</a>
                             <button class="btn btn-sm btn-info" type="button" id="nuevo_gasto"><i class="fas fa-dollar-sign"></i> Nuevo Gasto</button>
                             <br>
                             <br>
@@ -117,10 +139,16 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-12">
+            <input type="text" class="form-control" id="buscar_cliente" placeholder="Ingrese el nombre del Cliente...">
+            <br>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-xl-12">
             <div class="ms-card">
                 <div class="ms-card-body">
-                    <ul class="ms-activity-log">
+                    <ul class="ms-activity-log" id="lista">
                         <?php if (!empty($clientes_ruta)) : ?>
                             <?php foreach ($clientes_ruta as $cliente) : ?>
                                 <li>
@@ -131,12 +159,13 @@
                                     </div>
                                     <br>
                                     <br>
-                                    <h6><?= !empty($cliente->nombre_completo) ? $cliente->nombre_completo : 'Sin información' ?>
+                                    <h6><b><?= !empty($cliente->nombre_completo) ? $cliente->nombre_completo : 'Sin información' ?></b>
                                         <span class="badge badge-<?= $cliente->estado_cliente_ruta_id == 1 ? 'success' : ($cliente->estado_cliente_ruta_id == 2 ? 'warning' : 'secondary') ?>"><?= $cliente->estado_cliente_ruta_id == 1 ? 'FINALIZADO' : ($cliente->estado_cliente_ruta_id == 2 ? 'PENDIENTE' : 'SECONDARY') ?></span>
                                         <span role="button" onclick="VerDeudasCliente(<?= $cliente->cliente_id ?>)" id="btn_ver_deuda" style="cursor: pointer;" class="badge badge-danger">Ver Deuda</span>
                                         <span class="badge badge-info" role="button" onclick="CargarCliente(<?= $cliente->cliente_id ?>)" id="btn_venta_<?= $cliente->cliente_id ?>" style="cursor: pointer;" hidden data-toggle="modal" data-target="#modal-15">Nueva Venta</span>
                                     </h6>
-                                    <span> <i class="material-icons">event</i>ULTIMA COMPRA: <?= !empty($cliente->fecha_ultima_compra) ? $cliente->fecha_ultima_compra : 'Sin Información...' ?></span>
+                                    <br>
+                                    <span style="display: none;"> <i class="material-icons">event</i>ULTIMA COMPRA: <?= !empty($cliente->fecha_ultima_compra) ? $cliente->fecha_ultima_compra : 'Sin Información...' ?></span>
                                     <div class="row">
                                         <div class="col-4">
                                             <p class="fs-14"><b>Categoria Favorita: </b><?= !empty($cliente->cliente_data->producto_id) ? $cliente->cliente_data->producto_id : 'Sin Información' ?></p>
@@ -161,7 +190,6 @@
                                                                 <th class="text-center">Precio</th>
                                                                 <th class="text-center">Total Venta</th>
                                                                 <th class="text-center">Metodo Pago</th>
-                                                                <th class="text-center">Pagado</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody id="tbody_ventas_<?= $cliente->cliente_id ?>">
@@ -183,10 +211,9 @@
 </div>
 
 
-<div class="modal fade" id="modal-15" tabindex="-1" role="dialog" aria-labelledby="modal-15">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="modal-15">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-
             <div class="modal-body">
                 <form action="<?= base_url() ?>" id="formularioCarrito" method="post">
                     <input type="hidden" id="data_caarrito" name="data_carrito">
@@ -538,25 +565,24 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h3 class="modal-title has-icon ms-icon-round "><i class="flaticon-alert-1 bg-primary text-white"></i> DEUDAS DEL CLIENTE!</h3>
+                <h3 class="modal-title "><i class="flaticon-alert-1 bg-primary text-white"></i> DEUDAS DEL CLIENTE</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
 
             <div class="modal-body">
-                <div class="alert alert-danger alert-outline" role="alert">
-                    <table class="table table-hover w-100 dataTable no-footer" id="table_deudas">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Monto Deuda</th>
-                                <th>Monto Pagado</th>
-                                <th>Fecha Deuda</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody_deudas">
-                        </tbody>
-                    </table>
-                </div>
+                <table class="table table-hover w-100 dataTable no-footer" id="table_deudas">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Ruta</th>
+                            <th>Monto Deuda</th>
+                            <th>Monto Pagado</th>
+                            <th>Fecha Deuda</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody_deudas">
+                    </tbody>
+                </table>
             </div>
 
             <div class="modal-footer">
@@ -567,11 +593,11 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal_gasto" tabindex="-1" role="dialog" aria-labelledby="modal-1">
+<div class="modal fade" id="modal_gasto">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title has-icon ms-icon-round "><i class="flaticon-alert-1 bg-primary text-white"></i> Nuevo Gasto de Ruta</h3>
+                <h3 class="modal-title">Nuevo Gasto de Ruta</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
 
@@ -591,6 +617,49 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary shadow-none" id="confirmar_gasto">Confirmar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_cerrar_ruta">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">RESUMEN DE RUTA</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-md-3">
+                        <div class="form-group">
+                            <label for="cr_total_ventas">Total Ventas</label>
+                            <input type="text" name="cr_total_ventas" id="cr_total_ventas" class="form-control" disabled aria-describedby="invalid_cr_total_ventas">
+                            <small id="invalid_cr_total_ventas" class="text-muted"></small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <div class="form-group">
+                            <label for="cr_total_ventas">Total Pagado</label>
+                            <input type="text" name="cr_total_ventas" id="cr_total_ventas" class="form-control" disabled aria-describedby="invalid_cr_total_ventas">
+                            <small id="invalid_cr_total_ventas" class="text-muted"></small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <div class="form-group">
+                            <label for="cr_total_ventas">Total Deuda</label>
+                            <input type="text" name="cr_total_ventas" id="cr_total_ventas" class="form-control" disabled aria-describedby="invalid_cr_total_ventas">
+                            <small id="invalid_cr_total_ventas" class="text-muted"></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary shadow-none" id="btn_finalizar_ruta">Finalizar</button>
             </div>
 
         </div>

@@ -16,6 +16,7 @@ class Rutas_model extends Model
         } else {
             $rutas->where("eliminado", false);
         }
+        $rutas->orderBy('id', 'desc');
         return $rutas->get()->getResultObject();
     }
    /* public function getRutasJoin($where = array(), $select = '')

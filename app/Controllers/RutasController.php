@@ -29,6 +29,7 @@ class RutasController extends BaseController
                     $total_pagado = 0;
                     $total_efectivo = 0;
                     $total_fiado = 0;
+                    $total_transferencia = 0;
                     foreach ($ventas as $venta) {
                         $total_venta += $venta->total_venta;
 
@@ -39,7 +40,9 @@ class RutasController extends BaseController
                                 if ($pago->metodo_pago_id == 2) {
                                     $total_efectivo += $pago->monto_pago_actual;
                                 } elseif ($pago->metodo_pago_id == 1) {
-                                    $total_fiado += $pago->monto_pago_actual;
+                                    $total_fiado += $pago->monto_total;
+                                } elseif ($pago->metodo_pago_id == 3) {
+                                    $total_transferencia += $pago->monto_pago_actual;
                                 }
                             }
                         }
@@ -48,6 +51,7 @@ class RutasController extends BaseController
                     $ruta->total_pagado = $total_pagado;
                     $ruta->total_efectivo = $total_efectivo;
                     $ruta->total_fiado = $total_fiado;
+                    $ruta->total_transferencia = $total_transferencia;
                 }
 
                 $gastos = GetObjectByWhere('gastos', ['ruta_id' => $ruta->id, 'estado' => true]);
@@ -145,7 +149,7 @@ class RutasController extends BaseController
             'comunas' => !empty($comunas) ? $comunas : [],
             'js_content' => [
                 '0' => 'layout/js/generalJS',
-                '1' => 'rutas/js/RutasJS'
+                '1' => 'rutas/js/RutasNewJS'
             ]
         ];
         return view('layout/layout_main_view', $data);
@@ -216,6 +220,8 @@ class RutasController extends BaseController
             $total_transferencia = 0;
             $pagos_venta = [];
             foreach ($ventas as $venta) {
+                
+                pre_die($ventas);
                 $total_venta += $venta->total_venta;
 
                 $pagos_venta = GetObjectByWhere('pagos_venta', ['venta_id' => $venta->id]);
@@ -235,10 +241,10 @@ class RutasController extends BaseController
                 }
             }
             //pre_die($pagos_venta);
-            $ruta->total_venta = $total_venta;
             $ruta->total_pagado = $total_pagado;
             $ruta->total_efectivo = $total_efectivo;
             $ruta->total_fiado = $total_fiado;
+            $ruta->total_venta = $total_venta - $total_fiado;
             $ruta->total_transferencia = $total_transferencia;
         }
 
@@ -258,7 +264,7 @@ class RutasController extends BaseController
             'ruta_id' => !empty($id) ? $id : '',
             'js_content' => [
                 '0' => 'layout/js/generalJS',
-                '1' => 'rutas/js/RutasVerJS'
+                '1' => 'rutas/js/RutasVerJS',
             ]
         ];
         return view('layout/layout_main_view', $data);
@@ -555,6 +561,7 @@ class RutasController extends BaseController
         return $id_monedero > 0 ? $id_monedero : false;
     }
 
+
     public function CargarPrimeraVenta()
     {
         $post = $this->request->getPost();
@@ -620,5 +627,27 @@ class RutasController extends BaseController
             ];
         }
         return json_encode($rsp);
+    }
+
+    public function CerrarRuta($ruta_id)
+    {
+        if (!is_numeric($ruta_id)) {
+            return redirect('rutas/listado');
+        }
+
+        $ruta = $this->Rutas_model->getRuta($ruta_id);
+
+        if (empty($ruta)) {
+            return redirect('rutas/listado');
+        }
+
+        $post = $this->request->getPost();
+        $data = [
+            'title' => 'Cerrar Ruta',
+            'main_view' => 'rutas/rutas_cerrar_view',
+            'ruta' => !empty($ruta) ? $ruta : [],
+            'ruta_id' => !empty($ruta_id) ? $ruta_id : '',
+        ];
+        return view('layout/layout_main_view', $data);
     }
 }
