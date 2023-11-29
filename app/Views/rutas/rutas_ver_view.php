@@ -30,9 +30,10 @@
                             <br>
                             <br>
                         </div>
-                        <div class="col-md-12 text-right">
+                        <div class="col-md-12 text-left">
                             <a class="btn btn-sm btn-success" href="<?= base_url('rutas/cerrar-ruta/' . $ruta->id) ?>"><i class="fas fa-check"></i> Cerrar Ruta</a>
                             <button class="btn btn-sm btn-info" type="button" id="nuevo_gasto"><i class="fas fa-dollar-sign"></i> Nuevo Gasto</button>
+                            <button class="btn btn-sm btn-info" type="button" id="nuevo_fiado_pagado"><i class="fa fa-credit-card" aria-hidden="true"></i> Nuevo Fiado Pagado</button>
                             <br>
                             <br>
                         </div>
@@ -189,6 +190,7 @@
                                                                 <th class="text-center">Cantidad</th>
                                                                 <th class="text-center">Precio</th>
                                                                 <th class="text-center">Total Venta</th>
+                                                                <th class="text-center">Total Pagado</th>
                                                                 <th class="text-center">Metodo Pago</th>
                                                             </tr>
                                                         </thead>
@@ -665,3 +667,115 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" style="transition-duration: 0.1s;" id="modal_fiado_pagado">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">NUEVO FIADO PAGADO</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <label for="cliente_fiado_pagado">Selecciona Cliente Con Deuda</label>
+                        <br>
+                        <select style="width: 100%;" name="cliente_fiado_pagado" id="cliente_fiado_pagado">
+                            <?php if (!empty($clientes_deuda)) : ?>
+                                <option value="0" selected>Seleccionar</option>
+                                <?php foreach ($clientes_deuda as $cliente) : ?>
+                                    <option value="<?= $cliente->id ?>"><?= !empty($cliente->nombre) ? $cliente->nombre . ' Deuda Total: ' . formatear_numero($cliente->total_deuda) : 'Sin Informacion' ?></option>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </select>
+                        <span id="invalid_cliente_fiado_pagado" class="text-danger"></span>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-12 table-responsive">
+                        <table id="table-deudas-cliente" class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Ruta</th>
+                                    <th>Venta</th>
+                                    <th>Pagado</th>
+                                    <th>Deuda</th>
+                                    <th style="white-space: nowrap;">Fecha Venta</th>
+                                    <th>Accion</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody_deudas_cliente">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" style="transition-duration: 0.1s;" id="modal_pagar_deuda">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Pagar Deuda</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="monto_deuda">Monto</label>
+                            <input type="text" name="monto_deuda" id="monto_deuda" class="form-control" placeholder="Ingrese monto...">
+                            <span id="invalid_monto_deuda" class="text-danger"></span>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="ms-list d-flex justify-content-center p-2">
+                            <li class="pr-3">
+                                <label class="ms-checkbox-wrap ms-checkbox-secondary">
+                                    <input checked type="radio" value="2" name="metodo_pago_deuda" class="metodo_pago_deuda">
+                                    <i class="ms-checkbox-check"></i>
+                                </label>
+                                <span> Efectivo </span>
+                            </li>
+                            <li class="pr-3">
+                                <label class="ms-checkbox-wrap ms-checkbox-secondary">
+                                    <input type="radio" value="3" name="metodo_pago_deuda" class="metodo_pago_deuda">
+                                    <i class="ms-checkbox-check"></i>
+                                </label>
+                                <span> Transferencia </span>
+                            </li>
+                            <li class="pr-3">
+                                <label class="ms-checkbox-wrap ms-checkbox-secondary">
+                                    <input type="radio" value="4" name="metodo_pago_deuda" class="metodo_pago_deuda">
+                                    <i class="ms-checkbox-check"></i>
+                                </label>
+                                <span> Deposito </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" id="btn_modal_atras"><i class="fa fa-arrow-left" aria-hidden="true"></i> Atrás</button>
+                <button type="button" class="btn btn-primary shadow-none" id="btn_finalizar_pago"><i class="fas fa-dollar-sign    "></i> Pagar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<input type="hidden" id="deuda_id">

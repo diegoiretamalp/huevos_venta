@@ -122,7 +122,7 @@ class ClientesController extends BaseController
 
                 $sector = GetObjectRowByWhere('sectores', ['id' => !empty($post['sector_id']) ? $post['sector_id'] : '']);
                 if (!empty($sector)) {
-                    $comuna = GetObjectRowByWhere('comunas', ['id' => !empty($sector) ? $sector->id : '']);
+                    $comuna = GetObjectRowByWhere('comunas', ['id' => !empty($sector) ? $sector->comuna_id : '']);
                 }
 
                 $cliente_array = [
