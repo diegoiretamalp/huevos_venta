@@ -579,14 +579,18 @@ class RutasController extends BaseController
             } else {
                 $rsp = [
                     'tipo' => 'error',
-                    'msg' => 'Deudas no existe o fue eliminado'
+                    'title' => 'Gestión de Deudas',
+                    'msg' => 'Deudas no existe o fue eliminado',
+                    'data' => []
                 ];
                 http_response_code(404); // Código de estado HTTP: 404 Not Found
             }
         } else {
             $rsp = [
                 'tipo' => 'error',
-                'msg' => 'Datos no recibidos por el servidor'
+                'title' => 'Gestión de Deudas',
+                'msg' => 'Datos no recibidos por el servidor',
+                'data' => []
             ];
             http_response_code(400); // Código de estado HTTP: 400 Bad Request
         }
@@ -606,8 +610,8 @@ class RutasController extends BaseController
                 'v.ruta_id' => $post['ruta_id'],
                 'v.estado' => true
             ];
-            $ventas = $this->Ventas_model->GetVentasConPagosRuta($where_venta);
-            //pre_die($ventas);
+            $ventas = $this->Ventas_model->GetVentasDetalle($where_venta);
+            // pre_die($ventas);
             if (!empty($ventas)) {
 
                 foreach ($ventas as $key) {
@@ -693,51 +697,63 @@ class RutasController extends BaseController
     {
         $rsp = [];
         $post = $this->request->getPost();
-        if (is_numeric($deuda_id)) {
+        if (is_numeric($deuda_id) && !empty($post['monto_deuda']) && !empty($post['metodo_pago'])) {
+            // pre_die($post);
             $data_update = [
                 'updated_at' => getTimestamp()
             ];
-
             $deuda = $this->Ventas_model->getVenta($deuda_id);
-            $total_deuda = $deuda->total_venta - $deuda->total_pagado;
-            if ($post['monto_deuda'] == $total_deuda || $post['monto_deuda'] < $total_deuda) {
-                $data_update['pagado'] = $post['monto_deuda'] == $total_deuda ? true : false;
-                $data_update['total_pagado'] = $post['monto_deuda'] + $deuda->total_pagado;
+            if (!empty($deuda)) {
+                $total_deuda = $deuda->total_venta - $deuda->total_pagado;
+                if ($post['monto_deuda'] == $total_deuda || $post['monto_deuda'] < $total_deuda) {
+                    $data_update['pagado'] = $post['monto_deuda'] == $total_deuda ? true : false;
+                    $data_update['total_pagado'] = $post['monto_deuda'] + $deuda->total_pagado;
 
-                $new_pago_venta = [
-                    'venta_id' => $deuda_id,
-                    'metodo_pago_id' => $post['metodo_pago'],
-                    'monto_total' => $deuda->total_venta,
-                    'monto_pago_actual' => $post['monto_deuda'],
-                    'monto_pagado' => $data_update['total_pagado'],
-                    'created_at' => getTimestamp()
-                ];
+                    $new_pago_venta = [
+                        'venta_id' => $deuda_id,
+                        'metodo_pago_id' => $post['metodo_pago'],
+                        'monto_total' => $deuda->total_venta,
+                        'monto_pago_actual' => $post['monto_deuda'],
+                        'monto_pagado' => $data_update['total_pagado'],
+                        'created_at' => getTimestamp()
+                    ];
 
-                $rsp_pv = InsertRowTable('pagos_venta', $new_pago_venta);
+                    $rsp_pv = InsertRowTable('pagos_venta', $new_pago_venta);
 
-                if ($rsp_pv > 0) {
-                    $rsp = $this->Ventas_model->updateVenta($data_update, $deuda_id);
+                    if ($rsp_pv > 0) {
+                        $rsp = $this->Ventas_model->updateVenta($data_update, $deuda_id);
 
-                    if ($rsp > 0) {
-                        $rsp = [
-                            'tipo' => 'success',
-                            'title' => 'Gestión de Deudas',
-                            'msg' => 'Datos cargados con éxito',
-                            'data' => []
-                        ];
-                        http_response_code(200); // Código de estado HTTP: 200 OK
+                        if ($rsp > 0) {
+                            $rsp = [
+                                'tipo' => 'success',
+                                'title' => 'Gestión de Deudas',
+                                'msg' => 'Datos cargados con éxito',
+                                'data' => []
+                            ];
+                            http_response_code(200); // Código de estado HTTP: 200 OK
+                        } else {
+                            $rsp = [
+                                'tipo' => 'error',
+                                'msg' => 'Deudas no existe o fue eliminado',
+                                'title' => 'Gestión de Deudas',
+                                'data' => []
+                            ];
+                            http_response_code(404); // Código de estado HTTP: 404 Not Found
+                        }
                     } else {
                         $rsp = [
                             'tipo' => 'error',
-                            'msg' => 'Deudas no existe o fue eliminado'
+                            'title' => 'Gestión de Deudas',
+                            'msg' => 'No se ha realizado el pago de deuda, intente mas tarde.',
+                            'data' => []
                         ];
-                        http_response_code(404); // Código de estado HTTP: 404 Not Found
+                        http_response_code(400); // Código de estado HTTP: 400 Bad Request
                     }
                 } else {
                     $rsp = [
                         'tipo' => 'error',
                         'title' => 'Gestión de Deudas',
-                        'msg' => 'No se ha realizado el pago de deuda, intente mas tarde.',
+                        'msg' => 'Monto a Pagar no puede ser mayor a deuda de venta',
                         'data' => []
                     ];
                     http_response_code(400); // Código de estado HTTP: 400 Bad Request
@@ -746,7 +762,7 @@ class RutasController extends BaseController
                 $rsp = [
                     'tipo' => 'error',
                     'title' => 'Gestión de Deudas',
-                    'msg' => 'Monto a Pagar no puede ser mayor a deuda de venta',
+                    'msg' => 'No se ha encontrado la deuda.',
                     'data' => []
                 ];
                 http_response_code(400); // Código de estado HTTP: 400 Bad Request

@@ -262,6 +262,7 @@ class VentasController extends BaseController
     {
         $post = $this->request->getPost();
 
+
         if (!empty($post)) {
             $ruta = $this->Rutas_model->getRuta($post['ruta_id']);
             if (!empty($ruta)) {
@@ -309,7 +310,7 @@ class VentasController extends BaseController
                             'created_at' => getTimestamp(),
                         ];
 
-                        if ($post['check_pago_total'] == true) {
+                        if ($post['check_pago_total'] == 1) {
                             if ($metodo_pago_id != 1) {
                                 $new_pago['monto_pago_actual'] = $post['data']['costoTotal'];
                             } else {
@@ -326,6 +327,7 @@ class VentasController extends BaseController
                             $new_pago['monto_total'] = $post['data']['costoTotal'];
                             $new_pago['monto_pagado'] = $post['monto_pagado'];
                         }
+
                         $pago_id = InsertRowTable('pagos_venta', $new_pago);
                         $rsp = $this->ModificarMonedero($metodo_pago_id, $cliente_id, $monto_venta, $monto_pagado);
                         if (!empty($rsp)) {

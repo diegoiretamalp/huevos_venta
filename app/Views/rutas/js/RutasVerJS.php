@@ -47,14 +47,16 @@
             let metodo_pago = document.querySelector('input[name="metodo_pago"]:checked').value;
 
             let monto_pagado = $('#monto_pagado').val();
-            let check_pago_total = $('#check_pago_total').val();
+            let check_pago_total = $('#check_pago_total').prop("checked");
+            console.log(check_pago_total);
+            // console.log($('#check_pago_total'));
             if (carrito.productos.length > 0) {
                 let dat = {
                     cliente_id: cliente_id_venta,
                     data: carrito,
                     metodo_pago: metodo_pago,
                     monto_pagado: monto_pagado,
-                    check_pago_total: check_pago_total,
+                    check_pago_total: check_pago_total == false ? 0 : 1,
                     ruta_id: ruta_id
                 };
 
@@ -173,16 +175,19 @@
         $('#cliente_fiado_pagado').select2();
         $('#cliente_fiado_pagado').change(function() {
             let cliente_id = $(this).val();
-            let url = '<?= base_url('ruta/obtener-deuda-cliente/') ?>' + cliente_id;
-            let data = GetDataAjax(url, 'post')
-                .then(function(data) {
-                    CargarDeudaModal(data.data);
-                })
-                .catch(function(error) {
-                    // Manejar errores de GetDataAjax
-                    console.error('Error al obtener datos del cliente:', error);
-                    // Puedes agregar aquí la lógica para manejar el error, como mostrar un mensaje al usuario.
-                });
+            if (cliente_id > 0) {
+                let url = '<?= base_url('ruta/obtener-deuda-cliente/') ?>' + cliente_id;
+                let data = GetDataAjax(url, 'post')
+                    .then(function(data) {
+                        CargarDeudaModal(data.data);
+                    })
+                    .catch(function(error) {
+                        // ToastMsg('error', data.title, data.msg);
+                        // Manejar errores de GetDataAjax
+                        console.error('Error al obtener datos del cliente:', error);
+                        // Puedes agregar aquí la lógica para manejar el error, como mostrar un mensaje al usuario.
+                    });
+            }
         });
 
         $('#buscar_cliente').keyup(function() {
@@ -217,14 +222,17 @@
         });
 
         $('#btn_finalizar_pago').click(function() {
-            let monto_deuda = validaCampos($('#monto_deuda').val(), 'monto_deuda', 'moneda');
+            let monto_deudavalida = validaCampos($('#monto_deuda').val(), 'monto_deuda', 'numero');
             let metodo_pago_deuda = document.querySelector('input[name="metodo_pago_deuda"]:checked').value;
             let array = {
                 monto_deuda: $('#monto_deuda').val(),
                 metodo_pago: metodo_pago_deuda
             };
+            let monto_deuda = parseInt(array.monto_deuda);
+            let monto_deuda_ant = parseInt($('#monto_deuda_ant').val());
+
             let deuda_id = $('#deuda_id').val();
-            if (deuda_id > 0) {
+            if (monto_deudavalida == 1 && monto_deuda > 0 && (monto_deuda <= monto_deuda_ant)) {
                 let url = '<?= base_url('ruta/pagar-deuda/') ?>' + deuda_id;
                 let data = PostDataAjax(url, 'post', array)
                     .then(function(data) {
@@ -236,7 +244,7 @@
                     });
 
             } else {
-                toastr['error']['Deuda no Pagada'];
+                toastr['error']('Ingrese monto válido para realizar el pago por favor, Deuda: ' + formatearNumero(monto_deuda_ant));
             }
 
         });
@@ -254,8 +262,8 @@
             }
         }
         $('#tbody_deudas_cliente').empty();
-        let select2_cliente = $('#cliente_fiado_pagado').select2();
-        select2_cliente.defaults.reset();
+        $('#cliente_fiado_pagado').select2("val", '');
+
         $('#modal_pagar_deuda').modal('hide');
     }
 
@@ -274,7 +282,7 @@
                 <td class="text-center">${formatearNumero(d.total_venta - d.total_pagado)}</td>
                 <td class="text-center">${d.created_at}</td>
                 <td class="text-center">
-                    <button type="button" onclick="PagarDeuda(${d.id})" class="btn btn-sm btn-info"><i class="fas fa-dollar-sign"></i> Pagar</button>
+                    <button type="button" onclick="PagarDeuda(${d.id}, ${(d.total_venta - d.total_pagado)})" class="btn btn-sm btn-info"><i class="fas fa-dollar-sign"></i> Pagar</button>
                 </td>`;
             tbody += `
             </tr>
@@ -291,8 +299,10 @@
 
     }
 
-    function PagarDeuda(deuda_id) {
+    function PagarDeuda(deuda_id, monto_deuda) {
         $('#deuda_id').val(deuda_id);
+        $('#monto_deuda_ant').val(monto_deuda);
+        $('#monto_deuda').val(monto_deuda);
         $('#modal_fiado_pagado').modal('hide');
         $('#modal_pagar_deuda').modal('show');
     }
@@ -552,12 +562,10 @@
             tbody += `
             <tr>
                 <td class="text-center">${d.id}</td>
-                <td class="text-center">${d.nombres_productos}</td>
-                <td class="text-center">${d.cantidad}</td>
-                <td class="text-center">${d.precio}</td>
-                <td class="text-center">${d.precio * d.cantidad}</td>
-                <td class="text-center">${d.total_pagado}</td>
-                <td class="text-center">${d.metodo_pago}</td>`;
+                <td class="text-center">${d.productos}</td>
+                <td class="text-center">${d.cajas_total}</td>
+                <td class="text-center">${formatearNumero(d.total_venta)}</td>
+                <td class="text-center">${formatearNumero(d.total_pagado)}</td>`;
             // if (d.pagado == 0) {
             //     badge += `
             //         <span class="badge badge-warning">No</span>

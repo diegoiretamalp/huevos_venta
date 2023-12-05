@@ -188,6 +188,12 @@
 
     }
 
+    function formatNumber(costo) {
+        costo = costo.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+        costo = "" + costo;
+        return costo;
+    }
+
     function formatCelular(phone) {
         phone = phone.split(' ').join('');
         if (!(/\+569\d{8}/.test(phone))) {
@@ -291,6 +297,6 @@
     }
 
     function ToastMsg(type, title, msg) {
-        toastr[type][msg][title];
+        toastr[type](msg, title);
     }
 </script>

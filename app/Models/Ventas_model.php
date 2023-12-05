@@ -136,26 +136,29 @@ class Ventas_model extends Model
 
         return $pagos->get()->getResultObject();
     }
-    public function GetVentasConPagosRuta($where = [])
+    public function GetVentasDetalle($where = [])
     {
-        $pagos = $this->db->table('pagos_venta pv');
-
-        $pagos->join("ventas v", 'v.id = pv.venta_id', 'left');
-        $pagos->join("metodos_pago mp", 'mp.id = pv.metodo_pago_id', 'left');
-
-        if (empty($select)) {
-            $pagos->select('v.*, mp.nombre as nombre_metodo_pago, sum(pv.monto_pago_actual) as monto_pagado');
-        } else {
-            $pagos->select($select);
-        }
-
+        $ventasDetalle = $this->db->table('ventas v');
+    
+        $ventasDetalle->select('v.*, ' .
+                              'COUNT(DISTINCT pv.id) AS "N_Pagos", ' .
+                              'GROUP_CONCAT(CONCAT(p.nombre, " ($", FORMAT(prve.precio, 0), " - ", ' .
+                              'CASE prve.tipo_huevo WHEN \'b\' THEN \'BLANCO\' WHEN \'c\' THEN \'COLOR\' ELSE \'DESCONOCIDO\' END, ' .
+                              '")") SEPARATOR \', \') AS productos, ' .
+                              'v.total_venta AS "total_venta", ' .
+                              'SUM(DISTINCT pv.monto_pago_actual) AS "total_pagado"');
+    
+        $ventasDetalle->join('vi_pagos_venta pv', 'pv.venta_id = v.id', 'left');
+        $ventasDetalle->join('vi_productos_venta prve', 'prve.venta_id = v.id', 'left');
+        $ventasDetalle->join('vi_productos p', 'p.id = prve.producto_id', 'left');
+    
         if (!empty($where)) {
-            $pagos->where($where);
+            $ventasDetalle->where($where);
         } else {
-            $pagos->where("v.eliminado", false);
+            $ventasDetalle->where('v.eliminado', false);
         }
-        $pagos->groupBy(['v.id', 'nombre_metodo_pago'] );
-
-        return $pagos->get()->getResultObject();
+    
+        return $ventasDetalle->groupBy('v.id, v.ruta_id, v.total_venta, v.total_pagado')->get()->getResultObject();
     }
+    
 }

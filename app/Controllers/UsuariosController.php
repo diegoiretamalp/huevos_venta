@@ -15,8 +15,8 @@ class UsuariosController extends BaseController
     {
 
         $where_usuarios = [
-            'u.estado' => true,
-            'u.eliminado' => false,
+            'estado' => true,
+            'eliminado' => false,
             //'mostrar' => true,
         ];
         /*if(USUARIO_ROL == 2){

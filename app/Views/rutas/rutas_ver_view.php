@@ -188,10 +188,10 @@
                                                                 <th class="text-center">#</th>
                                                                 <th class="text-center">Producto</th>
                                                                 <th class="text-center">Cantidad</th>
-                                                                <th class="text-center">Precio</th>
+                                                                <!-- <th class="text-center">Precio</th> -->
                                                                 <th class="text-center">Total Venta</th>
                                                                 <th class="text-center">Total Pagado</th>
-                                                                <th class="text-center">Metodo Pago</th>
+                                                                <!-- <th class="text-center">Metodo Pago</th> -->
                                                             </tr>
                                                         </thead>
                                                         <tbody id="tbody_ventas_<?= $cliente->cliente_id ?>">
@@ -735,7 +735,8 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="monto_deuda">Monto</label>
-                            <input type="text" name="monto_deuda" id="monto_deuda" class="form-control" placeholder="Ingrese monto...">
+                            <input type="number" name="monto_deuda" id="monto_deuda" class="form-control" placeholder="Ingrese monto...">
+                            <input type="hidden" name="monto_deuda_ant" id="monto_deuda_ant">
                             <span id="invalid_monto_deuda" class="text-danger"></span>
 
                         </div>
