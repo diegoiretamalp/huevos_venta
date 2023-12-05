@@ -114,4 +114,48 @@ class Ventas_model extends Model
         $clientes->where($where_clientes);
         return $clientes->get()->getResultObject();
     }
+
+    public function GetPagosVentaCliente($where = [])
+    {
+        $pagos = $this->db->table('pagos_venta pv');
+
+        $pagos->join("ventas v", 'v.id = pv.venta_id', 'left');
+        $pagos->join("metodos_pago mp", 'mp.id = pv.metodo_pago_id', 'left');
+
+        if (empty($select)) {
+            $pagos->select('v.*, mp.nombre as nombre_metodo_pago, pv.monto_pago_actual as monto_pago_actual');
+        } else {
+            $pagos->select($select);
+        }
+
+        if (!empty($where)) {
+            $pagos->where($where);
+        } else {
+            $pagos->where("v.eliminado", false);
+        }
+
+        return $pagos->get()->getResultObject();
+    }
+    public function GetVentasConPagosRuta($where = [])
+    {
+        $pagos = $this->db->table('pagos_venta pv');
+
+        $pagos->join("ventas v", 'v.id = pv.venta_id', 'left');
+        $pagos->join("metodos_pago mp", 'mp.id = pv.metodo_pago_id', 'left');
+
+        if (empty($select)) {
+            $pagos->select('v.*, mp.nombre as nombre_metodo_pago, sum(pv.monto_pago_actual) as monto_pagado');
+        } else {
+            $pagos->select($select);
+        }
+
+        if (!empty($where)) {
+            $pagos->where($where);
+        } else {
+            $pagos->where("v.eliminado", false);
+        }
+        $pagos->groupBy(['v.id', 'nombre_metodo_pago'] );
+
+        return $pagos->get()->getResultObject();
+    }
 }

@@ -220,8 +220,7 @@ class RutasController extends BaseController
             $total_transferencia = 0;
             $pagos_venta = [];
             foreach ($ventas as $venta) {
-                
-                pre_die($ventas);
+
                 $total_venta += $venta->total_venta;
 
                 $pagos_venta = GetObjectByWhere('pagos_venta', ['venta_id' => $venta->id]);
@@ -254,6 +253,15 @@ class RutasController extends BaseController
             $total_gastos += SumaGeneralRow($gastos, 'monto');
         }
         $ruta->gastos_ruta = $total_gastos;
+
+        $where_clideu = [
+            'v.pagado' => false,
+            'v.estado' => true,
+            'v.eliminado' => false,
+        ];
+
+        $clientes_deuda = $this->Clientes_model->getClientesDeuda($where_clideu);
+        //pre_die($clientes_deuda);
         $data = [
             'title' => 'Ver Ruta',
             'main_view' => 'rutas/rutas_ver_view',
@@ -261,6 +269,7 @@ class RutasController extends BaseController
             'gastos' => !empty($gastos) ? $gastos : [],
             'ruta' => !empty($ruta) ? $ruta : [],
             'clientes_ruta' => !empty($clientes_ruta) ? $clientes_ruta : [],
+            'clientes_deuda' => !empty($clientes_deuda) ? $clientes_deuda : [],
             'ruta_id' => !empty($id) ? $id : '',
             'js_content' => [
                 '0' => 'layout/js/generalJS',
@@ -413,7 +422,6 @@ class RutasController extends BaseController
         if (is_numeric($comuna_id)) {
 
             $clientes = $this->Rutas_model->GetClientesRutaComuna($comuna_id);
-
             if (!empty($clientes)) {
                 foreach ($clientes as $cliente) {
                     $where_venta = [
@@ -515,50 +523,77 @@ class RutasController extends BaseController
 
     public function CargarClienteVenta($cliente_id)
     {
-
         $rsp = [];
+
         if (is_numeric($cliente_id)) {
             $cliente = $this->Clientes_model->getCliente($cliente_id);
+
             if (!empty($cliente)) {
                 $rsp = [
                     'tipo' => 'success',
+                    'title' => 'Gestión de Usuarios',
                     'msg' => 'Datos cargados con éxito',
                     'data' => $cliente
                 ];
+                http_response_code(200); // Código de estado HTTP: 200 OK
             } else {
                 $rsp = [
                     'tipo' => 'error',
                     'msg' => 'Cliente no existe o fue eliminado'
                 ];
+                http_response_code(404); // Código de estado HTTP: 404 Not Found
             }
         } else {
             $rsp = [
                 'tipo' => 'error',
-                'msg' => 'Datos no recibidos por le servidor'
+                'msg' => 'Datos no recibidos por el servidor'
             ];
+            http_response_code(400); // Código de estado HTTP: 400 Bad Request
         }
 
-        return json_encode($rsp);
+        header('Content-Type: application/json');
+        echo json_encode($rsp);
+        exit;
     }
 
-
-    private function CrearMonedero($id_cliente)
+    public function CargarDeudasCliente($cliente_id)
     {
-        $monedero = [
-            'cliente_id' => $id_cliente,
-            'saldo' => 0,
-            'total_deuda' => 0,
-            'total_pagado' => 0,
-            'total_transferencia' => 0,
-            'total_deposito' => 0,
-            'total_efectivo' => 0,
-            'total_fiado' => 0,
-            'estado' => true,
-            'eliminado' => false,
-            'created_at' => getTimestamp()
-        ];
-        $id_monedero = $this->Monedero_model->insertMonedero($monedero);
-        return $id_monedero > 0 ? $id_monedero : false;
+        $rsp = [];
+
+        if (is_numeric($cliente_id)) {
+            $where = [
+                'v.cliente_id' => $cliente_id,
+                'v.estado' => true,
+                'v.pagado' => false,
+                'v.eliminado' => false
+            ];
+            $deudas = $this->Clientes_model->getDeudasCliente($where);
+            if (!empty($deudas)) {
+                $rsp = [
+                    'tipo' => 'success',
+                    'title' => 'Gestión de Deudas',
+                    'msg' => 'Datos cargados con éxito',
+                    'data' => $deudas
+                ];
+                http_response_code(200); // Código de estado HTTP: 200 OK
+            } else {
+                $rsp = [
+                    'tipo' => 'error',
+                    'msg' => 'Deudas no existe o fue eliminado'
+                ];
+                http_response_code(404); // Código de estado HTTP: 404 Not Found
+            }
+        } else {
+            $rsp = [
+                'tipo' => 'error',
+                'msg' => 'Datos no recibidos por el servidor'
+            ];
+            http_response_code(400); // Código de estado HTTP: 400 Bad Request
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($rsp);
+        exit;
     }
 
 
@@ -571,16 +606,19 @@ class RutasController extends BaseController
                 'v.ruta_id' => $post['ruta_id'],
                 'v.estado' => true
             ];
-            $ventas = $this->Ventas_model->getVentasJoin($where_venta);
+            $ventas = $this->Ventas_model->GetVentasConPagosRuta($where_venta);
+            //pre_die($ventas);
             if (!empty($ventas)) {
 
                 foreach ($ventas as $key) {
-                    $productos_venta = GetObjectByWhere('productos_venta', ['venta_id' => $key->venta_id, 'ruta_id' => $key->ruta_id]);
+                    $productos_venta = GetObjectByWhere('productos_venta', ['venta_id' => $key->id, 'ruta_id' => $key->ruta_id]);
                     if (!empty($productos_venta)) {
+                        $nombres_producto = '';
                         foreach ($productos_venta as $p) {
                             $producto = $this->Productos_model->getProducto($p->producto_id);
-                            $p->producto_data = !empty($producto) ? $producto : [];
+                            $nombres_producto .= !empty($producto) ? ($producto->nombre . ', ') : [];
                         }
+                        $key->nombres_productos = $nombres_producto;
                     }
                     $key->productos_venta_data = !empty($productos_venta) ? $productos_venta : [];
                 }
@@ -649,5 +687,80 @@ class RutasController extends BaseController
             'ruta_id' => !empty($ruta_id) ? $ruta_id : '',
         ];
         return view('layout/layout_main_view', $data);
+    }
+
+    public function PagarDeudaCliente($deuda_id)
+    {
+        $rsp = [];
+        $post = $this->request->getPost();
+        if (is_numeric($deuda_id)) {
+            $data_update = [
+                'updated_at' => getTimestamp()
+            ];
+
+            $deuda = $this->Ventas_model->getVenta($deuda_id);
+            $total_deuda = $deuda->total_venta - $deuda->total_pagado;
+            if ($post['monto_deuda'] == $total_deuda || $post['monto_deuda'] < $total_deuda) {
+                $data_update['pagado'] = $post['monto_deuda'] == $total_deuda ? true : false;
+                $data_update['total_pagado'] = $post['monto_deuda'] + $deuda->total_pagado;
+
+                $new_pago_venta = [
+                    'venta_id' => $deuda_id,
+                    'metodo_pago_id' => $post['metodo_pago'],
+                    'monto_total' => $deuda->total_venta,
+                    'monto_pago_actual' => $post['monto_deuda'],
+                    'monto_pagado' => $data_update['total_pagado'],
+                    'created_at' => getTimestamp()
+                ];
+
+                $rsp_pv = InsertRowTable('pagos_venta', $new_pago_venta);
+
+                if ($rsp_pv > 0) {
+                    $rsp = $this->Ventas_model->updateVenta($data_update, $deuda_id);
+
+                    if ($rsp > 0) {
+                        $rsp = [
+                            'tipo' => 'success',
+                            'title' => 'Gestión de Deudas',
+                            'msg' => 'Datos cargados con éxito',
+                            'data' => []
+                        ];
+                        http_response_code(200); // Código de estado HTTP: 200 OK
+                    } else {
+                        $rsp = [
+                            'tipo' => 'error',
+                            'msg' => 'Deudas no existe o fue eliminado'
+                        ];
+                        http_response_code(404); // Código de estado HTTP: 404 Not Found
+                    }
+                } else {
+                    $rsp = [
+                        'tipo' => 'error',
+                        'title' => 'Gestión de Deudas',
+                        'msg' => 'No se ha realizado el pago de deuda, intente mas tarde.',
+                        'data' => []
+                    ];
+                    http_response_code(400); // Código de estado HTTP: 400 Bad Request
+                }
+            } else {
+                $rsp = [
+                    'tipo' => 'error',
+                    'title' => 'Gestión de Deudas',
+                    'msg' => 'Monto a Pagar no puede ser mayor a deuda de venta',
+                    'data' => []
+                ];
+                http_response_code(400); // Código de estado HTTP: 400 Bad Request
+            }
+        } else {
+            $rsp = [
+                'tipo' => 'error',
+                'msg' => 'Datos no recibidos por el servidor'
+            ];
+            http_response_code(400); // Código de estado HTTP: 400 Bad Request
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($rsp);
+        exit;
     }
 }

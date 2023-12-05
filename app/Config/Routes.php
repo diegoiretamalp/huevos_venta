@@ -106,6 +106,8 @@ $routes->post('rutas/editar/(:num)', 'RutasController::EditarRuta/$1', ['filter'
 $routes->get('rutas/ver/(:num)', 'RutasController::VerRuta/$1', ['filter' => 'auth']);
 $routes->post('rutas/eliminar', 'RutasController::EliminarRuta', ['filter' => 'auth']);
 $routes->get('rutas/cerrar-ruta/(:num)', 'RutasController::CerrarRuta/$1', ['filter' => 'auth']);
+$routes->post('ruta/obtener-deuda-cliente/(:num)', 'RutasController::CargarDeudasCliente/$1', ['filter' => 'auth']);
+$routes->post('ruta/pagar-deuda/(:num)', 'RutasController::PagarDeudaCliente/$1', ['filter' => 'auth']);
 
 
 $routes->post('clientes/obtener-clientes-ruta', 'RutasController::ObtenerClientesRuta', ['filter' => 'auth']);

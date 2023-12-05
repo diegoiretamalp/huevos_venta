@@ -25,6 +25,7 @@
 
     <!-- Fontawesome -->
     <link rel="stylesheet" href="<?= ASSETS_PLUGINS ?>fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="<?= ASSETS_CSS ?>select2.min.css">
 
 
 </head>
@@ -84,11 +85,12 @@
 
     <!-- Settings -->
     <script src="<?= ASSETS_JS ?>settings.js"></script>
-
-
+    
+    
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="<?= ASSETS_JS ?>select2.min.js"></script>
     <script>
         function cargando(msg = 'Cargando...', tiempo = 10000000000) {
             Swal.fire({

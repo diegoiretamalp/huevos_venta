@@ -1,5 +1,6 @@
 <script>
     let tableCarrito;
+    let deuda_id = 0;
     let cliente_id_venta;
     let carrito = {
         productos: [], // Subarray para almacenar los productos
@@ -165,31 +166,136 @@
             }
 
         });
-
-        $('#cerrar_ruta').click(function(){
+        $('#cerrar_ruta').click(function() {
             $('#modal_cerrar_ruta').modal('show');
         });
 
-        $('#buscar_cliente').keyup(function () {
-    let lista = document.querySelectorAll('#lista li');
-    let valor = $(this).val().trim().toLowerCase();
+        $('#cliente_fiado_pagado').select2();
+        $('#cliente_fiado_pagado').change(function() {
+            let cliente_id = $(this).val();
+            let url = '<?= base_url('ruta/obtener-deuda-cliente/') ?>' + cliente_id;
+            let data = GetDataAjax(url, 'post')
+                .then(function(data) {
+                    CargarDeudaModal(data.data);
+                })
+                .catch(function(error) {
+                    // Manejar errores de GetDataAjax
+                    console.error('Error al obtener datos del cliente:', error);
+                    // Puedes agregar aquí la lógica para manejar el error, como mostrar un mensaje al usuario.
+                });
+        });
 
-    lista.forEach(element => {
-        let h1Element = element.querySelector('h6');
-        if (h1Element) {
-            let nombre = h1Element.textContent.trim().toLowerCase();
+        $('#buscar_cliente').keyup(function() {
+            let lista = document.querySelectorAll('#lista li');
+            let valor = $(this).val().trim().toLowerCase();
 
-            if (nombre.includes(valor)) {
-                element.style.display = '';
+            lista.forEach(element => {
+                let h1Element = element.querySelector('h6');
+                if (h1Element) {
+                    let nombre = h1Element.textContent.trim().toLowerCase();
+
+                    if (nombre.includes(valor)) {
+                        element.style.display = '';
+                    } else {
+                        element.style.display = 'none';
+                    }
+                }
+            });
+        });
+
+        $('#nuevo_fiado_pagado').click(function() {
+            $('#modal_fiado_pagado').modal('show');
+        });
+
+        $('#btn_submit_fiado_pagado').click(function() {
+            console.log('fiado pagado');
+        });
+
+        $('#btn_modal_atras').click(function() {
+            $('#modal_pagar_deuda').modal('hide');
+            $('#modal_fiado_pagado').modal('show');
+        });
+
+        $('#btn_finalizar_pago').click(function() {
+            let monto_deuda = validaCampos($('#monto_deuda').val(), 'monto_deuda', 'moneda');
+            let metodo_pago_deuda = document.querySelector('input[name="metodo_pago_deuda"]:checked').value;
+            let array = {
+                monto_deuda: $('#monto_deuda').val(),
+                metodo_pago: metodo_pago_deuda
+            };
+            let deuda_id = $('#deuda_id').val();
+            if (deuda_id > 0) {
+                let url = '<?= base_url('ruta/pagar-deuda/') ?>' + deuda_id;
+                let data = PostDataAjax(url, 'post', array)
+                    .then(function(data) {
+                        LimpiarModalPagoDeuda();
+                        ToastMsg('success', data.title, data.msg);
+                    })
+                    .catch(function(error) {
+                        console.error('Error al obtener datos del cliente:', error);
+                    });
+
             } else {
-                element.style.display = 'none';
+                toastr['error']['Deuda no Pagada'];
+            }
+
+        });
+
+    });
+
+    function LimpiarModalPagoDeuda() {
+        $('#monto_deuda').val();
+
+        let radioOpcion2 = document.querySelector('input[name="metodo_pago_deuda"][value="2"]');
+
+        if (radioOpcion2) {
+            if (!radioOpcion2.checked) {
+                radioOpcion2.checked = true;
             }
         }
-    });
-});
+        $('#tbody_deudas_cliente').empty();
+        let select2_cliente = $('#cliente_fiado_pagado').select2();
+        select2_cliente.defaults.reset();
+        $('#modal_pagar_deuda').modal('hide');
+    }
+
+    function CargarDeudaModal(data) {
+        let tbody = '';
+        let count = 1;
+        console.log('data');
+        $('#tbody_deudas_cliente').empty();
+        data.forEach(d => {
+            tbody += `
+            <tr>
+                <td class="text-center">${count}</td>
+                <td class="text-center">${d.ruta_id}</td>
+                <td class="text-center">${formatearNumero(d.total_venta)}</td>
+                <td class="text-center">${formatearNumero(d.total_pagado)}</td>
+                <td class="text-center">${formatearNumero(d.total_venta - d.total_pagado)}</td>
+                <td class="text-center">${d.created_at}</td>
+                <td class="text-center">
+                    <button type="button" onclick="PagarDeuda(${d.id})" class="btn btn-sm btn-info"><i class="fas fa-dollar-sign"></i> Pagar</button>
+                </td>`;
+            tbody += `
+            </tr>
+            `;
+            count++;
+        });
+        console.log(tbody);
+        $('#tbody_deudas_cliente').html(tbody);
+
+        if (!$.fn.DataTable.isDataTable('#table-deudas-cliente')) {
+            $('#table-deudas-cliente').DataTable();
+        }
 
 
-    });
+    }
+
+    function PagarDeuda(deuda_id) {
+        $('#deuda_id').val(deuda_id);
+        $('#modal_fiado_pagado').modal('hide');
+        $('#modal_pagar_deuda').modal('show');
+    }
 
     function EliminarProducto(id_unico) {
 
@@ -206,28 +312,19 @@
 
     function CargarCliente(cliente_id) {
         cliente_id_venta = cliente_id
-        $.ajax({
-            url: '<?= base_url('clientes/cargar-cliente-venta/') ?>' + cliente_id, // Nombre de tu archivo PHP
-            method: 'post',
-            dataType: 'json',
-            success: function(resp) {
-                let respuesta = JSON.stringify(resp);
-                let obj = $.parseJSON(respuesta);
-                let tipo = obj['tipo'];
-                let msg = obj['msg'];
-                if (tipo != 'success') {
-                    toastr[tipo](msg, "Gestión Clientes")
-                } else {
-                    data = obj['data'];
-                    CargarDatosClienteModal(data);
-                    //toastr["success"](msg, "Gestión Clientes")
-                }
-            },
-            error: function(error) {
-                console.log(JSON.stringify(error));
-                console.log('Error al obtener los clientes: ' + error);
-            }
-        });
+        let url = '<?= base_url('clientes/cargar-cliente-venta/') ?>' + cliente_id;
+        let data = GetDataAjax(url, 'post')
+            .then(function(data) {
+                // Llamada exitosa a GetDataAjax
+                //console.log(data);
+                CargarDatosClienteModal(data.data);
+            })
+            .catch(function(error) {
+                // Manejar errores de GetDataAjax
+                console.error('Error al obtener datos del cliente:', error);
+                // Puedes agregar aquí la lógica para manejar el error, como mostrar un mensaje al usuario.
+            });
+        //CargarDatosClienteModal(data);
     }
 
     function LimpiarCamposModal() {
@@ -451,13 +548,15 @@
         console.log('data');
         data.forEach(d => {
             badge = '';
+
             tbody += `
             <tr>
-                <td class="text-center">${count}</td>
-                <td class="text-center">${d.nombre_producto}</td>
+                <td class="text-center">${d.id}</td>
+                <td class="text-center">${d.nombres_productos}</td>
                 <td class="text-center">${d.cantidad}</td>
                 <td class="text-center">${d.precio}</td>
                 <td class="text-center">${d.precio * d.cantidad}</td>
+                <td class="text-center">${d.total_pagado}</td>
                 <td class="text-center">${d.metodo_pago}</td>`;
             // if (d.pagado == 0) {
             //     badge += `

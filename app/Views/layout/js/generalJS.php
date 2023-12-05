@@ -187,6 +187,7 @@
 
 
     }
+
     function formatCelular(phone) {
         phone = phone.split(' ').join('');
         if (!(/\+569\d{8}/.test(phone))) {
@@ -194,6 +195,7 @@
         }
         return true;
     }
+
     function checkNumero(numero) {
         if (numero.length == 0) {
             return numero;
@@ -222,5 +224,73 @@
         var resultado = fecha + ' ' + tiempo;
 
         return resultado;
+    }
+
+    function formatearNumero(numero) {
+        if (numero !== null && numero !== undefined && numero !== '') {
+            var pesos = '$ ' + parseFloat(numero).toLocaleString('es-CL', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            });
+        } else {
+            var pesos = "No aplica";
+        }
+        return pesos;
+    }
+</script>
+
+<script>
+    function GetDataAjax(url, method, data = []) {
+        console.log('siu');
+        return $.ajax({
+            url: url,
+            method: method,
+            dataType: 'json',
+            success: function(resp) {
+                let respuesta = JSON.stringify(resp);
+                let obj = $.parseJSON(respuesta);
+
+                if (obj['tipo'] !== 'success') {
+                    toastr[obj['tipo']](obj['msg'], obj['title']);
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                //console.log(obj);
+                return obj['data'];
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('Error en la petición AJAX:', textStatus, errorThrown);
+                throw new Error('Error en la petición AJAX');
+
+            }
+        });
+    }
+
+    function PostDataAjax(url, method, data = []) {
+
+        return $.ajax({
+            url: url,
+            method: method,
+            dataType: 'json',
+            data: data,
+            success: function(resp) {
+                let respuesta = JSON.stringify(resp);
+                let obj = $.parseJSON(respuesta);
+
+                if (obj['tipo'] !== 'success') {
+                    toastr[obj['tipo']](obj['msg'], obj['title']);
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                return obj['data'];
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('Error en la petición AJAX:', textStatus, errorThrown);
+                throw new Error('Error en la petición AJAX');
+
+            }
+        });
+    }
+
+    function ToastMsg(type, title, msg) {
+        toastr[type][msg][title];
     }
 </script>
