@@ -609,10 +609,10 @@ class RutasController extends BaseController
         if (is_numeric($cliente_id)) {
             $monedero = $this->Monedero_model->getMonederoWhere(['cliente_id' => $cliente_id, 'estado' => true, 'eliminado' => false]);
             $where_ventas = [
-                'pagado' => false,
-                'estado' => true,
-                'eliminado' => false,
-                'cliente_id' => $cliente_id,
+                'v.pagado' => false,
+                'v.estado' => true,
+                'v.eliminado' => false,
+                'v.cliente_id' => $cliente_id,
             ];
             $ventas_deudas = $this->Ventas_model->getVentas($where_ventas);
             $rsp = [

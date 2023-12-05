@@ -4,13 +4,28 @@ namespace App\Controllers;
 
 class DeudasController extends BaseController
 {
+    public function __construct()
+    {
+        $this->session = session();
+        $this->Ventas_model = model('App\Models\Ventas_model');
+    }
     public function index()
     {
+
+        $where_venta = [
+            'v.estado' => true,
+            'v.eliminado' => false
+        ];
+
+        $deudas = $this->Ventas_model->getVentas($where_venta);
+      
         $data = [
             'title' => 'Listado de Deudas',
             'main_view' => 'deudas/deudas_list_view',
+            'deudas' => !empty($deudas) ? $deudas : [],
             'js_content' => [
                 '0' => 'layout/js/generalJS',
+                '1' => 'deudas/js/deudasJS'
             ]
         ];
         return view('layout/layout_main_view', $data);
