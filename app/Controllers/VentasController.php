@@ -11,11 +11,19 @@ class VentasController extends BaseController
         $this->Clientes_model = model('App\Models\Clientes_model');
         $this->Monedero_model = model('App\Models\Monedero_model');
         $this->Rutas_model = model('App\Models\Rutas_model');
+        $this->Ventas_model = model('App\Models\Ventas_model');
     }
     public function index()
     {
+        $where = [
+            'v.estado' => true,
+            'v.eliminado' => false,
+        ];
+        $ventas = $this->Ventas_model->getVentasJoin($where);
         $data = [
+            'title' => 'Listado de Ventas',
             'main_view' => 'ventas/ventas_list_view',
+            'ventas' => !empty($ventas) ? $ventas : [],
             'js_content' => [
                 '0' => 'layout/js/generalJS'
             ]
@@ -302,17 +310,17 @@ class VentasController extends BaseController
                         ];
 
                         if ($post['check_pago_total'] == true) {
-                            if($metodo_pago_id != 1){
+                            if ($metodo_pago_id != 1) {
                                 $new_pago['monto_pago_actual'] = $post['data']['costoTotal'];
-                            }else{
+                            } else {
                                 $new_pago['monto_pago_actual'] = 0;
                             }
                             $new_pago['monto_total'] = $post['data']['costoTotal'];
                             $new_pago['monto_pagado'] = $post['data']['costoTotal'];
                         } else {
-                            if($metodo_pago_id != 1){
+                            if ($metodo_pago_id != 1) {
                                 $new_pago['monto_pago_actual'] = $post['monto_pagado'];
-                            }else{
+                            } else {
                                 $new_pago['monto_pago_actual'] = 0;
                             }
                             $new_pago['monto_total'] = $post['data']['costoTotal'];
@@ -323,7 +331,6 @@ class VentasController extends BaseController
                         if (!empty($rsp)) {
                             UpdateRowTableByWhere('clientes_ruta', ['estado_cliente_ruta_id' => 1], ['cliente_id' => $post['cliente_id'], 'ruta_id' => $ruta->id]);
                             UpdateRowTableByWhere('rutas', ['cajas_vendidas' => $cajas_total, 'updated_at' => getTimestamp()], ['id' => $ruta->id]);
-                            return redirect('rutas/ver/'.$ruta->id);
                             $rsp = [
                                 'tipo' => 'success',
                                 'msg' => 'Venta registrada con éxito'

@@ -7,21 +7,16 @@ class Rutas_model extends Model
 {
     public function getRutas($where = array(), $select = '')
     {
-        $rutas = $this->db->table('rutas r');
+        $rutas = $this->db->table('rutas');
 
-        if (!empty($select)) {
-			$rutas->select($select);
-		} else {
-			$rutas->select('r.*, c.nombre as "nombre_comuna"');
-
-		}
-		if (!empty($where)) {
-			$rutas->where($where);
-		} else {
-			$rutas->where("r.eliminado", false);
-
-		}
-		$rutas->join("comunas c", 'r.comuna_id = c.id', 'left');
+        $select = trim($select);
+        
+        if (!empty($where)) {
+            $rutas->where($where);
+        } else {
+            $rutas->where("eliminado", false);
+        }
+        $rutas->orderBy('id', 'desc');
         return $rutas->get()->getResultObject();
     }
    /* public function getRutasJoin($where = array(), $select = '')

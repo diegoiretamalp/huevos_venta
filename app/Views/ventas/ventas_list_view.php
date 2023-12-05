@@ -9,173 +9,40 @@
             </nav>
         </div>
         <div class="col-12 table-responsive">
-            <table id="data-table" class="table table-hover w-100 dataTable no-footer">
-                <thead>
-                    <tr role="row">
-                        <th>Nombre Negocio</th>
-                        <th>Nombre</th>
-                        <th>Apellido Paterno</th>
-                        <th>Apellido Materno</th>
-                        <th>Rut a Facturar</th>
-                        <th>Celular</th>
-                        <th>Sector</th>
-                        <th>Direccion</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Airi Satou</td>
-                        <td>Accountant</td>
-                        <td>Tokyo</td>
-                        <td>5407</td>
-                        <td>2008/11/28</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                    </tr>
-                    <tr>
-                        <td>Airi Satou</td>
-                        <td>Accountant</td>
-                        <td>Tokyo</td>
-                        <td>5407</td>
-                        <td>2008/11/28</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                    </tr>
-                    <tr>
-                        <td>Airi Satou</td>
-                        <td>Accountant</td>
-                        <td>Tokyo</td>
-                        <td>5407</td>
-                        <td>2008/11/28</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                    </tr>
-                    <tr>
-                        <td>Airi Satou</td>
-                        <td>Accountant</td>
-                        <td>Tokyo</td>
-                        <td>5407</td>
-                        <td>2008/11/28</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                    </tr>
-                    <tr>
-                        <td>Airi Satou</td>
-                        <td>Accountant</td>
-                        <td>Tokyo</td>
-                        <td>5407</td>
-                        <td>2008/11/28</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                    </tr>
-                    <tr>
-                        <td>Airi Satou</td>
-                        <td>Accountant</td>
-                        <td>Tokyo</td>
-                        <td>5407</td>
-                        <td>2008/11/28</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                    </tr>
-                    <tr>
-                        <td>Airi Satou</td>
-                        <td>Accountant</td>
-                        <td>Tokyo</td>
-                        <td>5407</td>
-                        <td>2008/11/28</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                    </tr>
-                    <tr>
-                        <td>Airi Satou</td>
-                        <td>Accountant</td>
-                        <td>Tokyo</td>
-                        <td>5407</td>
-                        <td>2008/11/28</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                    </tr>
-                    <tr>
-                        <td>Airi Satou</td>
-                        <td>Accountant</td>
-                        <td>Tokyo</td>
-                        <td>5407</td>
-                        <td>2008/11/28</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                    </tr>
-                    <tr>
-                        <td>Airi Satou</td>
-                        <td>Accountant</td>
-                        <td>Tokyo</td>
-                        <td>5407</td>
-                        <td>2008/11/28</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                    </tr>
-                    <tr>
-                        <td>Airi Satou</td>
-                        <td>Accountant</td>
-                        <td>Tokyo</td>
-                        <td>5407</td>
-                        <td>2008/11/28</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                    </tr>
-                    <tr>
-                        <td>Airi Satou</td>
-                        <td>Accountant</td>
-                        <td>Tokyo</td>
-                        <td>5407</td>
-                        <td>2008/11/28</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                    </tr>
-                    <tr>
-                        <td>Airi Satou</td>
-                        <td>Accountant</td>
-                        <td>Tokyo</td>
-                        <td>5407</td>
-                        <td>2008/11/28</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                    </tr>
-                    <tr>
-                        <td>Airi Satou</td>
-                        <td>Accountant</td>
-                        <td>Tokyo</td>
-                        <td>5407</td>
-                        <td>2008/11/28</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                    </tr>
-                    <tr>
-                        <td>Airi Satou</td>
-                        <td>Accountant</td>
-                        <td>Tokyo</td>
-                        <td>5407</td>
-                        <td>2008/11/28</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                        <td>$162,700</td>
-                    </tr>
-
-                </tbody>
-            </table>
+            <div class="card card-body">
+                <table id="data-table" class="table table-hover w-100 dataTable no-footer">
+                    <thead>
+                        <tr role="row">
+                            <th>N° VENTA</th>
+                            <th>RUTA</th>
+                            <th>CLIENTE</th>
+                            <th>PRODUCTOS</th>
+                            <th>TOTAL VENTA</th>
+                            <th>TOTAL PAGADO</th>
+                            <th>METODO PAGO</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (!empty($ventas)) : ?>
+                            <?php foreach ($ventas as $venta) : ?>
+                                <tr>
+                                    <td><?= !empty($venta->id) ? '#' . $venta->id : 'Sin Información' ?></td>
+                                    <td><?= !empty($venta->ruta_id) ? $venta->ruta_id : 'Sin Información' ?></td>
+                                    <td><?= !empty($venta->nombre_cliente) ? strUpper($venta->nombre_cliente) : 'Sin Información' ?></td>
+                                    <td><?= !empty($venta->nombre_producto) ? $venta->nombre_producto : 'Sin Información' ?></td>
+                                    <td><?= !empty($venta->total_venta) ? formatear_numero($venta->total_venta) : '$0' ?></td>
+                                    <td><?= !empty($venta->total_pagado) ? formatear_numero($venta->total_pagado) : '$0' ?></td>
+                                    <td><?= !empty($venta->metodo_pago) ? $venta->metodo_pago : 'Sin Información' ?></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info" id="btn_pagar_deuda"><i class="fas fa-dollar-sign"></i>Pagar Deuda</button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

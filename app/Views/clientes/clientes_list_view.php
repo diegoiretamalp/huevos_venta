@@ -17,49 +17,51 @@
     </div>
     <br>
     <div class="row">
-        <div class="col-12 table-responsive">
-            <table id="data-table" class="table table-hover w-100 dataTable no-footer">
-                <thead>
-                    <tr role="row">
-                        <th>Rut a Facturar</th>
-                        <th>Nombre Negocio</th>
-                        <th>Nombre</th>
-                        <th>Apellido Paterno</th>
-                        <th>Precio Venta</th>
-                        <th>Categoria</th>
-                        <th>Color Huevo</th>
-                        <th>Celular</th>
-                        <th>Sector</th>
-                        <th>Direccion</th>
-                        <th>Accion</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!empty($clientes)) : ?>
-                        <?php foreach ($clientes as $cliente) : ?>
-                            <tr>
-                                <td><?= $cliente->rut_factura ?></td>
-                                <td><?= $cliente->nombre_negocio ?></td>
-                                <td><?= $cliente->nombre ?></td>
-                                <td><?= $cliente->apellido_paterno  ?></td>
-                                <td><?= $cliente->precio_favorito?></td>
-                                <td><?= $cliente->nombre_producto?></td>
-                                <td><?= $cliente->tipo_huevo?></td>
-                                <td><?= $cliente->celular ?></td>
-                                <td><?= $cliente->nombre_sector ?></td>
-                                <td><?= $cliente->direccion ?></td>
-                                <td style="width: 10%;">
-                                    <div class="btn-group btn-group-toggle">
-                                        <a class="btn btn-sm btn-secondary mt-0" href="<?= base_url('clientes/ver/' . $cliente->id) ?>"> <i class="fas fa-eye"></i> Ver</a>
-                                        <a class="btn btn-sm btn-secondary mt-0" href="<?= base_url('clientes/editar/' . $cliente->id) ?>"> <i class="fas fa-edit"></i> Editar</a>
-                                        <button type="button" onclick="EliminarCliente(<?= $cliente->id ?>)" class="btn btn-sm btn-danger btn_deleted mt-0 "><i class="fa fa-trash"></i> Eliminar</button>                                        
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+        <div class="card card-body ">
+            <div class="col-12 table-responsive">
+                <table id="data-table" class="table table-hover w-100 dataTable no-footer">
+                    <thead>
+                        <tr role="row">
+                            <th style="white-space: nowrap;">Rut a Facturar</th>
+                            <th style="white-space: nowrap;">Nombre Negocio</th>
+                            <th style="white-space: nowrap;">Nombre</th>
+                            <th style="white-space: nowrap;">Apellido Paterno</th>
+                            <th style="white-space: nowrap;">Precio Venta</th>
+                            <th style="white-space: nowrap;">Categoria</th>
+                            <th style="white-space: nowrap;">Color Huevo</th>
+                            <th style="white-space: nowrap;">Celular</th>
+                            <th style="white-space: nowrap;">Sector</th>
+                            <th style="white-space: nowrap;">Direccion</th>
+                            <th style="white-space: nowrap;">Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (!empty($clientes)) : ?>
+                            <?php foreach ($clientes as $cliente) : ?>
+                                <tr>
+                                    <td style="white-space: nowrap;"><?= !empty($cliente->rut_factura) ? formateaRut($cliente->rut_factura) : 'Sin Información' ?></td>
+                                    <td style="white-space: nowrap;"><?= !empty($cliente->nombre_negocio) ? strUpper($cliente->nombre_negocio) : 'Sin Información' ?></td>
+                                    <td style="white-space: nowrap;"><?= !empty($cliente->nombre) ? strUpper($cliente->nombre) : 'Sin Información' ?></td>
+                                    <td style="white-space: nowrap;"><?= !empty($cliente->apellido_paterno) ? strUpper($cliente->apellido_paterno) : 'Sin Información' ?></td>
+                                    <td style="white-space: nowrap;"><?= !empty($cliente->precio_favorito) ? formatear_miles($cliente->precio_favorito) : '$0' ?></td>
+                                    <td style="white-space: nowrap;"><?= !empty($cliente->nombre_producto) ? strUpper($cliente->nombre_producto) : '$0' ?></td>
+                                    <td style="white-space: nowrap;"><?= !empty($cliente->tipo_huevo) ? ($cliente->tipo_huevo == 'b' ? 'BLANCO' : 'COLOR') : 'Sin Información' ?></td>
+                                    <td style="white-space: nowrap;"><?= !empty($cliente->celular) ? $cliente->celular : 'Sin Información' ?></td>
+                                    <td style="white-space: nowrap;"><?= !empty($cliente->nombre_sector) ? strUpper($cliente->nombre_sector) : 'Sin Información' ?></td>
+                                    <td style="white-space: nowrap;"><?= !empty($cliente->direccion) ? strUpper($cliente->direccion) : 'Sin Información' ?></td>
+                                    <td style="white-space: nowrap;">
+                                        <div class="btn-group btn-group-toggle">
+                                            <a class="btn btn-sm btn-secondary mt-0" href="<?= base_url('clientes/ver/' . $cliente->id) ?>"> <i class="fas fa-eye"></i> Ver</a>
+                                            <a class="btn btn-sm btn-secondary mt-0" href="<?= base_url('clientes/editar/' . $cliente->id) ?>"> <i class="fas fa-edit"></i> Editar</a>
+                                            <button type="button" onclick="EliminarCliente(<?= $cliente->id ?>)" class="btn btn-sm btn-danger btn_deleted mt-0 "><i class="fa fa-trash"></i> Eliminar</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

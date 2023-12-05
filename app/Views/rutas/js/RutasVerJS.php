@@ -88,38 +88,106 @@
 
         $('.metodo_pago').click(function() {
             let metodo_pago = (this).value;
-            $('#metodo_pago_seleccionado').html(metodo_pago);
 
+            console.log('metodo_pago');
+            console.log(metodo_pago);
+            console.log('metodo_pago');
             switch (metodo_pago) {
-                case 'fiado':
+                case '1':
+                    $('#metodo_pago_seleccionado').html('Fiado');
                     $('#monto_pagado').val(0);
                     $('#monto_pagado').attr('disabled', true);
                     $('#check_pago_total').attr('disabled', true);
                     $('#check_pago_total').attr('checked', false);
                     break;
-                case 'efectivo':
+                case '2':
+                    $('#metodo_pago_seleccionado').html('Efectivo');
                     $('#monto_pagado').val(carrito.costoTotal);
                     $('#monto_pagado').attr('disabled', false);
                     $('#check_pago_total').attr('disabled', false);
                     $('#check_pago_total').attr('checked', true);
                     break;
-                case 'transferencia':
+                case '3':
+                    $('#metodo_pago_seleccionado').html('Transferencia');
                     $('#monto_pagado').val(carrito.costoTotal);
                     $('#monto_pagado').attr('disabled', false);
                     $('#check_pago_total').attr('disabled', false);
                     $('#check_pago_total').attr('checked', true);
                     break;
-                case 'deposito':
+                case '4':
+                    $('#metodo_pago_seleccionado').html('Deposito');
                     $('#monto_pagado').val(carrito.costoTotal);
                     $('#monto_pagado').attr('disabled', false);
                     $('#check_pago_total').attr('disabled', false);
                     $('#check_pago_total').attr('checked', true);
                     break;
-
                 default:
                     break;
             }
         });
+
+        $('#nuevo_gasto').click(function() {
+            $('#modal_gasto').modal('show');
+        });
+        $('#confirmar_gasto').click(function() {
+            let nombre = $('#nombre_gasto').val();
+            let monto = $('#monto_gasto').val();
+            if (nombre != '' && monto != '' && monto > 0) {
+                $.ajax({
+                    url: '<?= base_url('gastos/nuevo-gasto-ruta') ?>',
+                    method: 'post',
+                    data: {
+                        nombre: nombre,
+                        monto: monto,
+                        ruta_id: ruta_id
+                    },
+                    dataType: 'json',
+                    success: function(resp) {
+                        let respuesta = JSON.stringify(resp);
+                        let obj = $.parseJSON(respuesta);
+                        let tipo = obj['tipo'];
+                        let msg = obj['msg'];
+                        if (tipo != 'success') {
+                            toastr[tipo](msg, "Gestión de Gastos")
+                        } else {
+                            //data = obj['data'];
+                            //CargarDatosClienteModal(data);
+                            toastr["success"](msg, "Gestión Clientes")
+                        }
+                    },
+                    error: function(error) {
+                        console.log(JSON.stringify(error));
+                        console.log('Error al obtener los clientes: ' + error);
+                    }
+                });
+            } else {
+                toastr['warning']('1 o más campos son requeridos, completalos para continuar por favor.', "Gestión de Gastos")
+            }
+
+        });
+
+        $('#cerrar_ruta').click(function(){
+            $('#modal_cerrar_ruta').modal('show');
+        });
+
+        $('#buscar_cliente').keyup(function () {
+    let lista = document.querySelectorAll('#lista li');
+    let valor = $(this).val().trim().toLowerCase();
+
+    lista.forEach(element => {
+        let h1Element = element.querySelector('h6');
+        if (h1Element) {
+            let nombre = h1Element.textContent.trim().toLowerCase();
+
+            if (nombre.includes(valor)) {
+                element.style.display = '';
+            } else {
+                element.style.display = 'none';
+            }
+        }
+    });
+});
+
 
     });
 
@@ -137,6 +205,7 @@
     }
 
     function CargarCliente(cliente_id) {
+        cliente_id_venta = cliente_id
         $.ajax({
             url: '<?= base_url('clientes/cargar-cliente-venta/') ?>' + cliente_id, // Nombre de tu archivo PHP
             method: 'post',
@@ -356,6 +425,9 @@
                     console.log(msg);
                 } else {
                     data = obj['data'];
+                    console.log('data');
+                    console.log(data);
+                    console.log('data');
                     CargarDatosPrimeraVenta(data, cliente_id);
                 }
             },
@@ -373,23 +445,36 @@
         // Construir el cuerpo de la tabla
         let tbody = '';
         let count = 1;
-
+        let badge = '';
+        console.log('data');
+        console.log(data);
+        console.log('data');
         data.forEach(d => {
+            badge = '';
             tbody += `
             <tr>
-                <td>${count}</td><td>`;
-            console.log(d);
-            d.productos_venta_data.forEach(e => {
-                console.log(e.producto_data.nombre);
-                tbody += "" + e.producto_data.nombre + ", ";
-            });
-            tbody += `</td>
-                <td>${d.total_venta}</td>
-                <td>${d.pagado}</td>
-            </tr>`;
+                <td class="text-center">${count}</td>
+                <td class="text-center">${d.nombre_producto}</td>
+                <td class="text-center">${d.cantidad}</td>
+                <td class="text-center">${d.precio}</td>
+                <td class="text-center">${d.precio * d.cantidad}</td>
+                <td class="text-center">${d.metodo_pago}</td>`;
+            // if (d.pagado == 0) {
+            //     badge += `
+            //         <span class="badge badge-warning">No</span>
+            //     `;
+            // } else {
+            //     badge += `
+            //         <span class="badge badge-success">Si</span>
+            //     `;
+            // }
+            // <td class="text-center">${badge}</td>
+            tbody += `
+                </tr>
+            `;
             count++;
         });
-
+        $('#btn_venta_' + cliente_id).removeAttr('hidden');
         $('#tbody_ventas_' + cliente_id).html(tbody);
 
         // Inicializar DataTable solo si aún no ha sido inicializado
@@ -431,14 +516,15 @@
         let count = 1;
         console.log(data);
         data.forEach(d => {
+            created_at = ordenarFechaHoraHumano(d.created_at);
             tbody += `
             <tr>
                 <td>${count}</td>
+                <td>${d.ruta_id}</td>
                 <td>${d.total_venta}</td>
                 <td>${d.total_pagado}</td>
-                <td>${d.created_at}</td>
-            </tr>
-            `;
+                <td>${created_at}</td>
+            </tr>`;
 
             count++;
         });

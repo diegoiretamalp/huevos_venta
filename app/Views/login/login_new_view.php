@@ -1,10 +1,9 @@
-<?php 
+<?php
 $session = session();
 $errores = $session->getFlashdata('errores');
 
 ?>
 
-<main class="body-content">
 <!-- Body Content Wrapper -->
 <div class="ms-content-wrapper ms-auth">
 
@@ -15,29 +14,27 @@ $errores = $session->getFlashdata('errores');
     </div>
     <div class="ms-auth-col">
       <div class="ms-auth-form">
-        <form class="needs-validation" novalidate="">
+        <form action="<?= base_url('login') ?>" method="post" id="formulario" autocomplete="off">
           <h1>Inicio de Sesión</h1>
           <div class="mb-4">
-            <label for="rut">Rut</label>
-            <div class="input-group">
-              <input type="text" class="form-control" id="rut" placeholder="Ej: 19.345.400-3" required="">
-              <div class="invalid_rut"></div>
+            <div class="form-group">
+              <label for="rut">Rut</label>
+              <input type="text" class="form-control" id="rut" name="rut" placeholder="Ej: 19.345.400-3">
+              <span id="invalid_rut" class="text-danger" ></span>
             </div>
           </div>
           <div class="mb-4">
-            <label for="password">Contraseña</label>
-            <div class="input-group">
-              <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" required="">
-              <div class="invalid_password"></div>
+            <div class="form-group">
+              <label for="password">Contraseña</label>
+              <input type="password" class="form-control" id="password" name="password" placeholder="Ingrese su contraseña">
+              <span id="invalid_password" class="text-danger" ></span>
             </div>
           </div>
-          <button class="btn btn-pill btn-primary mt-4 d-block w-100" id="iniciar_sesion" type="submit">Iniciar Sesion <i class="far fa-user-circle "></i></button>
+          <button class="btn btn-pill btn-primary mt-4 d-block w-100" id="iniciar_sesion" type="button"><i class="far fa-user-circle pr-2" style="font-size: 18px;"></i> Iniciar Sesion</button>
           <span class="d-block text-center my-4">O</span>
-          <a class="btn btn-pill btn-danger mt-4 d-block w-100"" href="<?= base_url('login/restablecer-password') ?>"> <i></i> Restablecer Contraseña? <i class="fas fa-edit"></i></a> 
+          <a class="btn btn-pill btn-danger mt-4 d-block w-100" href=" <?= base_url('login/restablecer-password') ?>"><i class="fas fa-key pr-2" style="font-size:18px ;"></i> Restablecer Contraseña</a>
         </form>
       </div>
     </div>
   </div>
 </div>
-
-</main>

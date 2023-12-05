@@ -16,7 +16,7 @@
                 <div class="ms-card-body media text-center">
                     <div class="media-body">
                         <h1 class="text-white">Total Compra</h1>
-                        <p class="ms-card-change"><?= !empty($monedero) ? formatear_numero($monedero->total_comprado) : '$0' ?></p>
+                        <p class="ms-card-change"><?= !empty($monedero->total_venta) ? formatear_numero($monedero->total_venta) : '$0' ?></p>
                     </div>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                 <div class="ms-card-body media text-center">
                     <div class="media-body">
                         <h1 class="text-white">Total Pagado</h1>
-                        <p class="ms-card-change"> <?= !empty($monedero) ? formatear_numero($monedero->total_pagado) : '$0' ?></p>
+                        <p class="ms-card-change"> <?= !empty($monedero->total_pagado) ? formatear_numero($monedero->total_pagado) : '$0' ?></p>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                 <div class="ms-card-body media text-center">
                     <div class="media-body">
                         <h1 class="text-white">Total Deuda</h1>
-                        <p class="ms-card-change"> <?= !empty($monedero) ? formatear_numero($monedero->total_deuda) : '$0' ?></p>
+                        <p class="ms-card-change"> <?= !empty($monedero->total_deuda) ? formatear_numero($monedero->total_deuda) : '$0' ?></p>
                     </div>
                 </div>
             </div>
@@ -87,6 +87,10 @@
                                     </a>
                                 </li>
                             <?php endforeach; ?>
+                        <?php else : ?>
+                            <li class="ms-list-item text-center text-muted" style="font-size: 24px;">
+                                No se encontraron ventas.
+                            </li>
                         <?php endif; ?>
                     </ul>
                 </div>
