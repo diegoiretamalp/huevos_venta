@@ -53,10 +53,10 @@ class ClientesController extends BaseController
         // }
         //pre_die($monedero);
         $where_ventas = [
-            'estado' => true,
-            'eliminado' => false,
-            'pagado' => false,
-            'cliente_id' => $id
+            'v.estado' => true,
+            'v.eliminado' => false,
+            'v.cliente_id' => $id
+
         ];
         $ventas = $this->Ventas_model->getVentas($where_ventas);
 

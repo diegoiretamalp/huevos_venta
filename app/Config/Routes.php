@@ -67,12 +67,15 @@ $routes->post('clientes/eliminar', 'ClientesController::EliminarCliente', ['filt
 
 #RUTAS DE MANTENEDOR DE DEUDAS
 
-$routes->get('deudas/listado', 'DeudasController::index', ['filter' => 'auth']);
-$routes->get('deudas/nueva', 'DeudasController::NuevaDeuda', ['filter' => 'auth']);
-$routes->post('deudas/nueva', 'DeudasController::NuevaDeuda', ['filter' => 'auth']);
-$routes->get('deudas/editar/(:num)', 'DeudasController::EditarDeuda/$1', ['filter' => 'auth']);
-$routes->post('deudas/editar/(:num)', 'DeudasController::EditarDeuda/$1', ['filter' => 'auth']);
-$routes->post('deudas/eliminar', 'DeudasController::EliminarDeuda', ['filter' => 'auth']);
+
+$routes->get('deudas/listado', 'DeudasController::index');
+$routes->get('deudas/nueva', 'DeudasController::NuevaDeuda');
+$routes->post('deudas/nueva', 'DeudasController::NuevaDeuda');
+$routes->get('deudas/editar/(:num)', 'DeudasController::EditarDeuda/$1');
+$routes->post('deudas/editar/(:num)', 'DeudasController::EditarDeuda/$1');
+$routes->post('deudas/eliminar', 'DeudasController::EliminarDeuda');
+$routes->get('deudas/ver/(:num)', 'DeudasController::VerRuta/$1');
+
 
 #RUTAS DE MANTENEDOR DE PRODUCTOS
 
@@ -124,7 +127,6 @@ $routes->post('sectores/eliminar', 'SectoresController::EliminarSector', ['filte
 
 #RUTAS DE GASTOS
 $routes->post('gastos/nuevo-gasto-ruta', 'GastosController::NuevoGastoRuta', ['filter' => 'auth']);
-
 
 
 /*

@@ -39,7 +39,7 @@ class SectoresController extends BaseController
                 $this->session->setflashdata("error_title", "Error de Validación");
                 $this->session->setflashdata("error", "Se encontraron los siguientes errores: " . implode(", ", $validate));
                 $this->session->setflashdata("errores", $post);
-                return redirect('sectores/nueva');
+                return redirect('sectores/nuevo');
             } else {
 
                 $sector_array = [
@@ -104,26 +104,31 @@ class SectoresController extends BaseController
         $post = $this->request->getPost();
 
         if (!empty($post)) {
-
-
-            //  pre_die($post);
-            $array_update = [
-                'nombre' => !empty($post['nombre']) ? $post['nombre'] : NULL,
-                'comuna_id' => !empty($post['comuna_id']) ? $post['comuna_id'] : NULL,
-                'updated_at' => gettimestamp()
-            ];
-
-            //pre_die($array_update);
-            $rsp = $this->Sectores_model->updateSector($array_update, $id);
-            if ($rsp) {
-                $this->session->setflashdata("success_title", "Mantenedor de Sectores");
-                $this->session->setflashdata("success", "Se ha modificado el sector con exito!");
-                return redirect('sectores/listado');
-            } else {
-                $this->session->setflashdata("error_title", "Error de validación");
-                $this->session->setflashdata("error", "No se ha modificado el sector");
+            if ($validate = $this->ValidaFields($post)) {
+                $this->session->setflashdata("error_title", "Error de Validación");
+                $this->session->setflashdata("error", "Se encontraron los siguientes errores: " . implode(", ", $validate));
                 $this->session->setflashdata("errores", $post);
-                return redirect('sectores/editar/' . $id);
+                return redirect()->route('sectores/editar/'. $id);
+            } else {
+                //  pre_die($post);
+                $array_update = [
+                    'nombre' => !empty($post['nombre']) ? $post['nombre'] : NULL,
+                    'comuna_id' => !empty($post['comuna_id']) ? $post['comuna_id'] : NULL,
+                    'updated_at' => gettimestamp()
+                ];
+
+                //pre_die($array_update);
+                $rsp = $this->Sectores_model->updateSector($array_update, $id);
+                if ($rsp) {
+                    $this->session->setflashdata("success_title", "Mantenedor de Sectores");
+                    $this->session->setflashdata("success", "Se ha modificado el sector con exito!");
+                    return redirect('sectores/listado');
+                } else {
+                    $this->session->setflashdata("error_title", "Error de validación");
+                    $this->session->setflashdata("error", "No se ha modificado el sector");
+                    $this->session->setflashdata("errores", $post);
+                    return redirect('sectores/editar/' . $id);
+                }
             }
         }
 
@@ -220,12 +225,15 @@ class SectoresController extends BaseController
         $error = [];
         $error_flag = false;
 
+        if (validateText(trim($data['nombre']))) {
+            $error_flag = true;
+            $error['nombre'] = 'Nombre';
+        }
 
-        if (!empty($data['nombre'])) {
-            if (validateText(trim($data['nombre']))) {
-                $error_flag = true;
-                $error['nombre'] = 'Nombre';
-            }
+
+        if (empty($data['comuna_id']) || $data['comuna_id'] == 0) {
+            $error_flag = true;
+            $error['comuna_id'] = 'Comuna';
         }
 
         if ($error_flag) {
