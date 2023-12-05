@@ -61,6 +61,7 @@ $routes->post('deudas/nueva', 'DeudasController::NuevaDeuda');
 $routes->get('deudas/editar/(:num)', 'DeudasController::EditarDeuda/$1');
 $routes->post('deudas/editar/(:num)', 'DeudasController::EditarDeuda/$1');
 $routes->post('deudas/eliminar', 'DeudasController::EliminarDeuda');
+$routes->get('deudas/ver/(:num)', 'DeudasController::VerRuta/$1');
 
 #RUTAS DE MANTENEDOR DE PRODUCTOS
 
@@ -111,7 +112,6 @@ $routes->get('login/restablecer-password', 'LoginController::restablecer_passwor
 $routes->post('login/restablecer-password', 'LoginController::restablecer_password');
 $routes->get('login/cambiar-password', 'LoginController::cambiar_password');
 $routes->post('login/cambiar-password', 'LoginController::cambiar_password');
-
 
 
 
