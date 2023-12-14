@@ -1,6 +1,6 @@
 <?php
 //defined('BASEPATH') or exit('No direct script access allowed');
-
+//hola
 use CodeIgniter\Model;
 
 class Usuarios_model extends Model
