@@ -242,3 +242,6 @@ class Ventas_model extends Model
         return $ventas->get()->getResultObject();
     }
 }
+
+
+//hola

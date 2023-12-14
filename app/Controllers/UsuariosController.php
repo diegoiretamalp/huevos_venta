@@ -1,5 +1,5 @@
 <?php
-
+//hola
 namespace App\Controllers;
 
 class UsuariosController extends BaseController
