@@ -6,16 +6,27 @@ class VentasController extends BaseController
 {
     public function __construct()
     {
+        
         $this->session = session();
         $this->Productos_model = model('App\Models\Productos_model');
         $this->Clientes_model = model('App\Models\Clientes_model');
         $this->Monedero_model = model('App\Models\Monedero_model');
         $this->Rutas_model = model('App\Models\Rutas_model');
+        $this->Ventas_model = model('App\Models\Ventas_model');
+       
     }
     public function index()
     {
+        $where = [
+            'v.estado' => true,
+            'v.eliminado' => false,
+        ];
+        $ventas = $this->Ventas_model->GetVentasDetalle($where);
+        // pre_die($ventas);
         $data = [
+            'title' => 'Listado de Ventas',
             'main_view' => 'ventas/ventas_list_view',
+            'ventas' => !empty($ventas) ? $ventas : [],
             'js_content' => [
                 '0' => 'layout/js/generalJS'
             ]
@@ -254,6 +265,7 @@ class VentasController extends BaseController
     {
         $post = $this->request->getPost();
 
+
         if (!empty($post)) {
             $ruta = $this->Rutas_model->getRuta($post['ruta_id']);
             if (!empty($ruta)) {
@@ -270,6 +282,7 @@ class VentasController extends BaseController
                     'total_venta' => $monto_venta,
                     'total_pagado' => $post['monto_pagado'],
                     'cliente_id' => $post['cliente_id'],
+                    'fecha_venta' => $ruta->fecha_ruta,
                     'created_at' => getTimestamp()
                 ];
 
@@ -301,23 +314,24 @@ class VentasController extends BaseController
                             'created_at' => getTimestamp(),
                         ];
 
-                        if ($post['check_pago_total'] == true) {
-                            if($metodo_pago_id != 1){
+                        if ($post['check_pago_total'] == 1) {
+                            if ($metodo_pago_id != 1) {
                                 $new_pago['monto_pago_actual'] = $post['data']['costoTotal'];
-                            }else{
+                            } else {
                                 $new_pago['monto_pago_actual'] = 0;
                             }
                             $new_pago['monto_total'] = $post['data']['costoTotal'];
                             $new_pago['monto_pagado'] = $post['data']['costoTotal'];
                         } else {
-                            if($metodo_pago_id != 1){
+                            if ($metodo_pago_id != 1) {
                                 $new_pago['monto_pago_actual'] = $post['monto_pagado'];
-                            }else{
+                            } else {
                                 $new_pago['monto_pago_actual'] = 0;
                             }
                             $new_pago['monto_total'] = $post['data']['costoTotal'];
                             $new_pago['monto_pagado'] = $post['monto_pagado'];
                         }
+
                         $pago_id = InsertRowTable('pagos_venta', $new_pago);
                         $rsp = $this->ModificarMonedero($metodo_pago_id, $cliente_id, $monto_venta, $monto_pagado);
                         if (!empty($rsp)) {
@@ -416,5 +430,24 @@ class VentasController extends BaseController
         ];
         $id_monedero = $this->Monedero_model->insertMonedero($monedero);
         return $id_monedero;
+    }
+
+    public function VerDetalleVenta($venta_id)
+    {
+        if (!is_numeric($venta_id)) {
+            return redirect('ventas/listado');
+        }
+        $venta = $this->Ventas_model->getVenta($venta_id);
+        $productos_venta = $this->Ventas_model->getProductosVentaJoin($venta_id);
+        $pagos_venta = $this->Ventas_model->getPagosVentaJoin($venta_id);
+        // pre_die($productos_venta);
+        $data = [
+            'title' => 'Detalle de Venta',
+            'main_view' => 'ventas/ventas_detalle_view',
+            'venta' => !empty($venta) ? $venta : [],
+            'productos_venta' => !empty($productos_venta) ? $productos_venta : [],
+            'pagos_venta' => !empty($pagos_venta) ? $pagos_venta : []
+        ];
+        return view('layout/layout_main_view', $data);
     }
 }

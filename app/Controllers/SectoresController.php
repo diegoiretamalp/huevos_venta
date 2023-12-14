@@ -19,6 +19,7 @@ class SectoresController extends BaseController
         $sectores = $this->Sectores_model->getSectores($where_sectores);
         $comunas = GetObjectByWhere('comunas', ['estado' => true]);
         $data = [
+            'title' => 'Listado de Sectores',
             'main_view' => 'sectores/sectores_list_view',
             'sectores' => !empty($sectores) ? $sectores : [],
             'comunas' => !empty($comunas) ? $comunas : [],
@@ -39,7 +40,7 @@ class SectoresController extends BaseController
                 $this->session->setflashdata("error_title", "Error de Validación");
                 $this->session->setflashdata("error", "Se encontraron los siguientes errores: " . implode(", ", $validate));
                 $this->session->setflashdata("errores", $post);
-                return redirect('sectores/nueva');
+                return redirect('sectores/nuevo');
             } else {
 
                 $sector_array = [
@@ -52,7 +53,7 @@ class SectoresController extends BaseController
                 if ($id_sector > 0) {
                     $this->session->setflashdata("success_title", "Mantenedor de Sectores");
                     $this->session->setflashdata("success", "Se ha creado el sector con exito!");
-                    return redirect('sectores/nuevo');
+                    return redirect('sectores/listado');
                 } else {
                     $this->session->setflashdata("error_title", "Error de Validación");
                     $this->session->setflashdata("error", "Se encontraron los siguientes errores: " . implode(", ", $validate));
@@ -104,26 +105,31 @@ class SectoresController extends BaseController
         $post = $this->request->getPost();
 
         if (!empty($post)) {
-
-
-            //  pre_die($post);
-            $array_update = [
-                'nombre' => !empty($post['nombre']) ? $post['nombre'] : NULL,
-                'comuna_id' => !empty($post['comuna_id']) ? $post['comuna_id'] : NULL,
-                'updated_at' => gettimestamp()
-            ];
-
-            //pre_die($array_update);
-            $rsp = $this->Sectores_model->updateSector($array_update, $id);
-            if ($rsp) {
-                $this->session->setflashdata("success_title", "Mantenedor de Sectores");
-                $this->session->setflashdata("success", "Se ha modificado el sector con exito!");
-                return redirect('sectores/listado');
-            } else {
-                $this->session->setflashdata("error_title", "Error de validación");
-                $this->session->setflashdata("error", "No se ha modificado el sector");
+            if ($validate = $this->ValidaFields($post)) {
+                $this->session->setflashdata("error_title", "Error de Validación");
+                $this->session->setflashdata("error", "Se encontraron los siguientes errores: " . implode(", ", $validate));
                 $this->session->setflashdata("errores", $post);
-                return redirect('sectores/editar/' . $id);
+                return redirect()->route('sectores/editar/'. $id);
+            } else {
+                //  pre_die($post);
+                $array_update = [
+                    'nombre' => !empty($post['nombre']) ? $post['nombre'] : NULL,
+                    'comuna_id' => !empty($post['comuna_id']) ? $post['comuna_id'] : NULL,
+                    'updated_at' => gettimestamp()
+                ];
+
+                //pre_die($array_update);
+                $rsp = $this->Sectores_model->updateSector($array_update, $id);
+                if ($rsp) {
+                    $this->session->setflashdata("success_title", "Mantenedor de Sectores");
+                    $this->session->setflashdata("success", "Se ha modificado el sector con exito!");
+                    return redirect('sectores/listado');
+                } else {
+                    $this->session->setflashdata("error_title", "Error de validación");
+                    $this->session->setflashdata("error", "No se ha modificado el sector");
+                    $this->session->setflashdata("errores", $post);
+                    return redirect('sectores/editar/' . $id);
+                }
             }
         }
 
@@ -133,7 +139,7 @@ class SectoresController extends BaseController
         // pre_die($comunas);
 
         $data = [
-            'titulo' => 'Editar Usuario',
+            'title' => 'Editar Sector',
             'action' => base_url('sectores/editar/' . $id),
             'comunas' => !empty($comunas) ? $comunas : [],
             'sector' => !empty($sector) ? $sector : [],
@@ -164,26 +170,19 @@ class SectoresController extends BaseController
             $sector = $this->Sectores_model->getSectorWhere($where);
 
             if (empty($sector)) {
-                echo 'Sector no existe, fue eliminado o no pertenece a los sectores';
+                echo false;
             } else {
-
                 $deleted = $this->Sectores_model->deleteSector($arr_data, $id);
                 if ($deleted) {
-                    echo 'ok';
-                    return redirect('sectores/listado');
+                    echo true;
                 } else {
-                    echo 'Ocurrió un problema al Eliminar. Intente Nuevamente';
+                    echo false;
                 }
             }
         } else {
-            echo 'error';
+            echo false;
         }
     }
-
-
-
-
-
 
     public function ObtenerSector()
     {
@@ -211,21 +210,20 @@ class SectoresController extends BaseController
         return json_encode($rsp);
     }
 
-
-
-
-
     private function ValidaFields($data)
     {
         $error = [];
         $error_flag = false;
 
+        if (validateText(trim($data['nombre']))) {
+            $error_flag = true;
+            $error['nombre'] = 'Nombre';
+        }
 
-        if (!empty($data['nombre'])) {
-            if (validateText(trim($data['nombre']))) {
-                $error_flag = true;
-                $error['nombre'] = 'Nombre';
-            }
+
+        if (empty($data['comuna_id']) || $data['comuna_id'] == 0) {
+            $error_flag = true;
+            $error['comuna_id'] = 'Comuna';
         }
 
         if ($error_flag) {

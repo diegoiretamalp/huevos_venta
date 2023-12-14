@@ -14,7 +14,7 @@ $errores = $session->getFlashdata('errores');
                 </ol>
             </nav>
         </div>
-        <div class="col-12">
+        <div class="col-12 card card-body">
             <form action="<?= isset($action) ? $action : '' ?>" method="post">
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
@@ -41,7 +41,8 @@ $errores = $session->getFlashdata('errores');
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-primary mt-4 d-block w-100" type="submit">Crear Sector</button>
+                <a class="btn btn-info mt-4" href="<?= base_url('sectores/listado') ?>"><i class="fa fa-list-alt" aria-hidden="true"></i> Volver a Listado</a>
+                <button class="btn btn-success mt-4" type="submit"><i class="fas fa-save    "></i> Crear Sector</button>
             </form>
         </div>
     </div>

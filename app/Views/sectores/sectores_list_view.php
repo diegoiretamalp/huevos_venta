@@ -17,37 +17,39 @@
     </div>
     <br>
     <div class="row">
-        <div class="col-12 table-responsive">
-            <table id="data-table" class="table table-hover w-100 dataTable no-footer">
-                <thead>
-                    <th>Nombre</th>
-                    <th>Comuna</th>
-                    <th>Accion</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!empty($sectores)) : ?>
-                        <?php foreach ($sectores as $sector) : ?>
-                            <tr>
-                                <td><?= $sector->nombre ?></td>
-                                <td>
-                                    <?php foreach ($comunas as $comuna) : ?>
-                                        <?php if ($comuna->id == $sector->comuna_id) : ?>
-                                            <?= $comuna->nombre ?>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?>
-                                </td>
-                                <td style="width: 10%;">
-                                    <a class="btn btn-sm btn-secondary mt-0" href="<?= base_url('sectores/editar/' . $sector->id) ?>"> <i class="fas fa-edit"></i> Editar</a>
-                                    <button type="button" onclick="EliminarSector(<?= $sector->id ?>)" class="btn btn-sm btn-danger btn_deleted "><i class="fa fa-trash"></i> Eliminar
-                                    </button>
-
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+        <div class="col-12">
+            <div class="card card-body table-responsive">
+                <table id="data-table" class="table table-hover w-100 dataTable no-footer">
+                    <thead>
+                        <tr>
+                            <th>NOMBRE</th>
+                            <th>COMUNA</th>
+                            <th class="text-center">ACCION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (!empty($sectores)) : ?>
+                            <?php foreach ($sectores as $sector) : ?>
+                                <tr id="row_<?= $sector->id ?>">
+                                    <td style="width: 33%;"><?= $sector->nombre ?></td>
+                                    <td style="width: 33%;">
+                                        <?php foreach ($comunas as $comuna) : ?>
+                                            <?php if ($comuna->id == $sector->comuna_id) : ?>
+                                                <?= $comuna->nombre ?>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </td>
+                                    <td class="text-center" style="width: 33%;">
+                                        <a class="btn btn-sm btn-secondary" href="<?= base_url('sectores/editar/' . $sector->id) ?>"> <i class="fas fa-edit"></i> Editar</a>
+                                        <button type="button" onclick="EliminarSector(<?= $sector->id ?>)" class="btn btn-sm btn-danger btn_deleted "><i class="fa fa-trash"></i> Eliminar
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

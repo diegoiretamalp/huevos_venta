@@ -17,7 +17,7 @@
     </div>
     <br>
     <div class="row">
-        <div class="col-12 table-responsive">
+        <div class="col-12 card card-body table-responsive">
             <table id="data-table" class="table table-hover w-100 dataTable no-footer">
                 <thead>
                     <tr role="row">

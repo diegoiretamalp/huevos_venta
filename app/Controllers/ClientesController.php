@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use stdClass;
+
 class ClientesController extends BaseController
 {
     public function __construct()
@@ -19,7 +21,15 @@ class ClientesController extends BaseController
             'cli.eliminado' => false
         ];
         $clientes = $this->Clientes_model->getClientes($where_clientes);
-
+        if(!empty($clientes)){
+            foreach ($clientes as $key) {
+                $cartera = GetCarteraCliente($key->id);
+                $key->total_compra = !empty($cartera->total_compra) ? $cartera->total_compra : 0;
+                $key->total_pagado = !empty($cartera->total_pagado) ? $cartera->total_pagado : 0;
+                $key->cantidad_compras = !empty($cartera->total_ventas) ? $cartera->total_ventas : 0;
+                $key->total_deuda = $key->total_compra - $key->total_pagado;
+            }
+        }
         $data = [
             'title' => 'Listado de Clientes',
             'main_view' => 'clientes/clientes_list_view',
@@ -39,30 +49,32 @@ class ClientesController extends BaseController
             return redirect('clientes/listado');
         }
         $cliente = $this->Clientes_model->getCliente($id);
-        $monedero = NULL;
+        // $monedero = NULL;
 
-        if (!empty($cliente)) {
-            $where_monedero = [
-                'cliente_id' => $cliente->id,
-                'estado' => true,
-                'eliminado' => false
-            ];
-            $monedero = $this->Monedero_model->getMonederoWhere($where_monedero);
-        }
+        // if (!empty($cliente)) {
+        //     $where_monedero = [
+        //         'cliente_id' => $cliente->id,
+        //         'estado' => true,
+        //         'eliminado' => false
+        //     ];
+        //     $monedero = $this->Monedero_model->getMonederoWhere($where_monedero);
+        // }
         //pre_die($monedero);
         $where_ventas = [
             'estado' => true,
             'eliminado' => false,
             'cliente_id' => $id
+
         ];
         $ventas = $this->Ventas_model->getVentas($where_ventas);
-
+        $cartera = GetCarteraCliente($cliente->id);
+        // pre_die($cartera);
         $data = [
             'title' => 'Ver Cliente',
             'main_view' => 'clientes/clientes_ver_view',
             'cliente' => !empty($cliente) ? $cliente : [],
             'ventas' => !empty($ventas) ? $ventas : [],
-            'monedero' => !empty($monedero) ? $monedero  : [],
+            'cartera' => !empty($cartera) ? $cartera  : [],
             'js_content' => [
                 '0' => 'layout/js/generalJS',
                 '1' => 'clientes/js/clientesVerJS'
@@ -85,7 +97,7 @@ class ClientesController extends BaseController
 
                 $sector = GetObjectRowByWhere('sectores', ['id' => !empty($post['sector_id']) ? $post['sector_id'] : '']);
                 if (!empty($sector)) {
-                    $comuna = GetObjectRowByWhere('comunas', ['id' => !empty($sector) ? $sector->id : '']);
+                    $comuna = GetObjectRowByWhere('comunas', ['id' => !empty($sector) ? $sector->comuna_id : '']);
                 }
 
                 $cliente_array = [
@@ -147,6 +159,7 @@ class ClientesController extends BaseController
         $productos = GetObjectByWhere('productos', ['estado' => true, 'eliminado' => false]);
         $comunas = GetObjectByWhere('comunas', ['estado' => true]);
         $sectores = GetObjectByWhere('sectores', ['estado' => true, 'eliminado' => false]);
+
         $data = [
             'title' => 'Formulario de Nuevo Cliente',
             'productos' => !empty($productos) ? $productos : [],
@@ -155,7 +168,11 @@ class ClientesController extends BaseController
             'sectores' => !empty($sectores) ? $sectores : [],
             'main_view' => 'clientes/clientes_new_view',
             'action' => base_url('clientes/nuevo'),
-
+            'js_content' => [
+                '0' => 'layout/js/generalJS',
+                '1' => 'login/js/validate_rut',
+                '2' => 'clientes/js/ClientesNewJS'
+            ]
         ];
         return view('layout/layout_main_view', $data);
     }
@@ -183,7 +200,7 @@ class ClientesController extends BaseController
                     'email' => !empty($post['email']) ? $post['email'] : NULL,
                     'precio_favorito' => !empty($post['precio_favorito']) ? $post['precio_favorito'] : NULL,
                     'producto_id' => !empty($post['producto_id']) ? $post['producto_id'] : NULL,
-                    'estado' => true,
+                    'estado' => !empty($post['estado']) ? ($post['estado'] == '1' ? true : false) : FALSE,
                     'region_id' => !empty($comuna) ? $comuna->region_id : NULL,
                     'comuna_id' => !empty($comuna) ? $comuna->id : NULL,
                     'sector_id' => !empty($post['sector_id']) ? $post['sector_id'] : NULL,
@@ -276,17 +293,23 @@ class ClientesController extends BaseController
 
 
 
-        if (validateText(trim($data['apellido_paterno']))) {
-            $error_flag = true;
-            $error['apellido_paterno'] = 'Apellido Paterno';
+        if (!empty($data['apellido_paterno'])) {
+            if (validateText(trim($data['apellido_paterno']))) {
+                $error_flag = true;
+                $error['apellido_paterno'] = 'Apellido Paterno';
+            }
         }
-        if (validateText(trim($data['apellido_materno']))) {
-            $error_flag = true;
-            $error['apellido_materno'] = 'Apellido Materno';
+        if (!empty($data['apellido_materno'])) {
+            if (validateText(trim($data['apellido_materno']))) {
+                $error_flag = true;
+                $error['apellido_materno'] = 'Apellido Materno';
+            }
         }
-        if (validateEmail(trim($data['email']))) {
-            $error_flag = true;
-            $error['email'] = 'Correo electrónico';
+        if (!empty($data['email'])) {
+            if (validateEmail(trim($data['email']))) {
+                $error_flag = true;
+                $error['email'] = 'Correo electrónico';
+            }
         }
 
         if (!validateRut(trim($data['rut_factura']))) {
@@ -311,7 +334,7 @@ class ClientesController extends BaseController
         //     $error['comuna_id'] = 'Comuna';
         // }
 
-        if (empty($data['sector_id']) || $data['sector_id'] == 0) {
+        if (!empty($data['sector_id']) && $data['sector_id'] == 0) {
             $error_flag = true;
             $error['sector_id'] = 'Sector';
         }

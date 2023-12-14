@@ -1,5 +1,5 @@
 <?php
-
+//hola
 namespace App\Controllers;
 
 class UsuariosController extends BaseController
@@ -51,7 +51,7 @@ class UsuariosController extends BaseController
                     'rut' => !empty($post['rut']) ? $post['rut'] : NULL,
                     'celular' => !empty($post['celular']) ? $post['celular'] : NULL,
                     'email' => !empty($post['email']) ? $post['email'] : NULL,
-                    'estado' => false,
+                    'estado' => true,
                     'perfil_id' => !empty($post['perfil_id']) ? $post['perfil_id'] : NULL,
                     'direccion' => !empty($post['direccion']) ? $post['direccion'] : NULL,
                     'password' => sha1(1234),
@@ -73,11 +73,14 @@ class UsuariosController extends BaseController
             }
         }
 
+        $perfiles = GetObjectByWhere('perfiles', ['estado' => true]);
+
         $data = [
             'title' => 'Nuevo Usuario',
             'action' => base_url('usuarios/nuevo'),
             'main_view' => 'usuarios/usuarios_new_view',
             'usuarios' => !empty($usuario) ? $usuario : [],
+            'perfiles' => !empty($perfiles) ? $perfiles : [],
             'js_content' => [
                 '0' => 'layout/js/generalJS',
                 '1' => 'usuarios/js/UsuariosJS'
@@ -85,11 +88,58 @@ class UsuariosController extends BaseController
         ];
         return view('layout/layout_main_view', $data);
     }
-    public function EditarVenta($id)
+    public function EditarUsuario($id)
     {
         $post = $this->request->getPost();
+
+        if (!empty($post)) {
+            if ($validate = $this->validateFields($post)) {
+                $this->session->setflashdata("error_title", "Error de Validación");
+                $this->session->setflashdata("error", "Se encontraron los siguientes errores: " . implode(", ", $validate));
+                $this->session->setflashdata("errores", $post);
+                return redirect()->route('usuarios/editar/'. $id);
+            } else {
+
+                $array_update = [
+                    'nombre' => !empty($post['nombre']) ? $post['nombre'] : NULL,
+                    'rut' => !empty($post['rut']) ? $post['rut'] : NULL,
+                    'celular' => !empty($post['celular']) ? $post['celular'] : NULL,
+                    'email' => !empty($post['email']) ? $post['email'] : NULL,
+                    'estado' => !empty($post['estado']) ? ($post['estado'] === 'true') : NULL,
+                    'perfil_id' => !empty($post['perfil_id']) ? $post['perfil_id'] : NULL,
+                    'direccion' => !empty($post['direccion']) ? $post['direccion'] : NULL,
+                    'updated_at' => getTimestamp()
+                ];
+
+                $id_usuario = $this->Usuarios_model->updateUsuario($array_update,$id);
+                if ($id_usuario > 0) {
+                    $this->session->setflashdata("success_title", "Gestión de Usuarios");
+                    $this->session->setflashdata("success", "Se ha realizado la creación del nuevo usuario correctamente.");
+                    return redirect('usuarios/listado');
+                } else {
+                    $this->session->setflashdata("error_title", "Error Interno");
+                    $this->session->setflashdata("error", "Ha Ocurrido un problema al crear el usuario. Intentelo Nuevamente, si el problema persiste contácte a Soporte");
+                    $this->session->setflashdata("errores", $post);
+                    return redirect()->route('usuarios/editar/'. $id);
+                }
+            }
+        }
+
+
+        $perfiles = GetObjectByWhere('perfiles', ['estado' => true]);
+        $usuarios = $this->Usuarios_model->getUsuario($id);
+
+
         $data = [
-            'main_view' => 'ventas/ventas_new_view'
+            'title' => 'Formulario Editar Usuario',
+            'action' => base_url('usuarios/editar/' . $id),
+            'perfiles' => !empty($perfiles) ? $perfiles : [],
+            'usuarios' => !empty($usuarios) ? $usuarios : [],
+            'main_view' => 'usuarios/usuarios_edit_view',
+            'js_content' => [
+                '0' => 'layout/js/generalJS',
+                '1' => 'usuarios/js/UsuariosJS'
+            ]
         ];
         return view('layout/layout_main_view', $data);
     }

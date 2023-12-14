@@ -16,7 +16,7 @@
                 <div class="ms-card-body media text-center">
                     <div class="media-body">
                         <h1 class="text-white">Total Compra</h1>
-                        <p class="ms-card-change"><?= !empty($monedero) ? formatear_numero($monedero->total_comprado) : '$0' ?></p>
+                        <p class="ms-card-change"><?= !empty($cartera->total_compra) ? formatear_numero($cartera->total_compra) : '$0' ?></p>
                     </div>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                 <div class="ms-card-body media text-center">
                     <div class="media-body">
                         <h1 class="text-white">Total Pagado</h1>
-                        <p class="ms-card-change"> <?= !empty($monedero) ? formatear_numero($monedero->total_pagado) : '$0' ?></p>
+                        <p class="ms-card-change"> <?= !empty($cartera->total_pagado) ? formatear_numero($cartera->total_pagado) : '$0' ?></p>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                 <div class="ms-card-body media text-center">
                     <div class="media-body">
                         <h1 class="text-white">Total Deuda</h1>
-                        <p class="ms-card-change"> <?= !empty($monedero) ? formatear_numero($monedero->total_deuda) : '$0' ?></p>
+                        <p class="ms-card-change"> <?= formatear_numero($cartera->total_compra - $cartera->total_pagado) ?></p>
                     </div>
                 </div>
             </div>
@@ -73,13 +73,19 @@
                                             <div class="d-flex justify-content-between">
                                                 <h4 class="ms-feed-user mb-0">Venta <strong>#<?= $venta->id ?></strong></h4>
                                             </div>
-                                            <span class="my-2 d-block"> <i class="material-icons">date_range</i> <?= ordenar_fechaHumano($venta->created_at) ?></span>
-                                            <p class="d-block"></p>
-                                            <div class="d-flex justify-content-between align-items-end">
+                                            <span class="ml-auto"> <i class="material-icons" style="font-size: 22px;">date_range</i> <?= !empty($venta->fecha_venta) ? ordenar_fechaHumano($venta->fecha_venta) : ordenar_fechaHumano($venta->created_at) ?></span>
+                                            <div class="d-flex justify-content-between align-items-end pt-2">
                                                 <div class="ms-feed-controls">
                                                     <span>
-                                                        <i class="fas fa-dollar-sign"></i> Monto Venta: <?= $venta->total_venta ?>
-                                                        <i class="fas fa-dollar-sign"></i> Monto Pagado: <?= $venta->total_pagado ?>
+                                                        <i class="fas fa-box pr-2" style="font-size: 20px;"></i> Cajas: <?= !empty($venta->cajas_total) ? $venta->cajas_total : '$0' ?><br>
+                                                        <i class="fas fa-route pr-2" style="font-size: 20px;"></i> Ruta: <?= !empty($venta->ruta_id) ? $venta->ruta_id : 'Sin Información' ?>
+                                                    </span>
+                                                    <span>
+                                                        <i class="fas fa-dollar-sign pr-2" style="font-size: 20px;"></i> Total Venta: <?= !empty($venta->total_venta) ? formatear_numero($venta->total_venta) : '$0' ?><br>
+                                                        <i class="far fa-money-bill-alt pr-2" style="font-size: 20px;"></i> Total Pagado: <?= !empty($venta->total_pagado) ? formatear_numero($venta->total_pagado) : '$0' ?>
+                                                    </span>
+                                                    <span>
+                                                        <a href="<?= base_url('ventas/detalle/'. $venta->id) ?>" class="btn btn-info"><i class="fas fa-info-circle"></i> Ver Detalle</a>
                                                     </span>
                                                 </div>
                                             </div>
@@ -87,6 +93,10 @@
                                     </a>
                                 </li>
                             <?php endforeach; ?>
+                        <?php else : ?>
+                            <li class="ms-list-item text-center text-muted" style="font-size: 24px;">
+                                No se encontraron ventas.
+                            </li>
                         <?php endif; ?>
                     </ul>
                 </div>
@@ -101,6 +111,10 @@
                             <tr>
                                 <th scope="row">NOMBRE COMPLETO</th>
                                 <td><?= strUpper($cliente->nombre) . ' ' .  strUpper($cliente->apellido_paterno) . ' ' . strUpper($cliente->apellido_materno) ?></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">NOMBRE NEGOCIO</th>
+                                <td><?= strUpper($cliente->nombre_negocio) . ' ' .  strUpper($cliente->nombre_negocio) . ' ' . strUpper($cliente->nombre_negocio) ?></td>
                             </tr>
                             <tr>
                                 <th scope="row">RUT A FACTURAR</th>
@@ -124,7 +138,9 @@
                             </tr>
                             <tr>
                                 <th scope="row">DIRECCION</th>
-                                <td><?= !empty($cliente->direccion) ? $cliente->direccion : 'Sin Datos...' ?></td>
+                                <td>
+                                    <a href="<?= !empty($cliente->direccion) ? $cliente->direccion : '#' ?>" target="_blank"><i class="fas fa-map-marker-alt"></i> Abrir Maps</a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
