@@ -22,13 +22,11 @@
                 <table id="data-table" class="table table-hover w-100 dataTable no-footer">
                     <thead>
                         <tr role="row">
+                            <th style="white-space: nowrap;">ID</th>
                             <th style="white-space: nowrap;">Rut a Facturar</th>
-                            <th style="white-space: nowrap;">Nombre Negocio</th>
-                            <th style="white-space: nowrap;">Nombre</th>
-                            <th style="white-space: nowrap;">Apellido Paterno</th>
-                            <th style="white-space: nowrap;">Precio Venta</th>
-                            <th style="white-space: nowrap;">Categoria</th>
-                            <th style="white-space: nowrap;">Color Huevo</th>
+                            <th >Nombre Completo</th>
+                            <th style="white-space: nowrap;">Favoritos</th>
+                            <th style="white-space: nowrap;">CARTERA</th>
                             <th style="white-space: nowrap;">Celular</th>
                             <th style="white-space: nowrap;">Sector</th>
                             <th style="white-space: nowrap;">Direccion</th>
@@ -39,13 +37,25 @@
                         <?php if (!empty($clientes)) : ?>
                             <?php foreach ($clientes as $cliente) : ?>
                                 <tr>
+                                    <td style="white-space: nowrap;"><?= $cliente->id ?></td>
                                     <td style="white-space: nowrap;"><?= !empty($cliente->rut_factura) ? formateaRut($cliente->rut_factura) : 'Sin Información' ?></td>
-                                    <td style="white-space: nowrap;"><?= !empty($cliente->nombre_negocio) ? strUpper($cliente->nombre_negocio) : 'Sin Información' ?></td>
-                                    <td style="white-space: nowrap;"><?= !empty($cliente->nombre) ? strUpper($cliente->nombre) : 'Sin Información' ?></td>
-                                    <td style="white-space: nowrap;"><?= !empty($cliente->apellido_paterno) ? strUpper($cliente->apellido_paterno) : 'Sin Información' ?></td>
-                                    <td style="white-space: nowrap;"><?= !empty($cliente->precio_favorito) ? formatear_miles($cliente->precio_favorito) : '$0' ?></td>
-                                    <td style="white-space: nowrap;"><?= !empty($cliente->nombre_producto) ? strUpper($cliente->nombre_producto) : '$0' ?></td>
-                                    <td style="white-space: nowrap;"><?= !empty($cliente->tipo_huevo) ? ($cliente->tipo_huevo == 'b' ? 'BLANCO' : 'COLOR') : 'Sin Información' ?></td>
+                                    <td style="white-space: nowrap;"><?= !empty($cliente->nombre) ? (strUpper($cliente->nombre) . (!empty($cliente->apellido_paterno) ? ' ' . strUpper($cliente->apellido_paterno) : '') . (!empty($cliente->apellido_materno) ? ' ' . strUpper($cliente->apellido_paterno) : '')) : 'Sin Información' ?></td>
+                                    <td style="white-space: nowrap;">
+                                        <p>
+                                            Precio Favorito: <?= !empty($cliente->precio_favorito) ? formatear_numero($cliente->precio_favorito) : 'Sin Favorito' ?><br>
+                                            Producto Favorito: <?= !empty($cliente->nombre_producto) ? strUpper($cliente->nombre_producto) : 'Sin Favorito' ?><br>
+                                            Calibre Favorito: <?= !empty($cliente->tipo_huevo) ? ($cliente->tipo_huevo == 'b' ? 'BLANCO' : 'COLOR') : 'Sin Favorito' ?>
+                                        </p>
+                                    </td>
+                                    <td style="white-space: nowrap;">
+                                        <p>
+                                            Total Compra: <?= !empty($cliente->total_compra) ? formatear_numero($cliente->total_compra) : '$0' ?><br>
+                                            Total Pagado: <?= !empty($cliente->total_pagado) ? formatear_numero($cliente->total_pagado) : '$0' ?><br>
+                                            Total Deuda: <?= !empty($cliente->total_deuda) ? formatear_numero($cliente->total_deuda) : '$0' ?><br>
+                                            N° Compras: <?= !empty($cliente->cantidad_compras) ? $cliente->cantidad_compras : '0' ?>
+                                        </p>
+                                    </td>
+                                    <!-- <td style="white-space: nowrap;"><?= !empty($cliente->nombre_negocio) ? strUpper($cliente->nombre_negocio) : 'Sin Información' ?></td> -->
                                     <td style="white-space: nowrap;"><?= !empty($cliente->celular) ? $cliente->celular : 'Sin Información' ?></td>
                                     <td style="white-space: nowrap;"><?= !empty($cliente->nombre_sector) ? strUpper($cliente->nombre_sector) : 'Sin Información' ?></td>
                                     <td style="white-space: nowrap;"><?= !empty($cliente->direccion) ? strUpper($cliente->direccion) : 'Sin Información' ?></td>

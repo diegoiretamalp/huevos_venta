@@ -14,10 +14,11 @@ class DeudasController extends BaseController
 
         $where_venta = [
             'v.estado' => true,
+            'v.pagado' => false,
             'v.eliminado' => false
         ];
 
-        $deudas = $this->Ventas_model->getVentas($where_venta);
+        $deudas = $this->Ventas_model->GetVentasDetalle($where_venta);
       
         $data = [
             'title' => 'Listado de Deudas',

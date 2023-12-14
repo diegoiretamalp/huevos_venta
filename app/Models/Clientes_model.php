@@ -12,7 +12,7 @@ class Clientes_model extends Model
 		if (!empty($select)) {
 			$clientes->select($select);
 		} else {
-			$clientes->select('cli.*, p.nombre as "nombre_producto", s.nombre as "nombre_sector", m.total_deuda as "total_deuda" ');
+			$clientes->select('cli.*, p.nombre as "nombre_producto", s.nombre as "nombre_sector"');
 		}
 		if (!empty($where)) {
 			$clientes->where($where);
@@ -21,7 +21,7 @@ class Clientes_model extends Model
 		}
 		$clientes->join("productos p", 'cli.producto_id = p.id', 'left');
 		$clientes->join("sectores s", 'cli.sector_id = s.id', 'left');
-		$clientes->join("monedero m", 'm.cliente_id = cli.id', 'left');
+		// $clientes->join("monedero m", 'm.cliente_id = cli.id', 'left');
 
 		return $clientes->get()->getResultObject();
 	}

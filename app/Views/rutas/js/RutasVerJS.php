@@ -155,6 +155,8 @@
                         } else {
                             //data = obj['data'];
                             //CargarDatosClienteModal(data);
+                            location.reload();
+                            $('#modal_gasto').modal('hide');
                             toastr["success"](msg, "Gestión Clientes")
                         }
                     },
@@ -226,7 +228,8 @@
             let metodo_pago_deuda = document.querySelector('input[name="metodo_pago_deuda"]:checked').value;
             let array = {
                 monto_deuda: $('#monto_deuda').val(),
-                metodo_pago: metodo_pago_deuda
+                metodo_pago: metodo_pago_deuda,
+                ruta_id: ruta_id
             };
             let monto_deuda = parseInt(array.monto_deuda);
             let monto_deuda_ant = parseInt($('#monto_deuda_ant').val());
@@ -238,6 +241,7 @@
                     .then(function(data) {
                         LimpiarModalPagoDeuda();
                         ToastMsg('success', data.title, data.msg);
+                        location.reload();
                     })
                     .catch(function(error) {
                         console.error('Error al obtener datos del cliente:', error);
@@ -586,11 +590,41 @@
 
         // Inicializar DataTable solo si aún no ha sido inicializado
         if (!$.fn.DataTable.isDataTable('#table_ventas_' + cliente_id)) {
-            $('#table_ventas_' + cliente_id).DataTable();
+            $('#table_ventas_' + cliente_id).DataTable({
+                scrollCollapse: true,
+                autoWidth: true,
+                responsive: true,
+                searching: true,
+                bPaginate: true,
+                bInfo: true,
+                columnDefs: [{
+                    targets: "datatable-nosort",
+                    orderable: false,
+                }],
+                order: [
+                    [0, 'desc']
+                ],
+                pageLength: 2,  // Establece el número de registros por página
+                lengthChange: false,
+                "language": {
+                    "info": "",
+                    search: "Buscar",
+                    searchPlaceholder: "Ingrese una o más letras",
+                    paginate: {
+                        next: '<i class="fa fa-chevron-right"></i>',
+                        previous: '<i class="fa fa-chevron-left"></i>'
+                    },
+                    "sZeroRecords": "No existen registros a mostrar",
+                    "sInfoEmpty": "Mostrando 0 al 0 de 0 registros",
+                    "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+                    "sLengthMenu": "Mostrar _MENU_ Registros",
+                },
+            });
         }
     }
 
     function VerDeudasCliente(cliente_id) {
+        console.log('cliente_id');
         console.log(cliente_id);
         $.ajax({
             url: '<?= base_url('clientes/obtener-deudas/') ?>' + cliente_id, // Nombre de tu archivo PHP
@@ -606,7 +640,8 @@
                 } else {
                     data = obj['data'];
                     cargarDatosDeuda(data);
-                    //console.log(data);
+                    console.log('data');
+                    console.log(data);
                     toastr["success"](msg, "Gestión Deudas Clientes")
                 }
             },
@@ -638,7 +673,56 @@
         $('#tbody_deudas').html(tbody);
         // Inicializar DataTable solo si aún no ha sido inicializado
         if (!$.fn.DataTable.isDataTable('#table_deudas')) {
-            $('#table_deudas').DataTable();
+            $('#table_deudas').DataTable({
+                scrollCollapse: true,
+                autoWidth: true,
+                responsive: true,
+                searching: false,
+                bPaginate: false,
+                bInfo: true,
+                columnDefs: [{
+                    targets: "datatable-nosort",
+                    orderable: false,
+                }],
+                order: [
+                    [0, 'desc']
+                ],
+                lengthChange: false,
+                "language": {
+                    "info": "",
+                    search: "Buscar",
+                    searchPlaceholder: "Ingrese una o más letras",
+                    paginate: {
+                        next: '<i class="fa fa-chevron-right"></i>',
+                        previous: '<i class="fa fa-chevron-left"></i>'
+                    },
+                    "sZeroRecords": "No existen registros a mostrar",
+                    "sInfoEmpty": "Mostrando 0 al 0 de 0 registros",
+                    "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+                    "sLengthMenu": "Mostrar _MENU_ Registros",
+                },
+
+            });
         }
+    }
+
+    function EliminarGasto(gasto_id) {
+        // cliente_id_venta = cliente_id
+        if (gasto_id > 0) {
+            let url = '<?= base_url('gastos/eliminar-gasto/') ?>' + gasto_id;
+            let data = GetDataAjax(url, 'post')
+                .then(function(data) {
+                    ToastMsg('success', data.title, data.msg);
+                })
+                .catch(function(error) {
+                    // Manejar errores de GetDataAjax
+                    ToastMsg('error', data.title, data.msg);
+                    console.error('Error al obtener datos del cliente:', error);
+                    // Puedes agregar aquí la lógica para manejar el error, como mostrar un mensaje al usuario.
+                });
+        } else {
+
+        }
+        //CargarDatosClienteModal(data);
     }
 </script>

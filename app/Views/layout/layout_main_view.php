@@ -22,15 +22,54 @@
     <link href="<?= ASSETS_CSS ?>style.css" rel="stylesheet">
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="..\..\favicon.ico">
-
+    <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"> -->
+  <link rel="stylesheet" href="/resources/demos/style.css">
     <!-- Fontawesome -->
     <link rel="stylesheet" href="<?= ASSETS_PLUGINS ?>fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="<?= ASSETS_CSS ?>select2.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"> -->
 
+    <link rel="stylesheet" href="<?= ASSETS_PLUGINS ?>daterangepicker/daterangepicker.css">
+    <style>
+        .body-content {
+            margin: 0;
+            padding: 0;
+            padding-right: 0 !important;
+            background-image: url(<?= ASSETS_IMG . 'background2.jpg' ?>);
+            /* Reemplaza 'nombre-de-tu-imagen.jpg' con el nombre de tu archivo de imagen */
+            background-size: cover;
+            /* Ajusta el tamaño de la imagen para cubrir todo el fondo */
+            background-position: center;
+            /* Alinea la imagen al centro del fondo */
+            background-repeat: no-repeat;
+            /* Evita que la imagen se repita */
+            height: 100vh;
+            /* Ajusta la altura al 100% del viewport */
+        }
+
+        /* Estilo para el contenedor del grupo de botones */
+        .button-group2 {
+            display: inline-block;
+        }
+
+        /* Estilo para cada botón dentro del grupo */
+        .buttonSpecial {
+
+            padding: 6px 12px;
+            /* Puedes ajustar el padding según tus preferencias */
+            font-size: 14px;
+            /* Puedes ajustar el tamaño de fuente según tus preferencias */
+            margin: 0;
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
 
 </head>
 
-<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+<body class="ms-body ms-aside-left-close ms-primary-theme ms-has-quickbar">
     <!-- Preloader -->
     <!-- <div id="preloader-wrap">
         <div class="spinner spinner-8">
@@ -85,12 +124,17 @@
 
     <!-- Settings -->
     <script src="<?= ASSETS_JS ?>settings.js"></script>
-    
-    
+
+
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="<?= ASSETS_JS ?>select2.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script> -->
+    <!-- <script src="<?= ASSETS_PLUGINS ?>moment/moment.min.js"></script>
+    <script src="<?= ASSETS_PLUGINS ?>moment/moment-with-locales.js"></script>
+    <script src="<?= ASSETS_PLUGINS ?>daterangepicker/daterangepicker.js"></script> -->
     <script>
         function cargando(msg = 'Cargando...', tiempo = 10000000000) {
             Swal.fire({

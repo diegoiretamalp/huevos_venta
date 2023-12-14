@@ -19,6 +19,7 @@ class SectoresController extends BaseController
         $sectores = $this->Sectores_model->getSectores($where_sectores);
         $comunas = GetObjectByWhere('comunas', ['estado' => true]);
         $data = [
+            'title' => 'Listado de Sectores',
             'main_view' => 'sectores/sectores_list_view',
             'sectores' => !empty($sectores) ? $sectores : [],
             'comunas' => !empty($comunas) ? $comunas : [],
@@ -52,7 +53,7 @@ class SectoresController extends BaseController
                 if ($id_sector > 0) {
                     $this->session->setflashdata("success_title", "Mantenedor de Sectores");
                     $this->session->setflashdata("success", "Se ha creado el sector con exito!");
-                    return redirect('sectores/nuevo');
+                    return redirect('sectores/listado');
                 } else {
                     $this->session->setflashdata("error_title", "Error de Validación");
                     $this->session->setflashdata("error", "Se encontraron los siguientes errores: " . implode(", ", $validate));
@@ -138,7 +139,7 @@ class SectoresController extends BaseController
         // pre_die($comunas);
 
         $data = [
-            'titulo' => 'Editar Usuario',
+            'title' => 'Editar Sector',
             'action' => base_url('sectores/editar/' . $id),
             'comunas' => !empty($comunas) ? $comunas : [],
             'sector' => !empty($sector) ? $sector : [],
@@ -169,26 +170,19 @@ class SectoresController extends BaseController
             $sector = $this->Sectores_model->getSectorWhere($where);
 
             if (empty($sector)) {
-                echo 'Sector no existe, fue eliminado o no pertenece a los sectores';
+                echo false;
             } else {
-
                 $deleted = $this->Sectores_model->deleteSector($arr_data, $id);
                 if ($deleted) {
-                    echo 'ok';
-                    return redirect('sectores/listado');
+                    echo true;
                 } else {
-                    echo 'Ocurrió un problema al Eliminar. Intente Nuevamente';
+                    echo false;
                 }
             }
         } else {
-            echo 'error';
+            echo false;
         }
     }
-
-
-
-
-
 
     public function ObtenerSector()
     {
@@ -215,10 +209,6 @@ class SectoresController extends BaseController
         }
         return json_encode($rsp);
     }
-
-
-
-
 
     private function ValidaFields($data)
     {

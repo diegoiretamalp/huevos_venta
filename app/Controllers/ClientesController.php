@@ -21,7 +21,15 @@ class ClientesController extends BaseController
             'cli.eliminado' => false
         ];
         $clientes = $this->Clientes_model->getClientes($where_clientes);
-
+        if(!empty($clientes)){
+            foreach ($clientes as $key) {
+                $cartera = GetCarteraCliente($key->id);
+                $key->total_compra = !empty($cartera->total_compra) ? $cartera->total_compra : 0;
+                $key->total_pagado = !empty($cartera->total_pagado) ? $cartera->total_pagado : 0;
+                $key->cantidad_compras = !empty($cartera->total_ventas) ? $cartera->total_ventas : 0;
+                $key->total_deuda = $key->total_compra - $key->total_pagado;
+            }
+        }
         $data = [
             'title' => 'Listado de Clientes',
             'main_view' => 'clientes/clientes_list_view',
@@ -53,53 +61,20 @@ class ClientesController extends BaseController
         // }
         //pre_die($monedero);
         $where_ventas = [
-            'v.estado' => true,
-            'v.eliminado' => false,
-            'v.cliente_id' => $id
+            'estado' => true,
+            'eliminado' => false,
+            'cliente_id' => $id
 
         ];
         $ventas = $this->Ventas_model->getVentas($where_ventas);
-
-        $monedero = new stdClass();
-        if (!empty($ventas)) {
-            $total_venta = 0;
-            $total_pagado = 0;
-            $total_efectivo = 0;
-            $total_deuda = 0;
-            $total_transferencia = 0;
-            foreach ($ventas as $venta) {
-                $total_venta += $venta->total_venta;
-                if ($venta->total_venta > $venta->total_pagado) {
-                    $total_deuda += $venta->total_venta - $venta->total_pagado;
-                }
-                $total_pagado += $venta->total_pagado;
-                // pre_die($ventas);
-                // $pagos_venta = GetObjectByWhere('pagos_venta', ['venta_id' => $venta->id]);
-                // if (!empty($pagos_venta)) {
-                //     $total_pagado += SumaGeneralRow($pagos_venta, 'monto_pago_actual');
-                //     foreach ($pagos_venta as $pago) {
-                //         if ($pago->metodo_pago_id == 2) {
-                //             $total_efectivo += $pago->monto_pago_actual;
-                //         } elseif ($pago->metodo_pago_id == 1) {
-                //             $total_fiado += $pago->monto_total;
-                //         } elseif ($pago->metodo_pago_id == 3) {
-                //             $total_transferencia += $pago->monto_pago_actual;
-                //         }
-                //     }
-                // }
-            }
-            $monedero->total_deuda = $total_deuda;
-            $monedero->total_venta = $total_venta;
-            $monedero->total_pagado = $total_pagado;
-            // $monedero->total_efectivo = $total_efectivo;
-            // $monedero->total_transferencia = $total_transferencia;
-        }
+        $cartera = GetCarteraCliente($cliente->id);
+        // pre_die($cartera);
         $data = [
             'title' => 'Ver Cliente',
             'main_view' => 'clientes/clientes_ver_view',
             'cliente' => !empty($cliente) ? $cliente : [],
             'ventas' => !empty($ventas) ? $ventas : [],
-            'monedero' => !empty($monedero) ? $monedero  : [],
+            'cartera' => !empty($cartera) ? $cartera  : [],
             'js_content' => [
                 '0' => 'layout/js/generalJS',
                 '1' => 'clientes/js/clientesVerJS'
@@ -359,7 +334,7 @@ class ClientesController extends BaseController
         //     $error['comuna_id'] = 'Comuna';
         // }
 
-        if (empty($data['sector_id']) || $data['sector_id'] == 0) {
+        if (!empty($data['sector_id']) && $data['sector_id'] == 0) {
             $error_flag = true;
             $error['sector_id'] = 'Sector';
         }

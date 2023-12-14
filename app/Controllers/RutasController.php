@@ -140,6 +140,8 @@ class RutasController extends BaseController
         $clientes = $this->Clientes_model->getClientes($where_clientes);
         $repartidores = $this->Usuarios_model->getUsuarios($where_repartidores);
         $comunas = GetObjectByWhere('comunas', ['estado' => true]);
+        $regiones = GetObjectByWhere('regiones', ['estado' => true]);
+        $sectores = GetObjectByWhere('sectores', ['estado' => true]);
         $data = [
             'title' => 'Nueva Ruta',
             'main_view' => 'rutas/rutas_new_view',
@@ -147,6 +149,8 @@ class RutasController extends BaseController
             'clientes' => !empty($clientes) ? $clientes : [],
             'repartidores' => !empty($repartidores) ? $repartidores : [],
             'comunas' => !empty($comunas) ? $comunas : [],
+            'regiones' => !empty($regiones) ? $regiones : [],
+            'sectores' => !empty($sectores) ? $sectores : [],
             'js_content' => [
                 '0' => 'layout/js/generalJS',
                 '1' => 'rutas/js/RutasNewJS'
@@ -184,29 +188,10 @@ class RutasController extends BaseController
                     $cliente_r->direccion = !empty($cliente->direccion) ? $cliente->direccion : '';
                     //pre_die($cliente);
                     $cliente_r->nombre_completo = (!empty($cliente->nombre) ? $cliente->nombre : '') . ' ' . (!empty($cliente->apellido_paterno) ? $cliente->apellido_paterno : '') . ' ' . (!empty($cliente->apellido_matero) ? $cliente->apellido_matero : '');
-                    $where_venta = [
-                        'estado' => true,
-                        'eliminado' => false,
-                        'cliente_id' => $cliente->id,
-                    ];
-                    $ultima_compra = $this->Ventas_model->GetVentaWhere($where_venta);
-                    $cliente_r->fecha_ultima_compra = '';
-                    if (!empty($ultima_compra)) {
-                        $cliente_r->fecha_ultima_compra = $ultima_compra->created_at;
-                    }
-                    $where_monedero = [
-                        'estado' => true,
-                        'eliminado' => false,
-                        'cliente_id' => $cliente->id
-                    ];
-                    $monedero = $this->Monedero_model->GetMonederoWhere($where_monedero);
-
-                    if (!empty($monedero)) {
-                        $cliente_r->total_deuda = !empty($monedero->total_deuda) ? $monedero->total_deuda : 0;
-                    }
-
-                    $cliente_r->monedero = $monedero;
-                    $cliente_r->cliente_data = $cliente;
+                    $total_deuda = $this->Ventas_model->GetTotalDeudaCliente($cliente->id);
+                    $cliente_r->total_deuda = !empty($total_deuda) ? formatear_numero($total_deuda->total_deuda) : '$0';
+                    $cliente_r->precio_favorito = formatear_numero($cliente->precio_favorito);
+                    $cliente_r->producto_id = $cliente->producto_id;
                 }
             }
         }
@@ -216,7 +201,9 @@ class RutasController extends BaseController
             $total_venta = 0;
             $total_pagado = 0;
             $total_efectivo = 0;
+            $total_deposito = 0;
             $total_fiado = 0;
+            $total_fiado_pagado = 0;
             $total_transferencia = 0;
             $pagos_venta = [];
             foreach ($ventas as $venta) {
@@ -224,7 +211,7 @@ class RutasController extends BaseController
                 $total_venta += $venta->total_venta;
 
                 $pagos_venta = GetObjectByWhere('pagos_venta', ['venta_id' => $venta->id]);
-
+                // pre_die($pagos_venta);
                 if (!empty($pagos_venta)) {
                     $total_pagado += SumaGeneralRow($pagos_venta, 'monto_pago_actual');
                     foreach ($pagos_venta as $pago) {
@@ -234,17 +221,23 @@ class RutasController extends BaseController
                             $total_fiado += $pago->monto_total;
                         } elseif ($pago->metodo_pago_id == 3) {
                             $total_transferencia += $pago->monto_pago_actual;
+                        } elseif ($pago->metodo_pago_id == 4) {
+                            $total_deposito += $pago->monto_pago_actual;
                         }
                     }
                     //pre_die($pagos_venta);
                 }
             }
-            //pre_die($pagos_venta);
+
+            $fiados_pagados = GetPagosVentaYFiados($ruta->id);
+            // pre_die($fiados_pagados);
             $ruta->total_pagado = $total_pagado;
             $ruta->total_efectivo = $total_efectivo;
             $ruta->total_fiado = $total_fiado;
             $ruta->total_venta = $total_venta - $total_fiado;
             $ruta->total_transferencia = $total_transferencia;
+            $ruta->total_deposito = $total_deposito;
+            $ruta->total_fiado_pagado = $fiados_pagados->fiado_pagado_ruta;
         }
 
         $gastos = GetObjectByWhere('gastos', ['ruta_id' => $ruta->id, 'estado' => true]);
@@ -261,7 +254,7 @@ class RutasController extends BaseController
         ];
 
         $clientes_deuda = $this->Clientes_model->getClientesDeuda($where_clideu);
-        //pre_die($clientes_deuda);
+        // pre_die($clientes_ruta);
         $data = [
             'title' => 'Ver Ruta',
             'main_view' => 'rutas/rutas_ver_view',
@@ -274,6 +267,7 @@ class RutasController extends BaseController
             'js_content' => [
                 '0' => 'layout/js/generalJS',
                 '1' => 'rutas/js/RutasVerJS',
+                '2' => 'rutas/js/FunctionRutaJS',
             ]
         ];
         return view('layout/layout_main_view', $data);
@@ -419,31 +413,31 @@ class RutasController extends BaseController
     public function ObtenerClientesRuta()
     {
         $comuna_id = $this->request->getPost('comuna_id');
-        if (is_numeric($comuna_id)) {
-
-            $clientes = $this->Rutas_model->GetClientesRutaComuna($comuna_id);
+        $region_id = $this->request->getPost('region_id');
+        $sector_id = $this->request->getPost('sector_id');
+        if (is_numeric($comuna_id) && is_numeric($region_id)) {
+            $where = [
+                'c.estado' => true,
+                'c.eliminado' => false,
+                'c.region_id' => !empty($region_id) ? $region_id : '',
+                'c.comuna_id' => !empty($comuna_id) ? $comuna_id : '',
+            ];
+            if (!empty($sector_id)) {
+                $where['c.sector_id'] = $sector_id;
+            }
+            $clientes = $this->Rutas_model->GetClientesRutaComuna($where);
             if (!empty($clientes)) {
-                foreach ($clientes as $cliente) {
-                    $where_venta = [
-                        'estado' => true,
-                        'eliminado' => false,
-                        'cliente_id' => $cliente->id,
-                    ];
-                    $ultima_compra = $this->Ventas_model->GetVentaWhere($where_venta);
-                    $cliente->fecha_ultima_compra = '';
-                    if (!empty($ultima_compra)) {
-                        $cliente->fecha_ultima_compra = $ultima_compra->created_at;
-                    }
-                    $where_monedero = [
-                        'estado' => true,
-                        'eliminado' => false,
-                        'cliente_id' => $cliente->id
-                    ];
-                    $monedero = $this->Monedero_model->GetMonederoWhere($where_monedero);
-
-                    if (!empty($monedero)) {
-                        $cliente->total_deuda = !empty($monedero->total_deuda) ? $monedero->total_deuda : 0;
-                    }
+                foreach ($clientes as $c) {
+                    $total_deuda = $this->Ventas_model->GetTotalDeudaCliente($c->id);
+                    $total_venta = $this->Ventas_model->GetTotalVentaCliente($c->id);
+                    // $total_venta = $this->Ventas_model->GetTotalCajasVendidas($c->id);
+                    $c->total_deuda = !empty($total_deuda) ? ($total_deuda) : 0;
+                    $c->total_venta = !empty($total_venta->total_venta) ? ($total_venta->total_venta) : 0;
+                    $c->cajas_total = !empty($total_venta->cajas_total) ? ($total_venta->cajas_total) : 0;
+                    $c->total_pagado = formatear_numero($c->total_venta - $c->total_deuda);
+                    $c->total_deuda = formatear_numero($c->total_deuda);
+                    $c->total_venta = formatear_numero($c->total_venta);
+                    $c->precio_favorito = formatear_numero($c->precio_favorito);
                 }
 
                 if (!empty($clientes)) {
@@ -649,14 +643,15 @@ class RutasController extends BaseController
     public function CargarDeudaCliente($cliente_id)
     {
         if (is_numeric($cliente_id)) {
-            $monedero = $this->Monedero_model->getMonederoWhere(['cliente_id' => $cliente_id, 'estado' => true, 'eliminado' => false]);
+            // $monedero = $this->Monedero_model->getMonederoWhere(['cliente_id' => $cliente_id, 'estado' => true, 'eliminado' => false]);
             $where_ventas = [
-                'v.pagado' => false,
-                'v.estado' => true,
-                'v.eliminado' => false,
-                'v.cliente_id' => $cliente_id,
+                'pagado' => false,
+                'estado' => true,
+                'eliminado' => false,
+                'cliente_id' => $cliente_id,
             ];
             $ventas_deudas = $this->Ventas_model->getVentas($where_ventas);
+            // pre_die(json_encode($ventas_deudas));
             $rsp = [
                 'tipo' => 'success',
                 'msg' => 'Deudas cargadas con éxito',
@@ -708,13 +703,15 @@ class RutasController extends BaseController
                 if ($post['monto_deuda'] == $total_deuda || $post['monto_deuda'] < $total_deuda) {
                     $data_update['pagado'] = $post['monto_deuda'] == $total_deuda ? true : false;
                     $data_update['total_pagado'] = $post['monto_deuda'] + $deuda->total_pagado;
-
+                    // pre_die($data_update);
                     $new_pago_venta = [
                         'venta_id' => $deuda_id,
                         'metodo_pago_id' => $post['metodo_pago'],
                         'monto_total' => $deuda->total_venta,
                         'monto_pago_actual' => $post['monto_deuda'],
                         'monto_pagado' => $data_update['total_pagado'],
+                        'fiado_pagado' => true,
+                        'ruta_id_fiado_pagado' => $post['ruta_id'],
                         'created_at' => getTimestamp()
                     ];
 

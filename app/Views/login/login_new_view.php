@@ -32,7 +32,7 @@ $errores = $session->getFlashdata('errores');
           </div>
           <button class="btn btn-pill btn-primary mt-4 d-block w-100" id="iniciar_sesion" type="button"><i class="far fa-user-circle pr-2" style="font-size: 18px;"></i> Iniciar Sesion</button>
           <span class="d-block text-center my-4">O</span>
-          <a class="btn btn-pill btn-danger mt-4 d-block w-100" href=" <?= base_url('login/restablecer-password') ?>"><i class="fas fa-key pr-2" style="font-size:18px ;"></i> Restablecer Contraseña</a>
+          <a class="btn btn-pill btn-danger mt-4 d-block w-100" href=" <?= base_url('restablecer-password') ?>"><i class="fas fa-key pr-2" style="font-size:18px ;"></i> Restablecer Contraseña</a>
         </form>
       </div>
     </div>

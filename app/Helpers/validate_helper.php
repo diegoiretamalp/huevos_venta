@@ -1304,7 +1304,7 @@ function formatear_numero($numero)
 	if (!empty($numero)) {
 		$pesos = '$ ' . number_format($numero, 0, ',', '.');
 	} else {
-		$pesos = "No aplica";
+		$pesos = "$0";
 	}
 	return $pesos;
 }

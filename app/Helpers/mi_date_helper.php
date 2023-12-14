@@ -1,5 +1,5 @@
 <?php //if (!defined('BASEPATH')) exit('No direct script access allowed');
-
+// use DateTimeImmutable; 
 function ordenar_fechaHoraServidor($date)
 {
     $date = new DateTime($date);
@@ -31,6 +31,61 @@ function ordenar_fechaHumano($date)
     return $fecha;
 }
 
+function getDiaMesAño($timestamp) {
+    // Crea un objeto DateTimeImmutable a partir de la cadena de timestamp
+    $fecha = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $timestamp);
+    $mes = traducirMes($fecha->format('F'));
+    $dia = traducirDia($fecha->format('l'));
+    $ndia = $fecha->format('j');
+    $anio = $fecha->format('Y');
+    
+    $fechaFormateada = "$dia $ndia de $mes del $anio";
+    // pre_die($fechaFormateada);
+    return $fechaFormateada;
+}
+function traducirDia($diaIngles)
+{
+    $dias = array(
+        'Monday'    => 'Lunes',
+        'Tuesday'   => 'Martes',
+        'Wednesday' => 'Miércoles',
+        'Thursday'  => 'Jueves',
+        'Friday'    => 'Viernes',
+        'Saturday'  => 'Sábado',
+        'Sunday'    => 'Domingo'
+    );
+
+    return isset($dias[$diaIngles]) ? $dias[$diaIngles] : 'Desconocido';
+}
+function traducirMes($mesIngles)
+{
+    $meses = array(
+        'January'   => 'Enero',
+        'February'  => 'Febrero',
+        'March'     => 'Marzo',
+        'April'     => 'Abril',
+        'May'       => 'Mayo',
+        'June'      => 'Junio',
+        'July'      => 'Julio',
+        'August'    => 'Agosto',
+        'September' => 'Septiembre',
+        'October'   => 'Octubre',
+        'November'  => 'Noviembre',
+        'December'  => 'Diciembre'
+    );
+
+    return isset($meses[$mesIngles]) ? $meses[$mesIngles] : 'Desconocido';
+}
+
+function formatearFechaCompleta($fecha) {
+    // Convierte la fecha a timestamp
+    $timestamp = strtotime($fecha);
+
+    // Formatea la fecha completa
+    $fechaFormateada = date('l j \de F \de Y', $timestamp);
+
+    return $fechaFormateada;
+}
 function ordenarFechaHumanoSlash($date)
 {
     $explode = explode(" ", $date);

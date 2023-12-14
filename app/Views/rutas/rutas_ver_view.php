@@ -33,105 +33,97 @@
                         <div class="col-md-12 text-left">
                             <a class="btn btn-sm btn-success" href="<?= base_url('rutas/cerrar-ruta/' . $ruta->id) ?>"><i class="fas fa-check"></i> Cerrar Ruta</a>
                             <button class="btn btn-sm btn-info" type="button" id="nuevo_gasto"><i class="fas fa-dollar-sign"></i> Nuevo Gasto</button>
+                            <button class="btn btn-sm btn-primary" type="button" onclick="MostrarGastos()"><i class="fas fa-list"></i> Mostrar Gastos</button>
                             <button class="btn btn-sm btn-info" type="button" id="nuevo_fiado_pagado"><i class="fa fa-credit-card" aria-hidden="true"></i> Nuevo Fiado Pagado</button>
                             <br>
                             <br>
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-12">
                             <div class="row">
-                                <div class="col-4">
-                                    <div class="ms-card card-success ms-widget ms-infographics-widget">
+                                <div class="col-3">
+                                    <div class="ms-card card-success ms-widget ms-infographics-widget h-100 pt-3">
                                         <div class="ms-card-body media text-center">
                                             <div class="media-body">
-                                                <h2 class="text-white">Total Venta</h2>
-                                                <p class="ms-card-change"><?= !empty($ruta->total_venta) ? formatear_numero($ruta->total_venta) : '$0' ?></p>
+                                                <h6 class="text-white">Total Venta</h6>
+                                                <p style="font-size: 16px;" class="ms-card-change"><?= !empty($ruta->total_venta) ? formatear_numero($ruta->total_venta) : '$0' ?></p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-4">
-                                    <div class="ms-card card-primary card-shadow ms-widget ms-infographics-widget">
+                                <div class="col-3">
+                                    <div class="ms-card card-primary card-shadow ms-widget ms-infographics-widget h-100 pt-3">
                                         <div class="ms-card-body media text-center">
                                             <div class="media-body">
-                                                <h2 class="text-white">Total Pagado</h2>
-                                                <p class="ms-card-change"><?= !empty($ruta->total_pagado) ? formatear_numero($ruta->total_pagado) : '$0' ?></p>
+                                                <h6 class="text-white">Total Pagado</h6>
+                                                <p style="font-size: 16px;" class="ms-card-change"><?= !empty($ruta->total_pagado) ? formatear_numero($ruta->total_pagado + $ruta->total_fiado_pagado) : '$0' ?></p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-4">
-                                    <div class="ms-card card-warning ms-widget ms-infographics-widget">
+                                <div class="col-3">
+                                    <div class="ms-card card-warning ms-widget ms-infographics-widget h-100 pt-3">
                                         <div class="ms-card-body media text-center">
                                             <div class="media-body">
-                                                <h2 class="text-white">Total Gastos</h2>
-                                                <p class="ms-card-change"><?= !empty($ruta->gastos_ruta) ? formatear_numero($ruta->gastos_ruta) : '$0' ?></p>
+                                                <h6 class="text-white">Total Gastos</h6>
+                                                <p style="font-size: 16px;" class="ms-card-change"><?= !empty($ruta->gastos_ruta) ? formatear_numero($ruta->gastos_ruta) : '$0' ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="ms-card card-warning ms-widget ms-infographics-widget h-100 pt-3">
+                                        <div class="ms-card-body media text-center">
+                                            <div class="media-body">
+                                                <h6 class="text-white">Total Fiado Pagado</h6>
+                                                <p style="font-size: 16px;" class="ms-card-change"><?= !empty($ruta->total_fiado_pagado) ? formatear_numero($ruta->total_fiado_pagado) : '$0' ?></p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <br>
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="ms-card card-warning ms-widget ms-infographics-widget">
+                                <div class="col-md-3">
+                                    <div class="ms-card card-warning ms-widget ms-infographics-widget h-100 pt-3">
                                         <div class="ms-card-body media text-center">
                                             <div class="media-body">
-                                                <h2 class="text-white">Total Efectivo</h2>
-                                                <p class="ms-card-change"><?= !empty($ruta->total_efectivo) ? formatear_numero($ruta->total_efectivo) : '$0' ?></p>
+                                                <h6 class="text-white">Total Efectivo</h6>
+                                                <p style="font-size: 16px;" class="ms-card-change"><?= !empty($ruta->total_efectivo) ? formatear_numero($ruta->total_efectivo) : '$0' ?></p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-4">
-                                    <div class="ms-card card-warning ms-widget ms-infographics-widget">
+                                <div class="col-3">
+                                    <div class="ms-card card-warning ms-widget ms-infographics-widget h-100 pt-3">
                                         <div class="ms-card-body media text-center">
                                             <div class="media-body">
-                                                <h2 class="text-white">Total Fiado</h2>
-                                                <p class="ms-card-change"><?= !empty($ruta->total_fiado) ? formatear_numero($ruta->total_fiado) : '$0' ?></p>
+                                                <h6 class="text-white">Total Fiado</h6>
+                                                <p style="font-size: 16px;" class="ms-card-change"><?= !empty($ruta->total_fiado) ? formatear_numero($ruta->total_fiado) : '$0' ?></p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-4">
-                                    <div class="ms-card card-warning ms-widget ms-infographics-widget">
+                                <div class="col-3">
+                                    <div class="ms-card card-warning ms-widget ms-infographics-widget h-100 pt-3">
                                         <div class="ms-card-body media text-center">
                                             <div class="media-body">
-                                                <h2 class="text-white">Total Transferencia</h2>
-                                                <p class="ms-card-change"><?= !empty($ruta->total_transferencia) ? formatear_numero($ruta->total_transferencia) : '$0' ?></p>
+                                                <h6 class="text-white">Total Transferencia</h6>
+                                                <p style="font-size: 16px;" class="ms-card-change"><?= !empty($ruta->total_transferencia) ? formatear_numero($ruta->total_transferencia) : '$0' ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="ms-card card-warning ms-widget ms-infographics-widget h-100 pt-3">
+                                        <div class="ms-card-body media text-center">
+                                            <div class="media-body">
+                                                <h6 class="text-white">Total Deposito</h6>
+                                                <p style="font-size: 16px;" class="ms-card-change"><?= !empty($ruta->total_deposito) ? formatear_numero($ruta->total_deposito) : '$0' ?></p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-5 table-responsive">
-                            <table class="table" id="table_gastos">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th class="text-center">Gasto</th>
-                                        <th class="text-center">Monto</th>
-                                        <th style="white-space: nowrap; text-align: center;">Fecha</th>
-                                        <th style="white-space: nowrap; text-align: center;">Accion</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php if (!empty($gastos)) : $count = 0; ?>
-                                        <?php foreach ($gastos as $gasto) : $count++; ?>
-                                            <tr>
-                                                <td>#<?= $count ?></td>
-                                                <td class="text-center"><?= !empty($gasto->nombre) ? $gasto->nombre : 'Sin Información' ?></td>
-                                                <td class="text-center"><?= !empty($gasto->monto) ? formatear_miles($gasto->monto) : 'Sin Información' ?></td>
-                                                <td style="white-space: nowrap; text-align: center;"><?= !empty($gasto->created_at) ? ordenar_fechaHumano($gasto->created_at) : 'Sin Informacón' ?></td>
-                                                <td style="white-space: nowrap; text-align: center;">
-                                                    <button class="ms-btn-icon btn-info" type="button" onclick="EditarGasto(<?= $gasto->id ?>)"><i class="fas fa-pencil-alt pl-2"></i></button>
-                                                    <button class="ms-btn-icon btn-danger" type="button" onclick="EliminarGasto(<?= $gasto->id ?>)"><i class="fa fa-trash pl-2" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
 
@@ -149,63 +141,89 @@
         <div class="col-xl-12">
             <div class="ms-card">
                 <div class="ms-card-body">
-                    <ul class="ms-activity-log" id="lista">
+                    <div class="row">
+
+                        <!-- <ul class="ms-activity-log" id="lista"> -->
                         <?php if (!empty($clientes_ruta)) : ?>
                             <?php foreach ($clientes_ruta as $cliente) : ?>
-                                <li>
-                                    <div class="ms-btn-icon btn-pill icon" style="width: 60px;">
-                                        <select class="form-control" name="" disabled id="">
-                                            <option value="" selected><?= $cliente->posicion ?></option>
-                                        </select>
-                                    </div>
-                                    <br>
-                                    <br>
-                                    <h6><b><?= !empty($cliente->nombre_completo) ? $cliente->nombre_completo : 'Sin información' ?></b>
-                                        <span class="badge badge-<?= $cliente->estado_cliente_ruta_id == 1 ? 'success' : ($cliente->estado_cliente_ruta_id == 2 ? 'warning' : 'secondary') ?>"><?= $cliente->estado_cliente_ruta_id == 1 ? 'FINALIZADO' : ($cliente->estado_cliente_ruta_id == 2 ? 'PENDIENTE' : 'SECONDARY') ?></span>
-                                        <span role="button" onclick="VerDeudasCliente(<?= $cliente->cliente_id ?>)" id="btn_ver_deuda" style="cursor: pointer;" class="badge badge-danger">Ver Deuda</span>
-                                        <span class="badge badge-info" role="button" onclick="CargarCliente(<?= $cliente->cliente_id ?>)" id="btn_venta_<?= $cliente->cliente_id ?>" style="cursor: pointer;" hidden data-toggle="modal" data-target="#modal-15">Nueva Venta</span>
-                                    </h6>
-                                    <br>
-                                    <span style="display: none;"> <i class="material-icons">event</i>ULTIMA COMPRA: <?= !empty($cliente->fecha_ultima_compra) ? $cliente->fecha_ultima_compra : 'Sin Información...' ?></span>
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <p class="fs-14"><b>Categoria Favorita: </b><?= !empty($cliente->cliente_data->producto_id) ? $cliente->cliente_data->producto_id : 'Sin Información' ?></p>
-                                            <p class="fs-14"><b>Precio Favorito: </b><?= !empty($cliente->cliente_data->precio_favorito) ? $cliente->cliente_data->precio_favorito : 'Sin Información' ?></p>
+                                <div class="col-12 col-sm-6 col-md-4 col-xl-3" id="card_<?= $cliente->id ?>">
+                                    <div class="ms-card" style="height: 95%;">
+                                        <div class="ms-card-header text-center">
+                                            <!-- <b class="text-danger" onclick=EliminarClienteRuta(${cliente.id}) style="margin-left: 90%; cursor: pointer;"><i class="fas fa-times-circle fa-2x"></i></b> -->
+                                            <h3 class="text-center"><?= !empty($cliente->nombre_completo) ? strUpper($cliente->nombre_completo) : 'Sin Información' ?></h3>
                                         </div>
-                                        <div class="col-6">
-                                            <p class="fs-14"><b>Total Deuda: </b><?= !empty($cliente->total_deuda) ? $cliente->total_deuda : 'Sin Información' ?></p>
-                                            <p class="fs-14"><b>Direccion: </b><?= !empty($cliente->direccion) ? $cliente->direccion : 'Sin Información' ?> <a href="#" target="_blank"> <i class="fas fa-share-square"></i> Abrir Maps</a></p>
+                                        <div class="ms-card-body text-center">
+                                            <h6 style="color: black;">
+                                                <i class="far fa-money-bill-alt p-2"></i> Precio Favorito: <b><?= !empty($cliente->precio_favorito) ? $cliente->precio_favorito : '$0' ?></b>
+                                            </h6>
+                                            <h6 style="color: black;">
+                                                <i class="fas fa-egg p-2"></i> Producto Favorito: <b><?= !empty($cliente->nombre_producto_favorito) ? strUpper($cliente->nombre_producto_favorito) : 'Sin Información' ?></b>
+                                            </h6>
+                                            <h6 class="text-danger">
+                                                <i class="far fa-money-bill-alt p-2"></i> Deuda Pendiente: <b><?= !empty($cliente->total_deuda) ? $cliente->total_deuda : 'Sin Información' ?></b>
+                                            </h6>
+
+                                            <div class="button-group2 d-flex justify-content-center">
+                                                <a class="buttonSpecial" target="_blank" href="<?= base_url('clientes/ver/' . $cliente->id) ?>" style="background-color: #374eae; color: white;">Ver Detalle</a>
+                                                <button type="button" class="buttonSpecial" onclick="VerDeudasCliente(<?= $cliente->cliente_id ?>)" style="background-color: red; color: white;">Ver Deudas</button>
+                                            </div>
+                                            <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nunc velit, dictum eget nulla a, sollicitudin rhoncus orci. Vivamus nec commodo turpis.</p> -->
+                                        </div>
+                                        <div class="ms-card-footer text-disabled d-flex">
+                                            <div class="ms-card-options">
+                                                <i class="fas fa-box    "></i> 982
+                                            </div>
+                                            <div class="ms-card-options" style="color: green;">
+                                                <i class="fas fa-dollar-sign    "></i> + 785
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-12 d-flex justify-content-start">
-                                            <button class="btn btn-sm btn-secondary" type="button" onclick="CargarCliente(<?= $cliente->cliente_id ?>)" id="<?= $cliente->cliente_id ?>" name="nueva_venta" data-toggle="modal" data-target="#modal-15">Nueva Venta</button>
-                                            <div class="row table-responsive">
-                                                <div class="col-md-12">
-                                                    <table class="table table-hover w-100 dataTable no-footer" id="table_ventas_<?= $cliente->cliente_id ?>">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="text-center">#</th>
-                                                                <th class="text-center">Producto</th>
-                                                                <th class="text-center">Cantidad</th>
-                                                                <!-- <th class="text-center">Precio</th> -->
-                                                                <th class="text-center">Total Venta</th>
-                                                                <th class="text-center">Total Pagado</th>
-                                                                <!-- <th class="text-center">Metodo Pago</th> -->
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="tbody_ventas_<?= $cliente->cliente_id ?>">
-                                                        </tbody>
-                                                    </table>
+                                </div>
+                                <div class="col-xl-9">
+                                    <div class="ms-card" style="height: 95%;">
+                                        <div class="ms-card-header text-center">
+                                            <!-- <b class="text-danger" onclick=EliminarClienteRuta(${cliente.id}) style="margin-left: 90%; cursor: pointer;"><i class="fas fa-times-circle fa-2x"></i></b> -->
+                                            <h3 class="text-center">RESUMEN DE VENTA</h3>
+                                        </div>
+                                        <div class="ms-card-body">
+                                            <div class="col-12">
+                                                <div class="row table-responsive">
+                                                    <div class="col-md-12">
+                                                        <table class="table table-hover w-100 dataTable no-footer" id="table_ventas_<?= $cliente->cliente_id ?>">
+                                                            <thead style="color: black;">
+                                                                <tr>
+                                                                    <th class="text-center">#</th>
+                                                                    <th class="text-center">Producto</th>
+                                                                    <th class="text-center">Cantidad</th>
+                                                                    <!-- <th class="text-center">Precio</th> -->
+                                                                    <th class="text-center">Total Venta</th>
+                                                                    <th class="text-center">Total Pagado</th>
+                                                                    <!-- <th class="text-center">Metodo Pago</th> -->
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="tbody_ventas_<?= $cliente->cliente_id ?>" style="color: black;">
+                                                                <tr>
+                                                                    <td colspan="5" class="text-center">
+                                                                        <h2><b>Sin Venta en Ruta</b></h2>
+                                                                        <br>
+                                                                        <div class="button-group2">
+                                                                            <button class="btn btn-sm btn-secondary p-3 buttonSpecial" style="background-color: #374eae; font-size: 16px;" type="button" onclick="CargarCliente(<?= $cliente->cliente_id ?>)" id="<?= $cliente->cliente_id ?>" name="nueva_venta" data-toggle="modal" data-target="#modal-15">Nueva Venta</button>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                </li>
+                                </div>
+                                <br>
                             <?php endforeach; ?>
                         <?php endif; ?>
-                    </ul>
+                        <!-- </ul> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -324,7 +342,7 @@
                                             <?php endforeach; ?>
                                         <?php endif; ?>
                                         <div class="col-md-12">
-                                            <div class="alert alert-brand alert-outline h-100" role="alert" style="color: #374eae;">
+                                            <div class="alert alert-brand alert-outline h-100 pt-3" role="alert" style="color: #374eae;">
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="d-flex justify-content-center align-items-center">
@@ -774,6 +792,54 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" id="btn_modal_atras"><i class="fa fa-arrow-left" aria-hidden="true"></i> Atrás</button>
                 <button type="button" class="btn btn-primary shadow-none" id="btn_finalizar_pago"><i class="fas fa-dollar-sign    "></i> Pagar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" style="transition-duration: 0.1s;" id="modal_gastos">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">GASTOS RUTA</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 table-responsive">
+                        <table class="table" id="table_gastos">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th class="text-center">Gasto</th>
+                                    <th class="text-center">Monto</th>
+                                    <th style="white-space: nowrap; text-align: center;">Fecha</th>
+                                    <th style="white-space: nowrap; text-align: center;">Accion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (!empty($gastos)) : $count = 0; ?>
+                                    <?php foreach ($gastos as $gasto) : $count++; ?>
+                                        <tr>
+                                            <td>#<?= $count ?></td>
+                                            <td class="text-center"><?= !empty($gasto->nombre) ? $gasto->nombre : 'Sin Información' ?></td>
+                                            <td class="text-center"><?= !empty($gasto->monto) ? formatear_miles($gasto->monto) : 'Sin Información' ?></td>
+                                            <td style="white-space: nowrap; text-align: center;"><?= !empty($gasto->created_at) ? ordenar_fechaHumano($gasto->created_at) : 'Sin Informacón' ?></td>
+                                            <td style="white-space: nowrap; text-align: center;">
+                                                <button class="ms-btn-icon btn-info" type="button" onclick="EditarGasto(<?= $gasto->id ?>)"><i class="fas fa-pencil-alt pl-2"></i></button>
+                                                <button class="ms-btn-icon btn-danger" type="button" onclick="EliminarGasto(<?= $gasto->id ?>)"><i class="fa fa-trash pl-2" aria-hidden="true"></i></button>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light close" data-dismiss="modal" id="btn_modal_atras"><i class="fa fa-arrow-left" aria-hidden="true"></i> Cerrar</button>
             </div>
 
         </div>

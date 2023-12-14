@@ -19,23 +19,26 @@
                             <th>PRODUCTOS</th>
                             <th>TOTAL VENTA</th>
                             <th>TOTAL PAGADO</th>
-                            <th>METODO PAGO</th>
-                            <th>ACCIONES</th>
+                            <!-- <th>METODO PAGO</th> -->
+                            <th class="text-center" style="white-space: nowrap;">ACCIONES</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (!empty($ventas)) : ?>
                             <?php foreach ($ventas as $venta) : ?>
                                 <tr>
-                                    <td><?= !empty($venta->id) ? '#' . $venta->id : 'Sin Información' ?></td>
+                                    <td><?= !empty($venta->id) ? $venta->id : 'Sin Información' ?></td>
                                     <td><?= !empty($venta->ruta_id) ? $venta->ruta_id : 'Sin Información' ?></td>
-                                    <td><?= !empty($venta->nombre_cliente) ? strUpper($venta->nombre_cliente) : 'Sin Información' ?></td>
-                                    <td><?= !empty($venta->nombre_producto) ? $venta->nombre_producto : 'Sin Información' ?></td>
+                                    <td><?= !empty($venta->cliente_id) ? strUpper(getNombreCompletoCliente($venta->cliente_id)->nombre_cliente) : 'Sin Información' ?></td>
+                                    <td><?= !empty($venta->productos) ? $venta->productos : 'Sin Información' ?></td>
                                     <td><?= !empty($venta->total_venta) ? formatear_numero($venta->total_venta) : '$0' ?></td>
                                     <td><?= !empty($venta->total_pagado) ? formatear_numero($venta->total_pagado) : '$0' ?></td>
-                                    <td><?= !empty($venta->metodo_pago) ? $venta->metodo_pago : 'Sin Información' ?></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-info" id="btn_pagar_deuda"><i class="fas fa-dollar-sign"></i>Pagar Deuda</button>
+                                    <!-- <td><?= !empty($venta->metodo_pago) ? $venta->metodo_pago : 'Sin Información' ?></td> -->
+                                    <td style="white-space: nowrap;" class="text-center">
+                                        <?php if ($venta->total_venta > $venta->total_pagado || !$venta->pagado) : ?>
+                                            <button class="btn btn-sm btn-success" id="btn_pagar_deuda"><i class="fas fa-dollar-sign"></i>Pagar Deuda</button>
+                                        <?php endif; ?>
+                                        <a href="<?= base_url('ventas/detalle/' . $venta->id) ?>" class="btn btn-sm btn-info"><i class="fa fa-info" aria-hidden="true"></i> Ver Venta</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
