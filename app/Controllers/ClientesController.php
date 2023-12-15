@@ -260,19 +260,17 @@ class ClientesController extends BaseController
             $cliente = $this->Clientes_model->getClienteWhere($where);
 
             if (empty($cliente)) {
-                echo 'Cliente no existe, fue eliminado!';
+                echo false;
             } else {
-
                 $deleted = $this->Clientes_model->deleteCliente($arr_data, $id);
                 if ($deleted) {
-                    echo 'ok';
-                    return redirect('clientes/listado');
+                    echo true;
                 } else {
-                    echo 'Ocurrió un problema al Eliminar. Intente Nuevamente';
+                    echo false;
                 }
             }
         } else {
-            echo 'error';
+            echo false;
         }
     }
 

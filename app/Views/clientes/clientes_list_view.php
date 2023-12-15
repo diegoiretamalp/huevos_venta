@@ -36,7 +36,7 @@
                     <tbody>
                         <?php if (!empty($clientes)) : ?>
                             <?php foreach ($clientes as $cliente) : ?>
-                                <tr>
+                                <tr id="row_<?= $cliente->id?>">
                                     <td style="white-space: nowrap;"><?= $cliente->id ?></td>
                                     <td style="white-space: nowrap;"><?= !empty($cliente->rut_factura) ? formateaRut($cliente->rut_factura) : 'Sin Información' ?></td>
                                     <td style="white-space: nowrap;"><?= !empty($cliente->nombre) ? (strUpper($cliente->nombre) . (!empty($cliente->apellido_paterno) ? ' ' . strUpper($cliente->apellido_paterno) : '') . (!empty($cliente->apellido_materno) ? ' ' . strUpper($cliente->apellido_paterno) : '')) : 'Sin Información' ?></td>
