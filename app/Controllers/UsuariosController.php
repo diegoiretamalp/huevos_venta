@@ -73,7 +73,7 @@ class UsuariosController extends BaseController
             }
         }
 
-        $perfiles = GetObjectByWhere('perfiles', ['estado' => true]);
+        $perfiles = GetObjectByWhere('perfiles', ['estado' => true, 'mostrar' => true]);
 
         $data = [
             'title' => 'Nuevo Usuario',
@@ -110,7 +110,6 @@ class UsuariosController extends BaseController
                     'direccion' => !empty($post['direccion']) ? $post['direccion'] : NULL,
                     'updated_at' => getTimestamp()
                 ];
-
                 $id_usuario = $this->Usuarios_model->updateUsuario($array_update,$id);
                 if ($id_usuario > 0) {
                     $this->session->setflashdata("success_title", "Gestión de Usuarios");
@@ -146,10 +145,37 @@ class UsuariosController extends BaseController
     public function EliminarVenta()
     {
         $post = $this->request->getPost();
-        $data = [
-            'main_view' => 'ventas/ventas_new_view'
-        ];
-        return view('layout/layout_main_view', $data);
+        
+        if (!empty($post)) {
+            $id = $post['usuario_id'];
+            $where = [
+                'id' => $id,
+                'eliminado' => false,
+            ];
+        
+            $arr_data = [
+                'eliminado' => true,
+                'deleted_at' => getTimestamp(),
+            ];
+            
+            // pre_die($id);
+            $usuario = GetRowObjectByWhere('usuarios', $where);
+            // pre_die($post);
+            if (!empty($usuario)) {
+                // pre_die('asa');
+                $deleted = $this->Usuarios_model->deleteUsuario($arr_data, $id);
+                if ($deleted) {
+                    echo true;
+                } else {
+                    echo false;
+                }
+            } else {
+                echo false;
+                
+            }
+        } else {
+            echo false;
+        }
     }
 
     public function ObtenerCliente()
