@@ -164,7 +164,7 @@ class UsuariosController extends BaseController
             if (empty($usuario)) {
                 echo false;
             } else {
-                $deleted = $this->Sectores_model->deleteUsuario($arr_data, $id);
+                $deleted = $this->Usuarios_model->deleteUsuario($arr_data, $id);
                 if ($deleted) {
                     echo true;
                 } else {
