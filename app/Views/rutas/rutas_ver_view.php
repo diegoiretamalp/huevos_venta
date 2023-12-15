@@ -11,12 +11,12 @@
                 </ol>
             </nav>
         </div>
-        <div class="col-md-12 col-xl-6 d-flex justify-content-end">
+        <!-- <div class="col-md-12 col-xl-6 d-flex justify-content-end">
             <a class="btn btn-pill btn-info has-icon d-flex align-items-center" href="<?= base_url('rutas/nueva') ?>">
                 <i class="fas fa-user-circle" style="font-size: 24px;"></i>
                 Nueva Ruta
             </a>
-        </div>
+        </div> -->
     </div>
     <br>
     <!--------breadcrumb-------->
@@ -31,7 +31,7 @@
                             <br>
                         </div>
                         <div class="col-md-12 text-left">
-                            <a class="btn btn-sm btn-success" href="<?= base_url('rutas/cerrar-ruta/' . $ruta->id) ?>"><i class="fas fa-check"></i> Cerrar Ruta</a>
+                            <!-- <a class="btn btn-sm btn-success" href="<?= base_url('rutas/cerrar-ruta/' . $ruta->id) ?>"><i class="fas fa-check"></i> Cerrar Ruta</a> -->
                             <button class="btn btn-sm btn-info" type="button" id="nuevo_gasto"><i class="fas fa-dollar-sign"></i> Nuevo Gasto</button>
                             <button class="btn btn-sm btn-primary" type="button" onclick="MostrarGastos()"><i class="fas fa-list"></i> Mostrar Gastos</button>
                             <button class="btn btn-sm btn-info" type="button" id="nuevo_fiado_pagado"><i class="fa fa-credit-card" aria-hidden="true"></i> Nuevo Fiado Pagado</button>
@@ -40,8 +40,8 @@
                         </div>
                         <div class="col-md-12">
                             <div class="row">
-                                <div class="col-3">
-                                    <div class="ms-card card-success ms-widget ms-infographics-widget h-100 pt-3">
+                                <div class="col-6 col-md-3 pb-sm-2">
+                                    <div class="ms-card card-info ms-widget ms-infographics-widget h-100 pt-3">
                                         <div class="ms-card-body media text-center">
                                             <div class="media-body">
                                                 <h6 class="text-white">Total Venta</h6>
@@ -50,8 +50,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-3">
-                                    <div class="ms-card card-primary card-shadow ms-widget ms-infographics-widget h-100 pt-3">
+                                <div class="col-6 col-md-3 pb-sm-2">
+                                    <div class="ms-card card-success card-shadow ms-widget ms-infographics-widget h-100 pt-3">
                                         <div class="ms-card-body media text-center">
                                             <div class="media-body">
                                                 <h6 class="text-white">Total Pagado</h6>
@@ -60,8 +60,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-3">
-                                    <div class="ms-card card-warning ms-widget ms-infographics-widget h-100 pt-3">
+                                <div class="col-6 col-md-3">
+                                    <div class="ms-card card-secondary ms-widget ms-infographics-widget h-100 pt-3">
                                         <div class="ms-card-body media text-center">
                                             <div class="media-body">
                                                 <h6 class="text-white">Total Gastos</h6>
@@ -70,8 +70,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-3">
-                                    <div class="ms-card card-warning ms-widget ms-infographics-widget h-100 pt-3">
+                                <div class="col-6 col-md-3">
+                                    <div class="ms-card card-secondary ms-widget ms-infographics-widget h-100 pt-3">
                                         <div class="ms-card-body media text-center">
                                             <div class="media-body">
                                                 <h6 class="text-white">Total Fiado Pagado</h6>
@@ -83,8 +83,8 @@
                             </div>
                             <br>
                             <div class="row">
-                                <div class="col-md-3">
-                                    <div class="ms-card card-warning ms-widget ms-infographics-widget h-100 pt-3">
+                                <div class="col-6 col-md-3 pb-sm-2">
+                                    <div class="ms-card card-secondary ms-widget ms-infographics-widget h-100 pt-3">
                                         <div class="ms-card-body media text-center">
                                             <div class="media-body">
                                                 <h6 class="text-white">Total Efectivo</h6>
@@ -93,8 +93,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-3">
-                                    <div class="ms-card card-warning ms-widget ms-infographics-widget h-100 pt-3">
+                                <div class="col-6 col-md-3 pb-sm-2">
+                                    <div class="ms-card card-secondary ms-widget ms-infographics-widget h-100 pt-3">
                                         <div class="ms-card-body media text-center">
                                             <div class="media-body">
                                                 <h6 class="text-white">Total Fiado</h6>
@@ -103,8 +103,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-3">
-                                    <div class="ms-card card-warning ms-widget ms-infographics-widget h-100 pt-3">
+                                <div class="col-6 col-md-3">
+                                    <div class="ms-card card-secondary ms-widget ms-infographics-widget h-100 pt-3">
                                         <div class="ms-card-body media text-center">
                                             <div class="media-body">
                                                 <h6 class="text-white">Total Transferencia</h6>
@@ -113,8 +113,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-3">
-                                    <div class="ms-card card-warning ms-widget ms-infographics-widget h-100 pt-3">
+                                <div class="col-6 col-md-3 ">
+                                    <div class="ms-card card-secondary ms-widget ms-infographics-widget h-100 pt-3">
                                         <div class="ms-card-body media text-center">
                                             <div class="media-body">
                                                 <h6 class="text-white">Total Deposito</h6>
@@ -139,13 +139,10 @@
     </div>
     <div class="row">
         <div class="col-xl-12">
-            <div class="ms-card">
-                <div class="ms-card-body">
-                    <div class="row">
-
-                        <!-- <ul class="ms-activity-log" id="lista"> -->
-                        <?php if (!empty($clientes_ruta)) : ?>
-                            <?php foreach ($clientes_ruta as $cliente) : ?>
+             <!-- <ul class="ms-activity-log" id="lista"> -->
+             <?php if (!empty($clientes_ruta)) : ?>
+                        <?php foreach ($clientes_ruta as $cliente) : ?>
+                            <div class="row">
                                 <div class="col-12 col-sm-6 col-md-4 col-xl-3" id="card_<?= $cliente->id ?>">
                                     <div class="ms-card" style="height: 95%;">
                                         <div class="ms-card-header text-center">
@@ -164,22 +161,23 @@
                                             </h6>
 
                                             <div class="button-group2 d-flex justify-content-center">
-                                                <a class="buttonSpecial" target="_blank" href="<?= base_url('clientes/ver/' . $cliente->id) ?>" style="background-color: #374eae; color: white;">Ver Detalle</a>
+                                                <a class="buttonSpecial pt-3" target="_blank" href="<?= base_url('clientes/ver/' . $cliente->cliente_id) ?>" style="background-color: #374eae; color: white;">Ver Detalle</a>
                                                 <button type="button" class="buttonSpecial" onclick="VerDeudasCliente(<?= $cliente->cliente_id ?>)" style="background-color: red; color: white;">Ver Deudas</button>
+                                                <a class="buttonSpecial" target="_blank" href="<?= $cliente->direccion ?>" style="background-color: #445cc8; color: white;"><i class="fas fa-map-marker-alt pt-1" style="font-size: 16px;"></i><br>Gps </a>
                                             </div>
                                             <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nunc velit, dictum eget nulla a, sollicitudin rhoncus orci. Vivamus nec commodo turpis.</p> -->
                                         </div>
                                         <div class="ms-card-footer text-disabled d-flex">
                                             <div class="ms-card-options">
-                                                <i class="fas fa-box    "></i> 982
+                                                <i class="fas fa-box    "></i> <?= $cliente->cajas_total ?>
                                             </div>
                                             <div class="ms-card-options" style="color: green;">
-                                                <i class="fas fa-dollar-sign    "></i> + 785
+                                                <i class="fas fa-dollar-sign"></i>+<?= $cliente->total_venta ?>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-9">
+                                <div class="col-12 col-sm-6 col-md-8 col-xl-9">
                                     <div class="ms-card" style="height: 95%;">
                                         <div class="ms-card-header text-center">
                                             <!-- <b class="text-danger" onclick=EliminarClienteRuta(${cliente.id}) style="margin-left: 90%; cursor: pointer;"><i class="fas fa-times-circle fa-2x"></i></b> -->
@@ -219,13 +217,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <br>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                        <!-- </ul> -->
-                    </div>
-                </div>
-            </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                    <!-- </ul> -->
+
         </div>
     </div>
 </div>

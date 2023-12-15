@@ -102,11 +102,11 @@ class LoginController extends BaseController
                         'password' => sha1($post['nueva_password']),
                         'updated_at' => getTimestamp()
                     ];
-                    $rps_update = UpdateRowTableByWhere('usuarios',$update_array, ['token_password' => $token]);
-                    if($rps_update > 0){
-                        
+                    $rps_update = UpdateRowTableByWhere('usuarios', $update_array, ['token_password' => $token]);
+                    if ($rps_update > 0) {
+
                         return redirect('login');
-                    }else{
+                    } else {
                         // contraseñas no modificada
                         return redirect('new-password/' . $token);
                     }
@@ -182,11 +182,18 @@ class LoginController extends BaseController
                         // pre_die($rsp_mail);
                         if ($rsp_mail['tipo'] == 'success') {
                             $rps_update = UpdateRowTableByWhere('usuarios', ['token_password' => $token], ['id' => $usuario->id]);
+                            
+                            $this->session->setflashdata("success_title", "Restablecimiento de Clave");
+                            $this->session->setflashdata("success", "Se ha enviado un correo con un link para restaurar tu clave, revisa tu Mail y carpeta de ¡SPAM!.");
                             return redirect('login');
                         } else {
+                            $this->session->setflashdata("error_title", "Error de Validación");
+                            $this->session->setflashdata("error", "No se ha ingresado la solucitud de restauración, reintentar por favor.");
                             return redirect('restablecer-password');
                         }
                     } else {
+                        $this->session->setflashdata("error_title", "Error de Validación");
+                        $this->session->setflashdata("error", "No tienes un correo asignado a tu usuario, contactar a soporte por favor.");
                         // usuario no posee correo electronico para restablecer contraseña, contactar a soporte por favor.
                         return redirect('restablecer-password');
                     }
@@ -194,6 +201,8 @@ class LoginController extends BaseController
                     return redirect('login');
                 }
             } else {
+                $this->session->setflashdata("error_title", "Error de Validación");
+                $this->session->setflashdata("error", "Ingrese un rut para continuar");
                 return redirect('login');
             }
         }

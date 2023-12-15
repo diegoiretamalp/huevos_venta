@@ -49,17 +49,11 @@ class ClientesController extends BaseController
             return redirect('clientes/listado');
         }
         $cliente = $this->Clientes_model->getCliente($id);
-        // $monedero = NULL;
-
-        // if (!empty($cliente)) {
-        //     $where_monedero = [
-        //         'cliente_id' => $cliente->id,
-        //         'estado' => true,
-        //         'eliminado' => false
-        //     ];
-        //     $monedero = $this->Monedero_model->getMonederoWhere($where_monedero);
-        // }
-        //pre_die($monedero);
+        if(empty($cliente)){
+            $this->session->setflashdata("error_title", "Cliente No Encontrado");
+            $this->session->setflashdata("error", "Cliente no existe o fue eliminado");
+            return redirect('clientes/listado');
+        }
         $where_ventas = [
             'estado' => true,
             'eliminado' => false,

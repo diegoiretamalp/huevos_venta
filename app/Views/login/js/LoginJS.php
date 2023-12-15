@@ -66,5 +66,14 @@
                 toastr["error"](`Se encontraron 1 o más Campos con Problemas. Corrija e Intente nuevamente`, "Error de Validación")
             }
         });
+
+        $('#restablecer').click(function(){
+            let rut = validaCampos($('#rut').val(), 'rut');
+            if(rut == 1){
+                $('#formulario_restablecer').submit();
+            }else{
+                toastr["error"](`Ingrese un rut válido para continuar`, "Error de Validación")
+            }
+        });
     });
 </script>

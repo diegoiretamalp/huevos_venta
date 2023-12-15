@@ -77,7 +77,7 @@
                 didOpen: () => {
                     Swal.showLoading()
                 }
-            })
+            });
         }
 
 

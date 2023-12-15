@@ -42,6 +42,17 @@
          </ul>
        </li>
      <?php endif; ?>
+     <?php if (USUARIO_ROL == 1) : ?>
+       <li class="ms-nav-item dropdown">
+         <a class="text-white" href="#" id="usuariosDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-users pr-2" style="font-size: 26px;"></i> Usuarios</a>
+         <ul class="dropdown-menu dropdown-menu-right user-dropdown" aria-labelledby="usuariosDropdown">
+           <li class="dropdown-menu-footer">
+             <a class="media fs-14 p-2" href="<?= base_url('usuarios/nuevo') ?>"> <span><i class="fa fa-plus-circle pr-2" aria-hidden="true"></i> Nuevo Usuario</span> </a>
+             <a class="media fs-14 p-2" href="<?= base_url('usuarios/listado') ?>"> <span><i class="fas fa-list pr-2"></i> Listado Usuarios</span> </a>
+           </li>
+         </ul>
+       </li>
+     <?php endif; ?>
 
      <li class="ms-nav-item">
        <a class="text-white" href="<?= base_url('logout') ?>"><i class="fas fa-door-open pr-2" style="font-size: 26px;"></i> Cerrar Sesion</a>

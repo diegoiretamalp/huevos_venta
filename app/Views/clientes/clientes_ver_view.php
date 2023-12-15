@@ -60,7 +60,7 @@
                         <div>
                             <h1>Últimas Compras</h1>
                         </div>
-                        <a href="<?= base_url('ventas/ver-todo/1') ?>" class="btn btn-primary"> Ver Todo</a>
+                        <!-- <a href="<?= base_url('ventas/ver-todo/1') ?>" class="btn btn-primary"> Ver Todo</a> -->
                     </div>
                 </div>
                 <div class="ms-panel-body p-0">
