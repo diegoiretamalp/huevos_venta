@@ -23,7 +23,7 @@
                     <thead>
                         <tr role="row">
                             <th class="text-center">#</th>
-                            <th class="text-center">TOTALES VENTA</th>
+                            <th colspan="2" class="text-center">TOTALES VENTA</th>
                             <th class="text-center">Cajas Total</th>
                             <th class="text-center">Cajas Vendidas</th>
                             <th class="text-center">Cantidad de Clientes</th>
@@ -37,36 +37,36 @@
                             <?php foreach ($rutas as $ruta) : $count++; ?>
                                 <tr>
                                     <td class="text-center"><?= $count ?></td>
-                                    <td style="width: 40%;">
+                                    <td colspan="2">
                                         <div class="row">
-                                            <div class="col-4">
-                                                <b>Total Venta: </b>
+                                            <div class="col-12 col-sm-6 col-xl-4">
+                                                <b>T. Venta: </b>
                                                 <br>
                                                 <?= !empty($ruta->total_venta) ? formatear_numero($ruta->total_venta) : '$0' ?>
 
                                             </div>
-                                            <div class="col-4">
-                                                <b>Total Pagado: </b>
+                                            <div class="col-12 col-sm-6 col-xl-4">
+                                                <b>T. Pagado: </b>
                                                 <br>
                                                 <?= !empty($ruta->total_pagado) ? formatear_numero($ruta->total_pagado) : '$0' ?>
                                             </div>
-                                            <div class="col-4">
-                                                <b>Total Gastos: </b>
+                                            <div class="col-12 col-sm-6 col-xl-4">
+                                                <b>T. Gastos: </b>
                                                 <br>
                                                 <?= !empty($ruta->gastos_ruta) ? formatear_numero($ruta->gastos_ruta) : '$0' ?>
                                             </div>
-                                            <div class="col-4">
-                                                <b>Total Fiado: </b>
+                                            <div class="col-12 col-sm-6 col-xl-4">
+                                                <b>T. Fiado: </b>
                                                 <br>
                                                 <?= !empty($ruta->total_fiado) ? formatear_numero($ruta->total_fiado) : '$0' ?>
                                             </div>
-                                            <div class="col-4">
-                                                <b>Total Efectivo: </b>
+                                            <div class="col-12 col-sm-6 col-xl-4">
+                                                <b>T. Efectivo: </b>
                                                 <br>
                                                 <?= !empty($ruta->total_efectivo) ? formatear_numero($ruta->total_efectivo) : '$0' ?>
                                             </div>
-                                            <div class="col-4">
-                                                <b>Total Transferencia: </b>
+                                            <div class="col-12 col-sm-6 col-xl-4">
+                                                <b>T. Transfer: </b>
                                                 <br>
                                                 <?= !empty($ruta->total_transferencia) ? formatear_numero($ruta->total_transferencia) : '$0' ?>
                                             </div>

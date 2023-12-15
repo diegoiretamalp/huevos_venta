@@ -7,7 +7,7 @@
             </h1>
         </div>
         <div class="ms-card-body">
-            <form action="<?= isset($action) ? $action : '' ?>" method="post">
+            <form action="<?= isset($action) ? $action : '' ?>" method="post" id="formulario_restablecer">
                 <div class="form-row">
                     <div class="col-md-3 mb-3">
                     </div>
@@ -27,7 +27,7 @@
                         <hr>
                         <div class="social-auth-links text-center mt-2 mb-3">
                             <div class="col-12">
-                                <button type="submit" class="btn btn-pill btn-primary mt-4 d-block w-100"> Restablecer Contraseña <i class="fa fa-history "></i></button>
+                                <button type="button" id="restablecer" class="btn btn-pill btn-primary mt-4 d-block w-100"> Restablecer Contraseña <i class="fa fa-history "></i></button>
                             </div>
                         </div>
                     </div>

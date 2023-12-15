@@ -44,49 +44,57 @@
         });
 
         $('#btn_finalizar_venta').click(function() {
-            let metodo_pago = document.querySelector('input[name="metodo_pago"]:checked').value;
+            let metodo_pago_element = document.querySelector('input[name="metodo_pago"]:checked');
+
 
             let monto_pagado = $('#monto_pagado').val();
             let check_pago_total = $('#check_pago_total').prop("checked");
-            console.log(check_pago_total);
-            // console.log($('#check_pago_total'));
             if (carrito.productos.length > 0) {
-                let dat = {
-                    cliente_id: cliente_id_venta,
-                    data: carrito,
-                    metodo_pago: metodo_pago,
-                    monto_pagado: monto_pagado,
-                    check_pago_total: check_pago_total == false ? 0 : 1,
-                    ruta_id: ruta_id
-                };
+                if (metodo_pago_element) {
+                    let metodo_pago = metodo_pago_element.value;
+                    // Ahora puedes utilizar el valor de 'metodo_pago' aquí
+                    let dat = {
+                        cliente_id: cliente_id_venta,
+                        data: carrito,
+                        metodo_pago: metodo_pago,
+                        monto_pagado: monto_pagado,
+                        check_pago_total: check_pago_total == false ? 0 : 1,
+                        ruta_id: ruta_id
+                    };
 
-                $.ajax({
-                    url: '<?= base_url('ventas/nueva-venta-ruta') ?>', // Nombre de tu archivo PHP
-                    method: 'post',
-                    data: dat,
-                    dataType: 'json',
-                    success: function(resp) {
-                        let respuesta = JSON.stringify(resp);
-                        let obj = $.parseJSON(respuesta);
-                        let tipo = obj['tipo'];
-                        let msg = obj['msg'];
-                        if (tipo != 'success') {
-                            toastr[tipo](msg, "Gestión Clientes")
-                        } else {
-                            //data = obj['data'];
-                            LimpiarCamposModal();
-                            toastr["success"](msg, "Gestión Clientes")
-                            location.reload();
-                            $('#modal-15').modal('hide');
+                    $.ajax({
+                        url: '<?= base_url('ventas/nueva-venta-ruta') ?>', // Nombre de tu archivo PHP
+                        method: 'post',
+                        data: dat,
+                        dataType: 'json',
+                        success: function(resp) {
+                            let respuesta = JSON.stringify(resp);
+                            let obj = $.parseJSON(respuesta);
+                            let tipo = obj['tipo'];
+                            let msg = obj['msg'];
+                            if (tipo != 'success') {
+                                toastr[tipo](msg, "Gestión Clientes")
+                            } else {
+                                //data = obj['data'];
+                                LimpiarCamposModal();
+                                toastr["success"](msg, "Gestión Clientes")
+                                location.reload();
+                                $('#modal-15').modal('hide');
+                            }
+                        },
+                        error: function(error) {
+                            console.log(JSON.stringify(error));
+                            console.log('Error al obtener los clientes: ' + error);
                         }
-                    },
-                    error: function(error) {
-                        console.log(JSON.stringify(error));
-                        console.log('Error al obtener los clientes: ' + error);
-                    }
-                });
+                    });
 
+                }else{
+                    toastr["warning"]("Selecciona un metodo de pago para continuar", "Gestión de Ruta")
+                }
+            }else{
+                toastr["warning"]("Agregar una venta para continuar", "Gestión de Ruta")
             }
+
         });
 
         $('.metodo_pago').click(function() {
@@ -594,8 +602,8 @@
                 scrollCollapse: true,
                 autoWidth: true,
                 responsive: true,
-                searching: true,
-                bPaginate: true,
+                searching: false,
+                bPaginate: false,
                 bInfo: true,
                 columnDefs: [{
                     targets: "datatable-nosort",
@@ -604,7 +612,7 @@
                 order: [
                     [0, 'desc']
                 ],
-                pageLength: 2,  // Establece el número de registros por página
+                pageLength: 2, // Establece el número de registros por página
                 lengthChange: false,
                 "language": {
                     "info": "",

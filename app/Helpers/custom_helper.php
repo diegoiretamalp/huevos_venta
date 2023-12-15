@@ -190,7 +190,7 @@ function enviarCorreoMail($data_mail, $debug = false, $adjunto = NULL, $fileType
 	$mensaje = $data_mail['mensaje'];
 	$asunto = $data_mail['asunto'];
 	$para = $data_mail['para'];
-	// $para = 'yugitomatabi@gmail.com';
+	//  $para = 'yugitomatabi@gmail.com';
 	$de = $data_mail['remitente'];
 
 
@@ -243,15 +243,16 @@ function enviarCorreoMail($data_mail, $debug = false, $adjunto = NULL, $fileType
 	$message_id = 0;
 	$success = false;
 	$status_code = 0;
+	// pre_die($sendgrid);
 	try {
 		$response = $sendgrid->send($email);
 		$status_code = $response->statusCode();
-		//pre_die($status_code);
+		// pre_die($response);
 		// Verificar el código de respuesta HTTP
 		if ($status_code === 202) {
 			$success = true;
 			$array_headers = $response->headers();
-			// pre_die($response);
+			// pre_die($array_headers);
 			foreach ($array_headers as $header) {
 				if (strpos($header, 'X-Message-Id') !== false) {
 					$message_id = str_replace('X-Message-Id: ', '', $header);

@@ -94,7 +94,7 @@ $errores = $session->getFlashdata('errores');
                         <div class="col-md-4 mb-3">
                             <label for="direccion">Direccion</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ingrese Direccion..." value="<?= !empty($errores) ? $errores['direccion'] : (!empty($cliente) ? $cliente->direccion : '') ?>">
+                                <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ingrese Link..." value="<?= !empty($errores) ? $errores['direccion'] : (!empty($cliente) ? $cliente->direccion : '') ?>">
                                 <div id="invalid_direccion">
                                 </div>
                             </div>

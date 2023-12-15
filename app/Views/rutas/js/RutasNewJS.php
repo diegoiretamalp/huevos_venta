@@ -3,29 +3,13 @@
     let lista = document.querySelector('#body_clientes');
     console.log(lista);
     $(document).ready(function() {
-        // $('#fecha_ruta').datetimepicker();
-        $("#fecha_ruta").datepicker({
-            dateFormat: 'dd/mm/yy', // Formato de la fecha
-            showButtonPanel: true, // Muestra el panel de botones
-            closeText: 'Cerrar', // Texto del botón de cierre
-            currentText: 'Hoy', // Texto del botón de hoy
-            // prevText: 'Anterior', // Texto del botón anterior
-            // nextText: 'Siguiente', // Texto del botón siguiente
-            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'], // Nombres de los meses
-            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'], // Nombres cortos de los meses
-            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'], // Nombres de los días
-            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'], // Nombres cortos de los días
-            dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'] // Nombres mínimos de los días
-        });
-        // $('#fecha_ruta').datetimepicker({
-        //     format: 'DD-MM-YYYY',
-        //     minDate: '1920/01/01', //yesterday is minimum date(for today use 0 or -1970/01/01)
-        //     maxDate: '+<?= date('Y-m-d') ?>', //tomorrow is maximum date calendar,
-        //     weekStart: 1,
-        //     locale: moment.locale('es', {}),
+        $('#fecha_ruta').focus(function() {
+            console.log('siu');
+            var dateInput = document.getElementById('fecha_ruta');
+            dateInput.click();
 
-
-        // });
+            // Dispara el evento clic en el campo de fecha
+        })
         $('#btn_cargar_clientes').click(function() {
             //console.log('kie');
             let comuna_id = $('#comuna_id').val();
@@ -51,10 +35,7 @@
             let observacionv = validaCampos(observacion, 'observacion_ruta', 'texto_min', false);
             let fecha_rutav = validaCampos(fecha_ruta, 'fecha_ruta', 'fecha');
             // let v = validaCampos(total_cajas, 'total_cajas', 'numero');
-            console.log(total_cajasv);
-            console.log(repartidor_idv);
-            console.log(fecha_rutav);
-            console.log(observacionv);
+
             if (total_cajasv == 1 && repartidor_idv == 1 && fecha_rutav == 1 && observacionv == 1) {
                 if (clientes_ruta.length > 0) {
                     $('#clientes_ruta').val(JSON.stringify(clientes_ruta));
