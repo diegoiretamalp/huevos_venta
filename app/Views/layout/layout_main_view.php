@@ -23,7 +23,7 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="..\..\favicon.ico">
     <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"> -->
-  <link rel="stylesheet" href="/resources/demos/style.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
     <!-- Fontawesome -->
     <link rel="stylesheet" href="<?= ASSETS_PLUGINS ?>fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="<?= ASSETS_CSS ?>select2.min.css">
@@ -36,15 +36,8 @@
             padding: 0;
             padding-right: 0 !important;
             background-image: url(<?= ASSETS_IMG . 'background2.jpg' ?>);
-            /* Reemplaza 'nombre-de-tu-imagen.jpg' con el nombre de tu archivo de imagen */
-            background-size: cover;
-            /* Ajusta el tamaño de la imagen para cubrir todo el fondo */
+            /* background-size: cover; */
             background-position: center;
-            /* Alinea la imagen al centro del fondo */
-            background-repeat: no-repeat;
-            /* Evita que la imagen se repita */
-            height: 100vh;
-            /* Ajusta la altura al 100% del viewport */
         }
 
         /* Estilo para el contenedor del grupo de botones */
@@ -69,7 +62,7 @@
 
 </head>
 
-<body class="ms-body ms-aside-left-close ms-primary-theme ms-has-quickbar">
+<body class="ms-body ms-primary-theme ms-has-quickbar">
     <!-- Preloader -->
     <!-- <div id="preloader-wrap">
         <div class="spinner spinner-8">
@@ -89,11 +82,11 @@
     </div> -->
 
     <!-- Overlays -->
-    <div class="ms-aside-overlay ms-overlay-left ms-toggler" data-target="#ms-side-nav" data-toggle="slideLeft"></div>
+    <!-- <div class="ms-aside-overlay ms-overlay-left ms-toggler" data-target="#ms-side-nav" data-toggle="slideLeft"></div> -->
     <div class="ms-aside-overlay ms-overlay-right ms-toggler" data-target="#ms-recent-activity" data-toggle="slideRight"></div>
 
     <?php
-    echo  $this->include('layout/sidenav_view');
+    // echo  $this->include('layout/sidenav_view');
     ?>
     <!-- Main Content -->
     <main class="body-content">
@@ -108,7 +101,48 @@
 
 
     </main>
+    <style>
+        #btnScrollToTop {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 18px;
+            cursor: pointer;
+        }
 
+        #btnScrollToTop:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <button onclick="scrollToTop()" id="btnScrollToTop" title="Volver al inicio">&#9650;</button>
+    <script>
+        // Mostrar u ocultar el botón dependiendo de la posición de desplazamiento
+        window.onscroll = function() {
+            scrollFunction();
+        };
+
+        function scrollFunction() {
+            var btnScrollToTop = document.getElementById("btnScrollToTop");
+
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btnScrollToTop.style.display = "block";
+            } else {
+                btnScrollToTop.style.display = "none";
+            }
+        }
+
+        // Animar el desplazamiento hacia arriba al hacer clic en el botón
+        function scrollToTop() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
     <!-- SCRIPTS -->
     <!-- Global Required Scripts Start -->
     <script src="<?= ASSETS_JS ?>jquery-3.5.1.min.js"></script>

@@ -49,17 +49,11 @@ class ClientesController extends BaseController
             return redirect('clientes/listado');
         }
         $cliente = $this->Clientes_model->getCliente($id);
-        // $monedero = NULL;
-
-        // if (!empty($cliente)) {
-        //     $where_monedero = [
-        //         'cliente_id' => $cliente->id,
-        //         'estado' => true,
-        //         'eliminado' => false
-        //     ];
-        //     $monedero = $this->Monedero_model->getMonederoWhere($where_monedero);
-        // }
-        //pre_die($monedero);
+        if(empty($cliente)){
+            $this->session->setflashdata("error_title", "Cliente No Encontrado");
+            $this->session->setflashdata("error", "Cliente no existe o fue eliminado");
+            return redirect('clientes/listado');
+        }
         $where_ventas = [
             'estado' => true,
             'eliminado' => false,
@@ -260,19 +254,17 @@ class ClientesController extends BaseController
             $cliente = $this->Clientes_model->getClienteWhere($where);
 
             if (empty($cliente)) {
-                echo 'Cliente no existe, fue eliminado!';
+                echo false;
             } else {
-
                 $deleted = $this->Clientes_model->deleteCliente($arr_data, $id);
                 if ($deleted) {
-                    echo 'ok';
-                    return redirect('clientes/listado');
+                    echo true;
                 } else {
-                    echo 'Ocurrió un problema al Eliminar. Intente Nuevamente';
+                    echo false;
                 }
             }
         } else {
-            echo 'error';
+            echo false;
         }
     }
 

@@ -18,6 +18,29 @@ class Usuarios_model extends Model
 		return $usuarios->get()->getResultObject();
 	}
 
+
+	public function getUsuariosJoin($where = array(), $select = '')
+	{
+		$usuarios = $this->db->table('usuarios u');
+
+		$select = trim($select);
+
+		$usuarios->join("perfiles p", 'p.id = u.perfil_id', 'left');;
+		if (empty($select)) {
+			$usuarios->select('u.*, p.*, p.nombre as nombre_perfil, u.nombre as nombre_usuario');
+		} else {
+			$usuarios->select($select);
+		}
+
+		if (!empty($where)) {
+			$usuarios->where($where);
+		} else {
+			$usuarios->where("u.eliminado", false);
+		}
+
+		return $usuarios->get()->getResultObject();
+	}
+
 	public function getUsuarioWhere($where, $select = '')
 	{ #select con where
 		$usuario = $this->db->table('usuarios');
@@ -44,7 +67,7 @@ class Usuarios_model extends Model
 		return $usuario->get()->getRowObject();
 	}
 
-    public function insertUsuario($data)
+	public function insertUsuario($data)
 	{
 		$usuario = $this->db->table('usuarios');
 		$insert = $usuario->insert($data);
@@ -61,5 +84,4 @@ class Usuarios_model extends Model
 		$usuario->where("id", $id);
 		return $usuario->update();
 	}
-
 }
