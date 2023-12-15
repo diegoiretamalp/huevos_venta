@@ -34,14 +34,15 @@
                     <?php if (!empty($usuarios)) : ?>
                         <?php foreach ($usuarios as $usuario) : ?>
                             <tr>
-                                <td><?= $usuario->nombre ?></td>
-                                <td><?= $usuario->rut ?></td>
-                                <td><?= $usuario->celular ?></td>
-                                <td><?= $usuario->email ?></td>
-                                <td><?= $usuario->direccion ?></td>
-                                <td><?= $usuario->perfil_id ?></td>
+                            <td><?= !empty($usuario->nombre_usuario) ? $usuario->nombre_usuario : 'Sin Datos...' ?></td>
+                            <td><?= !empty($usuario->rut) ? $usuario->rut : 'Sin Datos...' ?></td>
+                            <td><?= !empty($usuario->celular) ? $usuario->celular : 'Sin Datos...' ?></td>
+                            <td><?= !empty($usuario->email) ? $usuario->email : 'Sin Datos...' ?></td>
+                            <td><?= !empty($usuario->direccion) ? $usuario->direccion : 'Sin Datos...' ?></td>
+                            <td><?= !empty($usuario->nombre_perfil) ? $usuario->nombre_perfil : 'Sin Datos...' ?></td>
                                 <td>
                                     <a class="btn btn-sm btn-secondary mt-0" href="<?= base_url('usuarios/editar/' . $usuario->id) ?>"> <i class="fas fa-edit fs-16"></i> Editar</a>
+                                    <button type="button" onclick="EliminarUsuario(<?= $usuario->id ?>)" class="btn btn-sm btn-danger btn_deleted mt-0 "><i class="fa fa-trash"></i> Eliminar</button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -51,4 +52,3 @@
         </div>
     </div>
 </div>
-//hola

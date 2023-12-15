@@ -15,21 +15,21 @@ class UsuariosController extends BaseController
     {
 
         $where_usuarios = [
-            'estado' => true,
-            'eliminado' => false,
+            'u.eliminado' => false
             //'mostrar' => true,
         ];
         /*if(USUARIO_ROL == 2){
             $where_usuarios['id!='] = USUARIO_ID;
         }*/
-        $usuarios = $this->Usuarios_model->getUsuarios($where_usuarios);
+        $usuarios = $this->Usuarios_model->getUsuariosJoin($where_usuarios);
 
         $data = [
             'title' => 'Listado de Usuarios',
             'main_view' => 'usuarios/usuarios_list_view',
             'usuarios' => !empty($usuarios) ? $usuarios : [],
             'js_content' => [
-                '0' => 'layout/js/generalJS'
+                '0' => 'layout/js/generalJS',
+                '1' => 'usuarios/js/UsuariosJS',
             ]
         ];
         return view('layout/layout_main_view', $data);
@@ -105,12 +105,12 @@ class UsuariosController extends BaseController
                     'rut' => !empty($post['rut']) ? $post['rut'] : NULL,
                     'celular' => !empty($post['celular']) ? $post['celular'] : NULL,
                     'email' => !empty($post['email']) ? $post['email'] : NULL,
-                    'estado' => !empty($post['estado']) ? ($post['estado'] === 'true') : NULL,
+                    'estado' => !empty($post['estado']) ? true : false,
                     'perfil_id' => !empty($post['perfil_id']) ? $post['perfil_id'] : NULL,
                     'direccion' => !empty($post['direccion']) ? $post['direccion'] : NULL,
                     'updated_at' => getTimestamp()
                 ];
-
+                pre_die($array_update);
                 $id_usuario = $this->Usuarios_model->updateUsuario($array_update,$id);
                 if ($id_usuario > 0) {
                     $this->session->setflashdata("success_title", "Gestión de Usuarios");
@@ -143,13 +143,37 @@ class UsuariosController extends BaseController
         ];
         return view('layout/layout_main_view', $data);
     }
-    public function EliminarVenta()
+    public function EliminarUsuario()
     {
         $post = $this->request->getPost();
-        $data = [
-            'main_view' => 'ventas/ventas_new_view'
-        ];
-        return view('layout/layout_main_view', $data);
+
+        if (!empty($post)) {
+            $id = $post['usuario_id'];
+            $where = [
+                'id' => $id,
+                'eliminado' => false,
+            ];
+
+            $arr_data = [
+                'eliminado' => true,
+                'deleted_at' => getTimestamp(),
+            ];
+
+            $usuario = $this->Usuarios_model->getUsuarioWhere($where);
+
+            if (empty($usuario)) {
+                echo false;
+            } else {
+                $deleted = $this->Sectores_model->deleteUsuario($arr_data, $id);
+                if ($deleted) {
+                    echo true;
+                } else {
+                    echo false;
+                }
+            }
+        } else {
+            echo false;
+        }
     }
 
     public function ObtenerCliente()

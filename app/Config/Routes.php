@@ -75,7 +75,7 @@ $routes->post('clientes/eliminar', 'ClientesController::EliminarCliente', ['filt
 #RUTAS DE MANTENEDOR DE DEUDAS
 
 
-$routes->get('deudas/listado', 'DeudasController::index');
+$routes->get('deudas/listado', 'DeudasController::index', ['filter' => ['auth', 'rutasFilter']]);
 $routes->get('deudas/nueva', 'DeudasController::NuevaDeuda');
 $routes->post('deudas/nueva', 'DeudasController::NuevaDeuda');
 $routes->get('deudas/editar/(:num)', 'DeudasController::EditarDeuda/$1');
