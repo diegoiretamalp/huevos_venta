@@ -1363,9 +1363,9 @@ a.ms-confirm-trigger:hover{
   .ms-d-block-lg{
     display: none;
   }
-  .ms-d-block-sm{
+  /* .ms-d-block-sm{
     display: block;
-  }
+  } */
   .ms-aside-left-open  .ms-aside-left.side-nav{
     transform: translateX(-100%);
   }
@@ -1395,8 +1395,14 @@ a.ms-confirm-trigger:hover{
   .navbar,
   .ms-logged-out .navbar{
     padding: 0.25rem 15px;
+    justify-content: flex-start;
   }
-  .ms-navbar .ms-nav-list{
+  .navbar.ms-nav-list.ms-nav-item.text-white i{
+    font-size: 10px;
+  }
+
+
+  /* .ms-navbar .ms-nav-list{
     position: absolute;
     width: 100%;
     background-color: #34334a;
@@ -1407,15 +1413,15 @@ a.ms-confirm-trigger:hover{
     padding: 0 1.25rem;
     opacity: 0;
     visibility: hidden;
-  }
+  } */
   .ms-dark-theme .ms-navbar .ms-nav-list{
     background-color: #252851;
   }
-  .ms-navbar .ms-nav-list.ms-inline{
+  /* .ms-navbar .ms-nav-list.ms-inline{
     -webkit-transition: 0.3s;
     transition: 0.3s;
     height: auto;
-  }
+  } */
   .ms-nav-list.ms-slide-down{
     top: 100%;
     opacity: 1;

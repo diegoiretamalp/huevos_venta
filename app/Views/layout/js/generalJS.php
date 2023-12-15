@@ -9,9 +9,9 @@
         const limpiarCampo = (color, mensaje) => {
             $campo.css('border-color', color);
             $("#invalid_" + id).text(mensaje);
-            if(color == 'green'){
+            if (color == 'green') {
                 return 1;
-            }else{
+            } else {
                 return 0;
             }
         };
@@ -92,10 +92,19 @@
                         break;
 
                     case 'fecha':
-                        // Puedes utilizar una expresión regular para validar el formato de fecha (ejemplo: dd/mm/aaaa)
-                        const fechaRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-                        return fechaRegex.test(texto) ? campoValido() : limpiarCampo('red', 'Formato de fecha inválido (dd/mm/aaaa)');
+                        // Utiliza una expresión regular para validar el formato de fecha (ejemplo: yyyy/mm/dd)
+                        const fechaRegex = /^\d{4}-\d{2}-\d{2}$/;
+                        // const fechaRegex = /^\d{4}\/\d{2}\/\d{2}$/;
+                        console.log('FECHA');
+                        console.log(texto);
+                        console.log('FECHA');
+                        if (fechaRegex.test(texto)) {
+                            return campoValido();
+                        } else {
+                            return limpiarCampo('red', 'Formato de fecha inválido (yyyy/mm/dd)');
+                        }
                         break;
+
 
                     case 'url':
                         // Puedes utilizar una expresión regular para validar el formato de URL

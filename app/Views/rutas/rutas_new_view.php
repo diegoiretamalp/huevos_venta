@@ -29,19 +29,9 @@
                                         <span class="invalid_total_cajas"></span>
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <label for="fecha_ruta">Fecha de Ruta</label>
-                                        <div class="input-group date" id="fecha_rutadate" data-target-input="nearest" readonly>
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                                            </div>
-                                            <!-- <style>
-                                                .ui-datepicker-prev,
-                                                .ui-datepicker-next {
-                                                    color: #000000;
-                                                    /* Color negro */
-                                                }
-                                            </style> -->
-                                            <input type="text" id="fecha_ruta" class="form-control" autocomplete="off" name="fecha_ruta">
+                                        <div class="form-group">
+                                            <label for="fecha_ruta">Fecha de Ruta</label>                                           
+                                            <input type="date" id="fecha_ruta"placeholder="Fecha" aria-label="Search" class="form-control" autocomplete="off" name="fecha_ruta">
                                         </div>
                                         <span class="invalid_fecha_ruta"></span>
                                     </div>
