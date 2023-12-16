@@ -129,11 +129,11 @@ function GetRepartidor($usuario_id)
 	$db      = \Config\Database::connect();
 	$table = $db->table('usuarios');
 	$data = $table->getWhere(['estado' => true, 'eliminado' => false, 'id' => $usuario_id])->getRowObject();
-	// pre_die($usuario_id);
+	// pre_die($data);
 	if (!empty($data)) {
 		return $data;
 	} else {
-		return 'Sin información';
+		return [];
 	}
 }
 
@@ -285,4 +285,3 @@ function enviarCorreoMail($data_mail, $debug = false, $adjunto = NULL, $fileType
 
 	//error_log('que pasoMAIL'.print_r(json_encode($response), true));
 }
-

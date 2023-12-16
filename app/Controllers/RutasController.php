@@ -30,6 +30,7 @@ class RutasController extends BaseController
                     $total_efectivo = 0;
                     $total_fiado = 0;
                     $total_transferencia = 0;
+                    // pre_die($ventas);
                     foreach ($ventas as $venta) {
                         $total_venta += $venta->total_venta;
 
@@ -187,18 +188,18 @@ class RutasController extends BaseController
                 if (!empty($cliente)) {
                     $total_deuda = $this->Ventas_model->GetTotalDeudaCliente($cliente->id);
                     $total_venta = $this->Ventas_model->GetTotalVentaCliente($cliente->id);
-                    $td = !empty($total_deuda) ? ($total_deuda->total_deuda) : 0;
-                    $tv = !empty($total_venta) ? ($total_venta->total_venta) : 0;
-                    // pre_die($total_deuda);
-
+                   
+                    $td = !empty($total_deuda) ? $total_deuda : 0;
+                    $tv = !empty($total_venta) ? $total_venta->total_venta : 0;
+                    
                     $cliente_r->total_pagado = formatear_numero($tv - $td);
                     $cliente_r->total_venta = !empty($total_venta->total_venta) ? ($total_venta->total_venta) : 0;
                     $cliente_r->cajas_total = !empty($total_venta->cajas_total) ? $total_venta->cajas_total : 0;
                     $cliente_r->total_venta = !empty($tv) ? formatear_numero($tv) : '$0';
-
+                    
                     $cliente_r->direccion = !empty($cliente->direccion) ? $cliente->direccion : '';
                     $cliente_r->nombre_completo = (!empty($cliente->nombre) ? $cliente->nombre : '') . ' ' . (!empty($cliente->apellido_paterno) ? $cliente->apellido_paterno : '') . ' ' . (!empty($cliente->apellido_matero) ? $cliente->apellido_matero : '');
-                    $cliente_r->total_deuda = !empty($total_deuda) ? formatear_numero($total_deuda->total_deuda) : '$0';
+                    $cliente_r->total_deuda = !empty($total_deuda) ? formatear_numero($total_deuda) : '$0';
                     $cliente_r->precio_favorito = formatear_numero($cliente->precio_favorito);
                     $cliente_r->producto_id = $cliente->producto_id;
                 }
@@ -263,7 +264,7 @@ class RutasController extends BaseController
         ];
 
         $clientes_deuda = $this->Clientes_model->getClientesDeuda($where_clideu);
-        // pre_die($clientes_ruta);
+        // pre_die($clientes_deuda);
         $data = [
             'title' => 'Ver Ruta',
             'main_view' => 'rutas/rutas_ver_view',

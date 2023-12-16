@@ -14,7 +14,7 @@ $errores = $session->getFlashdata('errores');
                 </ol>
             </nav>
         </div>
-        <div class="col-12">
+        <div class="col-12 card card-body">
             <form action="<?= isset($action) ? $action : '' ?>" method="post">
                 <div class="form-row">
                     <div class="col-md-2 mb-3"></div>
@@ -70,16 +70,22 @@ $errores = $session->getFlashdata('errores');
                         <label for="perfil_id">Perfil</label>
                         <div class="input-group">
                             <select name="perfil_id" id="perfil_id" class="form-control">
-                                <option value="">Seleccionar</option>
-                                <option value="1">Administrador</option>
-                                <option value="2">Repartidor</option>
+                                <?php foreach ($perfiles as $perfil) : ?>
+                                    <option <?= !empty($errores) ? ($errores['perfil_id'] == $perfil->id ? 'selected' : '') : '' ?> value="<?= $perfil->id ?>"><?= $perfil->nombre ?></option>
+                                <?php endforeach; ?>
                             </select>
                             <div id="invalid_perfil_id">
                             </div>
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-primary mt-4 d-block w-100" type="submit">Crear Usuario</button>
+                <div class="form-row">
+                    <div class="col-2 text-right"></div>
+                    <div class="col-8 text-right">
+                        <a href="<?= base_url('usuarios/listado') ?>" class="btn btn-secondary mt-4"><i class="fa fa-list-alt" aria-hidden="true"></i> Volver a Listado</a>
+                        <button class="btn btn-primary mt-4" type="submit"><i class="fas fa-save    "></i> Crear Usuario</button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
