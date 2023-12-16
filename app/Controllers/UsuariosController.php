@@ -161,13 +161,7 @@ class UsuariosController extends BaseController
             
             // pre_die($id);
             $usuario = GetRowObjectByWhere('usuarios', $where);
-            // pre_die($post);
-            if (!empty($usuario)) {
-                // pre_die('asa');
-
-
-            $usuario = $this->Usuarios_model->getUsuarioWhere($where);
-
+        
             if (empty($usuario)) {
                 echo false;
             } else {
