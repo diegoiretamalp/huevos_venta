@@ -106,7 +106,7 @@ class Clientes_model extends Model
 			$clientes->where("v.eliminado", false);
 		}
 		$clientes->join('clientes c', 'c.id = v.cliente_id', 'left');
-		$clientes->groupBy('id');
+		$clientes->groupBy('id, nombre');
 
 		return $clientes->get()->getResultObject();
 	}
