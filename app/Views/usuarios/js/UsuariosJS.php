@@ -1,5 +1,8 @@
-
 <script>
+   $(document).ready(function() {
+
+   });
+
 
    function EliminarUsuario(usuario_id) {
       let table = $('#data-table').DataTable();
@@ -40,6 +43,7 @@
                });
             } else {
                $('#row_' + usuario_id).removeClass('selected_fila');
+
             }
          });
       } else {

@@ -1,8 +1,6 @@
-
 <?php
 $session = session();
 $errores = $session->getFlashdata('errores');
-//hola
 ?>
 <div class="ms-content-wrapper">
     <div class="row">
@@ -22,18 +20,18 @@ $errores = $session->getFlashdata('errores');
                     <div class="col-md-4 mb-3">
                         <label for="nombre">Nombre</label>
                         <div class="input-group">
-                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese Nombre..." value="<?= !empty($errores) ? $errores['nombre'] : (!empty($usuarios) ? $usuarios->nombre : '') ?>">
-                                <div id="invalid_nombre" class="valid-feedback">
-                                </div>
+                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese Nombre..." value="<?= !empty($errores) ? $errores['nombre'] : (!empty($usuarios) ? $usuarios->nombre : '') ?>">
+                            <div id="invalid_nombre" class="valid-feedback">
                             </div>
+                        </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="rut">Rut</label>
                         <div class="input-group">
-                                <input type="text" class="form-control" id="rut" name="rut" placeholder="Ingrese su R.U.T ..." value="<?= !empty($errores) ? $errores['rut'] : (!empty($usuarios) ? $usuarios->rut : '') ?>">
-                                <div id="invalid_rut" class="valid-feedback">
-                                </div>
+                            <input type="text" class="form-control" id="rut" name="rut" placeholder="Ingrese su R.U.T ..." value="<?= !empty($errores) ? $errores['rut'] : (!empty($usuarios) ? $usuarios->rut : '') ?>">
+                            <div id="invalid_rut" class="valid-feedback">
                             </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-row">
@@ -42,46 +40,63 @@ $errores = $session->getFlashdata('errores');
                     <div class="col-md-4 mb-3">
                         <label for="celular">Celular</label>
                         <div class="input-group">
-                                <input type="text" class="form-control" id="celular" name="celular" placeholder="Ingrese su número celular ej: 56987456124 ..." value="<?= !empty($errores) ? $errores['celuar'] : (!empty($usuarios) ? $usuarios->celular : '') ?>">
-                                <div id="invalid_celular" class="valid-feedback">
-                                </div>
+                            <input type="text" class="form-control" id="celular" name="celular" placeholder="Ingrese su número celular ej: 56987456124 ..." value="<?= !empty($errores) ? $errores['celuar'] : (!empty($usuarios) ? $usuarios->celular : '') ?>">
+                            <div id="invalid_celular" class="valid-feedback">
                             </div>
+                        </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="email">Email</label>
                         <div class="input-group">
-                                <input type="text" class="form-control" id="email" name="email" placeholder="Ingrese su email ej: correo@gmail.com ..." value="<?= !empty($errores) ? $errores['email'] : (!empty($usuarios) ? $usuarios->email : '') ?>">
-                                <div id="invalid_email" class="valid-feedback">
-                                </div>
+                            <input type="text" class="form-control" id="email" name="email" placeholder="Ingrese su email ej: correo@gmail.com ..." value="<?= !empty($errores) ? $errores['email'] : (!empty($usuarios) ? $usuarios->email : '') ?>">
+                            <div id="invalid_email" class="valid-feedback">
                             </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-md-2 mb-3"></div>
 
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-4 mb-4">
                         <label for="direccion">Direccion</label>
                         <div class="input-group">
-                                <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ingrese su direccion ..." value="<?= !empty($errores) ? $errores['email'] : (!empty($usuarios) ? $usuarios->direccion : '') ?>">
-                                <div id="invalid_email" class="valid-feedback">
-                                </div>
+                            <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ingrese su direccion ..." value="<?= !empty($errores) ? $errores['email'] : (!empty($usuarios) ? $usuarios->direccion : '') ?>">
+                            <div id="invalid_email" class="valid-feedback">
                             </div>
+                        </div>
                     </div>
-                    </div>
-                        <div class="col-md-4 mb-4">
-                            <label for="perfil_id">Perfil</label>
-                            <div class="input-group">
-                                <select name="perfil_id" id="perfil_id" class="form-control">
-                                    <option value="">Seleccionar</option>
-                                    <?php foreach ($perfiles as $perfil) : ?>
-                                        <option <?= !empty($errores) ? ($errores['sector_id'] == $perfil->id ? 'selected' : '') : (!empty($perfil) ? ($perfil->id == $usuarios->perfil_id ? 'selected' : '') : '') ?> value="<?= $perfil->id ?>"><?= $perfil->nombre ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <div id="invalid_comuna_id">
-                                </div>
+                    <div class="col-md-4 mb-4">
+                        <label for="perfil_id">Perfil</label>
+                        <div class="input-group">
+                            <select name="perfil_id" id="perfil_id" class="form-control">
+                                <?php foreach ($perfiles as $perfil) : ?>
+                                    <option <?= !empty($errores) ? ($errores['sector_id'] == $perfil->id ? 'selected' : '') : (!empty($perfil) ? ($perfil->id == $usuarios->perfil_id ? 'selected' : '') : '') ?> value="<?= $perfil->id ?>"><?= $perfil->nombre ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <div id="invalid_perfil_id">
                             </div>
-                        </div>     
+                        </div>
+                    </div>
                 </div>
+
+                <div class="form-row">
+
+                    <div class="col-md-2 mb-3"></div>
+
+                    <div class="col-md-4 mb-4">
+                        <label for="estado">Estado</label>
+                        <div class="input-group">
+                            <select name="estado" id="estado" class="form-control">
+                                <option value="0" <?= !empty($errores) ? ($errores['estado'] == '0' ? 'selected' : '') : (!empty($usuarios) ? ($usuarios->estado == '0' ? 'selected' : '') : '') ?>>Inactivo</option>
+                                <option value="1" <?= !empty($errores) ? ($errores['estado'] == '1' ? 'selected' : '') : (!empty($usuarios) ? ($usuarios->estado == '1' ? 'selected' : '') : '') ?>>Activo</option>
+                            </select>
+                            <div id="invalid_estado">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
 
                 <div class="form-row">
 
@@ -108,7 +123,9 @@ $errores = $session->getFlashdata('errores');
                     </div>
                 </div>
             </form>
+
         </div>
+        <button class="btn btn-primary mt-4 d-block w-100" type="submit">Editar Usuario</button>
+        </form>
     </div>
 </div>
-

@@ -26,7 +26,9 @@ class Usuarios_model extends Model
 
 		$usuarios->join("perfiles p", 'p.id = u.perfil_id', 'left');;
 		if (empty($select)) {
+
 			$usuarios->select('u.*, p.nombre as nombre_perfil, u.nombre as nombre_usuario');
+
 		} else {
 			$usuarios->select($select);
 		}
@@ -66,7 +68,7 @@ class Usuarios_model extends Model
 		return $usuario->get()->getRowObject();
 	}
 
-    public function insertUsuario($data)
+	public function insertUsuario($data)
 	{
 		$usuario = $this->db->table('usuarios');
 		$insert = $usuario->insert($data);
@@ -83,5 +85,4 @@ class Usuarios_model extends Model
 		$usuario->where("id", $id);
 		return $usuario->update();
 	}
-
 }
