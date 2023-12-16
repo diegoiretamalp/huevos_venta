@@ -3,6 +3,7 @@
 
    });
 
+
    function EliminarUsuario(usuario_id) {
       let table = $('#data-table').DataTable();
       $('#row_' + usuario_id).addClass('selected_fila');
@@ -41,7 +42,8 @@
                   }
                });
             } else {
-               $('#row_' + sector_id).removeClass('selected_fila');
+               $('#row_' + usuario_id).removeClass('selected_fila');
+
             }
          });
       } else {

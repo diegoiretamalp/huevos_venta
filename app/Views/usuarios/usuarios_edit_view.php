@@ -13,7 +13,7 @@ $errores = $session->getFlashdata('errores');
                 </ol>
             </nav>
         </div>
-        <div class="col-12">
+        <div class="col-12 card card-body">
             <form action="<?= isset($action) ? $action : '' ?>" method="post">
                 <div class="form-row">
                     <div class="col-md-2 mb-3"></div>
@@ -97,9 +97,35 @@ $errores = $session->getFlashdata('errores');
 
                 </div>
 
+
+                <div class="form-row">
+
+                    <div class="col-md-2 mb-3"></div>
+
+                    <div class="col-md-4 mb-4">
+                        <label for="estado">Estado</label>
+                        <div class="input-group">
+                            <select name="estado" id="estado" class="form-control">
+                                <option value="0" <?= !empty($errores) ? ($errores['estado'] == '0' ? 'selected' : '') : (!empty($usuarios) ? ($usuarios->estado == '0' ? 'selected' : '') : '') ?>>Inactivo</option>
+                                <option value="1" <?= !empty($errores) ? ($errores['estado'] == '1' ? 'selected' : '') : (!empty($usuarios) ? ($usuarios->estado == '1' ? 'selected' : '') : '') ?>>Activo</option>
+                            </select>
+                            <div id="invalid_estado">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-row">
+                    <div class="col-2"></div>
+                    <div class="col-8 text-right">
+                        <a class="btn btn-secondary mt-4" href="<?= base_url('usuarios/listado') ?>"><i class="fa fa-list-alt" aria-hidden="true"></i> Volvera Listado</a>
+                        <button class="btn btn-primary mt-4" type="submit"><i class="fas fa-save    "></i> Editar Usuario</button>
+                    </div>
+                </div>
+            </form>
+
         </div>
         <button class="btn btn-primary mt-4 d-block w-100" type="submit">Editar Usuario</button>
         </form>
     </div>
-</div>
 </div>

@@ -73,7 +73,7 @@ class UsuariosController extends BaseController
             }
         }
 
-        $perfiles = GetObjectByWhere('perfiles', ['estado' => true]);
+        $perfiles = GetObjectByWhere('perfiles', ['estado' => true, 'mostrar' => true]);
 
         $data = [
             'title' => 'Nuevo Usuario',
@@ -110,7 +110,6 @@ class UsuariosController extends BaseController
                     'direccion' => !empty($post['direccion']) ? $post['direccion'] : NULL,
                     'updated_at' => getTimestamp()
                 ];
-                pre_die($array_update);
                 $id_usuario = $this->Usuarios_model->updateUsuario($array_update,$id);
                 if ($id_usuario > 0) {
                     $this->session->setflashdata("success_title", "Gestión de Usuarios");
@@ -158,6 +157,14 @@ class UsuariosController extends BaseController
                 'eliminado' => true,
                 'deleted_at' => getTimestamp(),
             ];
+
+            
+            // pre_die($id);
+            $usuario = GetRowObjectByWhere('usuarios', $where);
+            // pre_die($post);
+            if (!empty($usuario)) {
+                // pre_die('asa');
+
 
             $usuario = $this->Usuarios_model->getUsuarioWhere($where);
 

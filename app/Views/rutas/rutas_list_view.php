@@ -77,7 +77,7 @@
                                     <td class="text-center"><?= !empty($ruta->cajas_total) ? $ruta->cajas_total : '0' ?></td>
                                     <td class="text-center"><?= !empty($ruta->cajas_vendidas) ? $ruta->cajas_vendidas : 0 ?></td>
                                     <td class="text-center"><?= !empty($ruta->cantidad_clientes) ? $ruta->cantidad_clientes : '0' ?></td>
-                                    <td class="text-center"><?= !empty($ruta->repartidor_id) ? GetRepartidor($ruta->repartidor_id)->nombre : 'Sin Información' ?></td>
+                                    <td class="text-center"><?= !empty($ruta->repartidor_id) ? (!empty($dataR = GetRepartidor($ruta->repartidor_id)) ? $dataR->nombre : 'Sin Información') : 'Sin Información' ?></td>
                                     <td class="text-center" style="white-space: nowrap;"><?= !empty($ruta->fecha_ruta) ? ordenar_fechaHumano($ruta->fecha_ruta) : 'Sin Información' ?></td>
                                     <td class="text-center">
                                         <a href="<?= base_url('rutas/ver/') . $ruta->id ?>" class="btn btn-sm btn-secondary "><i class="fas fa-eye fs-16"> Ver</i></a>
