@@ -97,7 +97,7 @@ class Clientes_model extends Model
 		if (!empty($select)) {
 			$clientes->select($select);
 		} else {
-			$clientes->select('v.cliente_id as id, c.nombre as nombre, count(*) as total_ventas, sum(v.total_venta) as total_venta, sum(v.total_pagado) as total_pagado, (total_venta - total_pagado) as total_deuda');
+			$clientes->select('v.cliente_id as id, c.nombre as nombre, count(*) as total_ventas, sum(v.total_venta) as total_venta, sum(v.total_pagado) as total_pagado, (`total_venta` - `total_pagado`) as total_deuda');
 		}
 
 		if (!empty($where)) {
@@ -106,7 +106,7 @@ class Clientes_model extends Model
 			$clientes->where("v.eliminado", false);
 		}
 		$clientes->join('clientes c', 'c.id = v.cliente_id', 'left');
-		$clientes->groupBy('id, nombre');
+		$clientes->groupBy('id, c.nombre');
 
 		return $clientes->get()->getResultObject();
 	}
