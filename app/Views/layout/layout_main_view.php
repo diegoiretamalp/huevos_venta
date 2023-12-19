@@ -62,7 +62,7 @@
 
 </head>
 
-<body class="ms-body ms-primary-theme ms-has-quickbar">
+<body class="ms-body ms-primary-theme">
     <!-- Preloader -->
     <!-- <div id="preloader-wrap">
         <div class="spinner spinner-8">
@@ -83,7 +83,7 @@
 
     <!-- Overlays -->
     <!-- <div class="ms-aside-overlay ms-overlay-left ms-toggler" data-target="#ms-side-nav" data-toggle="slideLeft"></div> -->
-    <div class="ms-aside-overlay ms-overlay-right ms-toggler" data-target="#ms-recent-activity" data-toggle="slideRight"></div>
+    <!-- <div class="ms-aside-overlay ms-overlay-right ms-toggler" data-target="#ms-recent-activity" data-toggle="slideRight"></div> -->
 
     <?php
     // echo  $this->include('layout/sidenav_view');

@@ -26,7 +26,7 @@
                     <tbody>
                         <?php if (!empty($ventas)) : ?>
                             <?php foreach ($ventas as $venta) : ?>
-                                <tr>
+                                <tr id="row_<?= $venta->id ?>">
                                     <td><?= !empty($venta->id) ? $venta->id : 'Sin Información' ?></td>
                                     <td><?= !empty($venta->ruta_id) ? $venta->ruta_id : 'Sin Información' ?></td>
                                     <td><?= !empty($venta->cliente_id) ? strUpper(getNombreCompletoCliente($venta->cliente_id)->nombre_cliente) : 'Sin Información' ?></td>
@@ -39,6 +39,7 @@
                                             <button class="btn btn-sm btn-success" id="btn_pagar_deuda"><i class="fas fa-dollar-sign"></i>Pagar Deuda</button>
                                         <?php endif; ?>
                                         <a href="<?= base_url('ventas/detalle/' . $venta->id) ?>" class="btn btn-sm btn-info"><i class="fa fa-info" aria-hidden="true"></i> Ver Venta</a>
+                                        <button class="btn btn-sm btn-danger" onclick="EliminarVenta(<?= $venta->id ?>)"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar Venta</button>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

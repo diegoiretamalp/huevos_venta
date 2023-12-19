@@ -7,6 +7,7 @@ class MainController extends BaseController
     public function index()
     {
         $data = [
+            'title' => 'Menu',
             'main_view' => 'layout/menu_view'
         ];
         return view('layout/layout_main_view', $data);

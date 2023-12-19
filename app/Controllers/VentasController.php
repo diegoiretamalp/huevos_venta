@@ -6,14 +6,13 @@ class VentasController extends BaseController
 {
     public function __construct()
     {
-        
+
         $this->session = session();
         $this->Productos_model = model('App\Models\Productos_model');
         $this->Clientes_model = model('App\Models\Clientes_model');
         $this->Monedero_model = model('App\Models\Monedero_model');
         $this->Rutas_model = model('App\Models\Rutas_model');
         $this->Ventas_model = model('App\Models\Ventas_model');
-       
     }
     public function index()
     {
@@ -28,7 +27,8 @@ class VentasController extends BaseController
             'main_view' => 'ventas/ventas_list_view',
             'ventas' => !empty($ventas) ? $ventas : [],
             'js_content' => [
-                '0' => 'layout/js/generalJS'
+                '0' => 'layout/js/generalJS',
+                '1' => 'ventas/js/VentasJS'
             ]
         ];
         return view('layout/layout_main_view', $data);
@@ -110,10 +110,29 @@ class VentasController extends BaseController
     public function EliminarVenta()
     {
         $post = $this->request->getPost();
-        $data = [
-            'main_view' => 'ventas/ventas_new_view'
-        ];
-        return view('layout/layout_main_view', $data);
+        $venta_id = !empty($post['venta_id']) ? $post['venta_id'] : NULL;
+        $venta = GetRowObjectByWhere('ventas', ['id' => $venta_id, 'eliminado' => false]);
+        if (!empty($venta)) {
+            $valida = UpdateRowTableByWhere('ventas', ['estado' => false, 'eliminado' => true, 'deleted_at' => getTimestamp()], ['id' => $venta_id]);
+            if ($valida > 0) {
+                $rsp = [
+                    'tipo' => 'success',
+                    'msg' => 'Venta eliminada con éxito.'
+                ];
+            } else {
+                $rsp = [
+                    'tipo' => 'error',
+                    'msg' => 'Venta no eliminada'
+                ];
+            }
+        } else {
+            $rsp = [
+                'tipo' => 'error',
+                'msg' => 'Datos no recibidos por el servidor'
+            ];
+        }
+
+        return json_encode($rsp);
     }
 
     public function ObtenerCliente()

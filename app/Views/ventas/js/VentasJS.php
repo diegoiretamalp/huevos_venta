@@ -124,13 +124,63 @@
             if (action) {
                 $('#cliente_id').val(0);
                 HabilitarCamposCliente();
-            }else{
+            } else {
                 HabilitarCamposCliente(true);
             }
             console.log('siu');
         });
 
     });
+
+    function EliminarVenta(venta_id) {
+
+        Swal.fire({
+            title: '¡¡ATENCIÓN!!',
+            html: '<h2>¿Estás seguro que quieres eliminar la venta?<br>¡se anularán los pagos realizados!</h2>',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                if (venta_id > 0) {
+                    $.ajax({
+                        url: "<?= base_url("ventas/eliminar") ?>",
+                        type: "post",
+                        data: {
+                            venta_id: venta_id,
+                        },
+                        dataType: 'json',
+                        success: function(resp) {
+                            let respuesta = JSON.stringify(resp);
+                            let obj = $.parseJSON(respuesta);
+                            let tipo = obj['tipo'];
+                            let resultado = obj['msg'];
+                            let data = obj['data'];
+                            console.log(data);
+                            if (tipo == 'error') {
+                                toastr["error"]("Error al Eliminar Venta, recargue página e intente nuevamente", "Error de Validación")
+                            } else {
+                                toastr["success"]("Venta eliminada con éxito", "Gestión de Ventas")
+                            }
+                        },
+                        error: function(error) {
+                            console.log(JSON.stringify(error));
+                            toastr["error"](`Error Interno`, "Error de Validación")
+                        }
+                    });
+                } else {
+                    toastr["error"]("Error al Eliminar Venta, recargue página e intente nuevamente", "Error de Validación")
+                }
+            } else {
+                $('#row_' + venta_id).removeClass('selected_fila');
+            }
+        });
+
+    }
 
     function HabilitarCamposCliente(habilitar = false) {
         $('#nombre').val('');

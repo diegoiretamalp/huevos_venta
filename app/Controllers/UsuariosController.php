@@ -55,7 +55,7 @@ class UsuariosController extends BaseController
                     'perfil_id' => !empty($post['perfil_id']) ? $post['perfil_id'] : NULL,
                     'direccion' => !empty($post['direccion']) ? $post['direccion'] : NULL,
                     'password' => sha1(1234),
-                    'validate_password' => true,
+                    'validate_password' => FALSE,
                     'created_at' => getTimestamp()
                 ];
 
@@ -72,8 +72,13 @@ class UsuariosController extends BaseController
                 }
             }
         }
-
-        $perfiles = GetObjectByWhere('perfiles', ['estado' => true, 'mostrar' => true]);
+        $where_perfiles = [
+            'estado' => true,
+        ];
+        if (USUARIO_ROL == 2) {
+            $where_perfiles['mostrar'] = true;
+        }
+        $perfiles = GetObjectByWhere('perfiles', $where_perfiles);
 
         $data = [
             'title' => 'Nuevo Usuario',
@@ -97,7 +102,7 @@ class UsuariosController extends BaseController
                 $this->session->setflashdata("error_title", "Error de Validación");
                 $this->session->setflashdata("error", "Se encontraron los siguientes errores: " . implode(", ", $validate));
                 $this->session->setflashdata("errores", $post);
-                return redirect()->route('usuarios/editar/'. $id);
+                return redirect()->route('usuarios/editar/' . $id);
             } else {
 
                 $array_update = [
@@ -110,7 +115,7 @@ class UsuariosController extends BaseController
                     'direccion' => !empty($post['direccion']) ? $post['direccion'] : NULL,
                     'updated_at' => getTimestamp()
                 ];
-                $id_usuario = $this->Usuarios_model->updateUsuario($array_update,$id);
+                $id_usuario = $this->Usuarios_model->updateUsuario($array_update, $id);
                 if ($id_usuario > 0) {
                     $this->session->setflashdata("success_title", "Gestión de Usuarios");
                     $this->session->setflashdata("success", "Se ha realizado la creación del nuevo usuario correctamente.");
@@ -119,7 +124,7 @@ class UsuariosController extends BaseController
                     $this->session->setflashdata("error_title", "Error Interno");
                     $this->session->setflashdata("error", "Ha Ocurrido un problema al crear el usuario. Intentelo Nuevamente, si el problema persiste contácte a Soporte");
                     $this->session->setflashdata("errores", $post);
-                    return redirect()->route('usuarios/editar/'. $id);
+                    return redirect()->route('usuarios/editar/' . $id);
                 }
             }
         }
@@ -158,10 +163,10 @@ class UsuariosController extends BaseController
                 'deleted_at' => getTimestamp(),
             ];
 
-            
+
             // pre_die($id);
             $usuario = GetRowObjectByWhere('usuarios', $where);
-        
+
             if (empty($usuario)) {
                 echo false;
             } else {

@@ -1,12 +1,10 @@
  <!-- Navigation Bar -->
  <nav class="navbar ms-navbar" style="background-color: black;">
 
-   <div class="ms-aside-toggler ms-toggler pl-0" data-target="#ms-side-nav" data-toggle="slideLeft">
-     <span class="ms-toggler-bar bg-primary"></span>
-     <span class="ms-toggler-bar bg-primary"></span>
-     <span class="ms-toggler-bar bg-primary"></span>
+   <div class="ms-aside-toggler pl-0">
+     <a class="text-center" href="<?= base_url('/') ?>"> <img src="<?= ASSETS_IMG ?>logo1.jpg" style="max-width: 100px;" alt="logo"> </a>
    </div>
-   <h1 class="text-white"><?= !empty($title) ? $title : '' ?></h1>
+   <h1 class="text-white pl-5"><?= !empty($title) ? $title : '' ?></h1>
 
    <div class="logo-sn logo-sm ms-d-block-sm">
      <a class="pl-0 ml-0 text-center navbar-brand mr-0" href="..\..\index.html"><img src="..\..\assets\img\logo-sm-dark.png" alt="logo"> </a>
@@ -38,6 +36,15 @@
            <li class="dropdown-menu-footer">
              <a class="media fs-14 p-2" href="<?= base_url('clientes/nuevo') ?>"> <span><i class="fa fa-plus-circle pr-2" aria-hidden="true"></i> Nuevo Cliente</span> </a>
              <a class="media fs-14 p-2" href="<?= base_url('clientes/listado') ?>"> <span><i class="fas fa-list pr-2"></i> Listado Clientes</span> </a>
+           </li>
+         </ul>
+       </li>
+       <li class="ms-nav-item dropdown">
+         <a class="text-white" href="#" id="sectoresDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-users pr-2" style="font-size: 26px;"></i> Sectores</a>
+         <ul class="dropdown-menu dropdown-menu-right user-dropdown" aria-labelledby="sectoresDropdown">
+           <li class="dropdown-menu-footer">
+             <a class="media fs-14 p-2" href="<?= base_url('sectores/nuevo') ?>"> <span><i class="fa fa-plus-circle pr-2" aria-hidden="true"></i> Nuevo Sector</span> </a>
+             <a class="media fs-14 p-2" href="<?= base_url('sectores/listado') ?>"> <span><i class="fas fa-list pr-2"></i> Listado Sectores</span> </a>
            </li>
          </ul>
        </li>

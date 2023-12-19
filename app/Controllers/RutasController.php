@@ -142,7 +142,7 @@ class RutasController extends BaseController
         $repartidores = $this->Usuarios_model->getUsuarios($where_repartidores);
         $comunas = GetObjectByWhere('comunas', ['estado' => true]);
         $regiones = GetObjectByWhere('regiones', ['estado' => true]);
-        $sectores = GetObjectByWhere('sectores', ['estado' => true]);
+        $sectores = GetObjectByWhere('sectores', ['estado' => true, 'eliminado' => false]);
         $data = [
             'title' => 'Nueva Ruta',
             'main_view' => 'rutas/rutas_new_view',
@@ -188,15 +188,15 @@ class RutasController extends BaseController
                 if (!empty($cliente)) {
                     $total_deuda = $this->Ventas_model->GetTotalDeudaCliente($cliente->id);
                     $total_venta = $this->Ventas_model->GetTotalVentaCliente($cliente->id);
-                   
+
                     $td = !empty($total_deuda) ? $total_deuda : 0;
                     $tv = !empty($total_venta) ? $total_venta->total_venta : 0;
-                    
+
                     $cliente_r->total_pagado = formatear_numero($tv - $td);
                     $cliente_r->total_venta = !empty($total_venta->total_venta) ? ($total_venta->total_venta) : 0;
                     $cliente_r->cajas_total = !empty($total_venta->cajas_total) ? $total_venta->cajas_total : 0;
                     $cliente_r->total_venta = !empty($tv) ? formatear_numero($tv) : '$0';
-                    
+
                     $cliente_r->direccion = !empty($cliente->direccion) ? $cliente->direccion : '';
                     $cliente_r->nombre_completo = (!empty($cliente->nombre) ? $cliente->nombre : '') . ' ' . (!empty($cliente->apellido_paterno) ? $cliente->apellido_paterno : '') . ' ' . (!empty($cliente->apellido_matero) ? $cliente->apellido_matero : '');
                     $cliente_r->total_deuda = !empty($total_deuda) ? formatear_numero($total_deuda) : '$0';

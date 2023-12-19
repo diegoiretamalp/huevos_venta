@@ -68,7 +68,7 @@ class LoginController extends BaseController
                         $_SESSION['userdata'] = $data;
 
                         if ($usuario->validate_password == 1) {
-                            return redirect('cambio-contrasena');
+                            return redirect('cambiar-password');
                         } else {
                             return redirect('/');
                         }
@@ -179,7 +179,7 @@ class LoginController extends BaseController
                         $data_correo['para'] =  $usuario->email;
                         $data_correo['asunto'] = 'Restablecimiento de Contraseña - Huevos Locos';
                         $rsp_mail = enviarCorreoMail($data_correo);
-                        pre_die($rsp_mail);
+                        // pre_die($rsp_mail);
                         if ($rsp_mail['tipo'] == 'success') {
                             $rps_update = UpdateRowTableByWhere('usuarios', ['token_password' => $token], ['id' => $usuario->id]);
                             
