@@ -25,7 +25,7 @@ class SectoresController extends BaseController
             'comunas' => !empty($comunas) ? $comunas : [],
             'js_content' => [
                 '0' => 'layout/js/generalJS',
-                '1' => 'sectores/js/sectoresJS'
+                '1' => 'sectores/js/SectoresJS'
             ]
         ];
         return view('layout/layout_main_view', $data);
@@ -72,7 +72,7 @@ class SectoresController extends BaseController
             'comunas' => !empty($comunas) ? $comunas : [],
             'js_content' => [
                 '0' => 'layout/js/generalJS',
-                '1' => 'sectores/js/SectoresJS'
+                '1' => 'sectores/js/sectoresJS'
             ]
         ];
         return view('layout/layout_main_view', $data);

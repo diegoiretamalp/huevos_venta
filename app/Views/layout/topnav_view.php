@@ -40,7 +40,7 @@
          </ul>
        </li>
        <li class="ms-nav-item dropdown">
-         <a class="text-white" href="#" id="sectoresDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-users pr-2" style="font-size: 26px;"></i> Sectores</a>
+         <a class="text-white" href="#" id="sectoresDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-map-signs pr-2" style="font-size: 26px;"></i> Sectores</a>
          <ul class="dropdown-menu dropdown-menu-right user-dropdown" aria-labelledby="sectoresDropdown">
            <li class="dropdown-menu-footer">
              <a class="media fs-14 p-2" href="<?= base_url('sectores/nuevo') ?>"> <span><i class="fa fa-plus-circle pr-2" aria-hidden="true"></i> Nuevo Sector</span> </a>
