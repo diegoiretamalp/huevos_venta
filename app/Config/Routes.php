@@ -138,6 +138,14 @@ $routes->post('clientes/obtener-cliente/(:num)', 'RutasController::ObtenerClient
 $routes->get('clientes/obtener-deudas/(:num)', 'RutasController::CargarDeudaCliente/$1', ['filter' => 'auth']);
 $routes->post('clientes/obtener-clientes-ruta', 'RutasController::ObtenerClientesRuta', ['filter' => 'auth']);
 
+#RUTAS DE MANTENEDOR DE RUTAS
+$routes->get('grupos/listado', 'GruposController::index', ['filter' => 'auth']);
+$routes->get('grupos/nuevo', 'GruposController::NuevoGrupo', ['filter' => 'auth']);
+$routes->post('grupos/nuevo', 'GruposController::NuevoGrupo', ['filter' => 'auth']);
+$routes->get('grupos/editar/(:num)', 'GruposController::EditarGrupo/$1', ['filter' => 'auth']);
+$routes->post('grupos/editar/(:num)', 'GruposController::EditarGrupo/$1', ['filter' => 'auth']);
+$routes->post('grupos/eliminar', 'GruposController::EliminarGrupo', ['filter' => 'auth']);
+
 
 /*
  * --------------------------------------------------------------------

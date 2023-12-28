@@ -39,12 +39,21 @@
            </li>
          </ul>
        </li>
-       <li class="ms-nav-item dropdown">
+       <!-- <li class="ms-nav-item dropdown">
          <a class="text-white" href="#" id="sectoresDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-map-signs pr-2" style="font-size: 26px;"></i> Sectores</a>
          <ul class="dropdown-menu dropdown-menu-right user-dropdown" aria-labelledby="sectoresDropdown">
            <li class="dropdown-menu-footer">
              <a class="media fs-14 p-2" href="<?= base_url('sectores/nuevo') ?>"> <span><i class="fa fa-plus-circle pr-2" aria-hidden="true"></i> Nuevo Sector</span> </a>
              <a class="media fs-14 p-2" href="<?= base_url('sectores/listado') ?>"> <span><i class="fas fa-list pr-2"></i> Listado Sectores</span> </a>
+           </li>
+         </ul>
+       </li> -->
+       <li class="ms-nav-item dropdown">
+         <a class="text-white" href="#" id="gruposDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-map-signs pr-2" style="font-size: 26px;"></i> Grupos</a>
+         <ul class="dropdown-menu dropdown-menu-right user-dropdown" aria-labelledby="gruposDropdown">
+           <li class="dropdown-menu-footer">
+             <a class="media fs-14 p-2" href="<?= base_url('grupos/nuevo') ?>"> <span><i class="fa fa-plus-circle pr-2" aria-hidden="true"></i> Nuevo Grupo</span> </a>
+             <a class="media fs-14 p-2" href="<?= base_url('grupos/listado') ?>"> <span><i class="fas fa-list pr-2"></i> Listado Grupos</span> </a>
            </li>
          </ul>
        </li>

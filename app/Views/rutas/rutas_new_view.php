@@ -30,8 +30,8 @@
                                     </div>
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
-                                            <label for="fecha_ruta">Fecha de Ruta</label>                                           
-                                            <input type="date" id="fecha_ruta"placeholder="Fecha" aria-label="Search" class="form-control" autocomplete="off" name="fecha_ruta">
+                                            <label for="fecha_ruta">Fecha de Ruta</label>
+                                            <input type="date" id="fecha_ruta" placeholder="Fecha" aria-label="Search" class="form-control" autocomplete="off" name="fecha_ruta">
                                         </div>
                                         <span class="invalid_fecha_ruta"></span>
                                     </div>
@@ -58,6 +58,7 @@
                         <div class="ms-card">
                             <div class="ms-card-body">
                                 <div class="row">
+                                    <?php /*
                                     <div class="col-xl-3">
                                         <label for="region_id">Region</label>
                                         <select class="form-control" name="region_id" id="region_id">
@@ -87,6 +88,17 @@
                                             <?php if (!empty($sectores)) : ?>
                                                 <?php foreach ($sectores as $sector) : ?>
                                                     <option comuna-data=<?= $sector->comuna_id ?> value="<?= $sector->id ?>"><?= $sector->nombre ?></option>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </select>
+                                    </div> */ ?>
+                                    <div class="col-xl-3">
+                                        <label for="grupo_id">Grupos</label>
+                                        <select class="form-control" name="grupo_id" id="grupo_id">
+                                            <option value="0">Todas</option>
+                                            <?php if (!empty($grupos)) : ?>
+                                                <?php foreach ($grupos as $grupo) : ?>
+                                                    <option value="<?= $grupo->id ?>"><?= !empty($grupo->nombre) ? $grupo->nombre : 'Sin Informacion' ?></option>
                                                 <?php endforeach; ?>
                                             <?php endif; ?>
                                         </select>

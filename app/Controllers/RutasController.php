@@ -143,6 +143,9 @@ class RutasController extends BaseController
         $comunas = GetObjectByWhere('comunas', ['estado' => true]);
         $regiones = GetObjectByWhere('regiones', ['estado' => true]);
         $sectores = GetObjectByWhere('sectores', ['estado' => true, 'eliminado' => false]);
+
+        $grupos = GetObjectByWhere('grupos', ['estado' => true, 'deleted' => false]);
+
         $data = [
             'title' => 'Nueva Ruta',
             'main_view' => 'rutas/rutas_new_view',
@@ -152,6 +155,7 @@ class RutasController extends BaseController
             'comunas' => !empty($comunas) ? $comunas : [],
             'regiones' => !empty($regiones) ? $regiones : [],
             'sectores' => !empty($sectores) ? $sectores : [],
+            'grupos' => !empty($grupos) ? $grupos : [],
             'js_content' => [
                 '0' => 'layout/js/generalJS',
                 '1' => 'rutas/js/RutasNewJS'
