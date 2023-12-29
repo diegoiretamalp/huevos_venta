@@ -2900,6 +2900,15 @@ input:checked + .ms-switch-slider.ms-switch-dark{
   min-width: 120px;
   margin-top: 1rem;
 }
+.btn-sm-custom{
+  font-size: 12px;
+  outline: none;
+  padding: 0.225rem 1rem;
+  min-width: 120px;
+  margin-top: 1rem;
+  border-radius: 5px;
+  border-color: red;
+}
 .btn:hover,
 .ms-dark-theme .btn:hover{
   color: #fff;

@@ -71,14 +71,16 @@ class GruposController extends BaseController
         }
 
         $clientes = GetObjectByWhere('clientes', ['estado' => true, 'eliminado' => false]);
+        $comunas = GetObjectByWhere('comunas', ['estado' => true]);
 
         $data = [
             'title' => 'Nuevo Grupo',
             'main_view' => 'grupos/grupos_new_view',
             'clientes' => !empty($clientes) ? $clientes : [],
+            'comunas' => !empty($comunas) ? $comunas : [],
             'js_content' => [
                 '0' => 'layout/js/generalJS',
-                '1' => 'grupos/js/GruposJS'
+                '1' => 'grupos/js/GruposNewJS'
             ]
         ];
         return view('layout/layout_main_view', $data);

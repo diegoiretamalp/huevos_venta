@@ -427,18 +427,18 @@ class RutasController extends BaseController
     public function ObtenerClientesRuta()
     {
         $comuna_id = $this->request->getPost('comuna_id');
-        $region_id = $this->request->getPost('region_id');
-        $sector_id = $this->request->getPost('sector_id');
-        if (is_numeric($comuna_id) && is_numeric($region_id)) {
+        // $region_id = $this->request->getPost('region_id');
+        // $sector_id = $this->request->getPost('sector_id');
+        if (is_numeric($comuna_id)) {
             $where = [
                 'c.estado' => true,
                 'c.eliminado' => false,
-                'c.region_id' => !empty($region_id) ? $region_id : '',
+                // 'c.region_id' => !empty($region_id) ? $region_id : '',
                 'c.comuna_id' => !empty($comuna_id) ? $comuna_id : '',
             ];
-            if (!empty($sector_id)) {
-                $where['c.sector_id'] = $sector_id;
-            }
+            // if (!empty($sector_id)) {
+            //     $where['c.sector_id'] = $sector_id;
+            // }
             $clientes = $this->Rutas_model->GetClientesRutaComuna($where);
             if (!empty($clientes)) {
                 foreach ($clientes as $c) {
