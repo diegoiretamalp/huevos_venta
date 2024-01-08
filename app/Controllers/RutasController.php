@@ -55,7 +55,7 @@ class RutasController extends BaseController
                     $ruta->total_transferencia = $total_transferencia;
                 }
 
-                $gastos = GetObjectByWhere('gastos', ['ruta_id' => $ruta->id, 'estado' => true]);
+                $gastos = GetObjectByWhere('gastos', ['ruta_id' => $ruta->id, 'estado' => true, 'eliminado' => false]);
                 $total_gastos = 0;
                 if (!empty($gastos)) {
                     $total_gastos += SumaGeneralRow($gastos, 'monto');
@@ -204,8 +204,10 @@ class RutasController extends BaseController
                     $cliente_r->direccion = !empty($cliente->direccion) ? $cliente->direccion : '';
                     $cliente_r->nombre_completo = (!empty($cliente->nombre) ? $cliente->nombre : '') . ' ' . (!empty($cliente->apellido_paterno) ? $cliente->apellido_paterno : '') . ' ' . (!empty($cliente->apellido_matero) ? $cliente->apellido_matero : '');
                     $cliente_r->total_deuda = !empty($total_deuda) ? formatear_numero($total_deuda) : '$0';
-                    $cliente_r->precio_favorito = formatear_numero($cliente->precio_favorito);
+                    $pre = !empty($cliente->precio_favorito) ? soloNumeros($cliente->precio_favorito) : 0;
+                    $cliente_r->precio_favorito = formatear_numero($pre);
                     $cliente_r->producto_id = $cliente->producto_id;
+                    // pre_die("asdas");
                 }
             }
         }
@@ -246,20 +248,23 @@ class RutasController extends BaseController
             $fiados_pagados = GetPagosVentaYFiados($ruta->id);
             // pre_die($fiados_pagados);
             $ruta->total_pagado = $total_pagado;
-            $ruta->total_efectivo = $total_efectivo;
+            $ruta->total_efectivo = !empty($total_efectivo) ? $total_efectivo : 0;
             $ruta->total_fiado = $total_fiado;
             $ruta->total_venta = $total_venta - $total_fiado;
             $ruta->total_transferencia = $total_transferencia;
             $ruta->total_deposito = $total_deposito;
             $ruta->total_fiado_pagado = $fiados_pagados->fiado_pagado_ruta;
+            
+            $gastos = GetObjectByWhere('gastos', ['ruta_id' => $ruta->id, 'estado' => true]);
+            $total_gastos = 0;
+            if (!empty($gastos)) {
+                $total_gastos += SumaGeneralRow($gastos, 'monto');
+                if(!empty($total_gastos)){
+                    $ruta->total_efectivo -= $total_gastos;
+                }
+            }
+            $ruta->gastos_ruta = $total_gastos;
         }
-
-        $gastos = GetObjectByWhere('gastos', ['ruta_id' => $ruta->id, 'estado' => true]);
-        $total_gastos = 0;
-        if (!empty($gastos)) {
-            $total_gastos += SumaGeneralRow($gastos, 'monto');
-        }
-        $ruta->gastos_ruta = $total_gastos;
 
         $where_clideu = [
             'v.pagado' => false,
@@ -543,6 +548,7 @@ class RutasController extends BaseController
                     'msg' => 'Datos cargados con éxito',
                     'data' => $cliente
                 ];
+                $cliente->precio_favorito = !empty($cliente->precio_favorito) ? soloNumeros($cliente->precio_favorito) : 0;
                 http_response_code(200); // Código de estado HTTP: 200 OK
             } else {
                 $rsp = [

@@ -21,7 +21,7 @@ class ClientesController extends BaseController
             'cli.eliminado' => false
         ];
         $clientes = $this->Clientes_model->getClientes($where_clientes);
-        if(!empty($clientes)){
+        if (!empty($clientes)) {
             foreach ($clientes as $key) {
                 $cartera = GetCarteraCliente($key->id);
                 $key->total_compra = !empty($cartera->total_compra) ? $cartera->total_compra : 0;
@@ -49,7 +49,7 @@ class ClientesController extends BaseController
             return redirect('clientes/listado');
         }
         $cliente = $this->Clientes_model->getCliente($id);
-        if(empty($cliente)){
+        if (empty($cliente)) {
             $this->session->setflashdata("error_title", "Cliente No Encontrado");
             $this->session->setflashdata("error", "Cliente no existe o fue eliminado");
             return redirect('clientes/listado');
@@ -62,6 +62,8 @@ class ClientesController extends BaseController
         ];
         $ventas = $this->Ventas_model->getVentas($where_ventas);
         $cartera = GetCarteraCliente($cliente->id);
+        // pre_die($cartera->precio_f)
+        $cliente->nombre_producto = GetRowObjectByWhere('productos', ['estado' => true, 'eliminado' => false, 'id' => $cliente->producto_id])->nombre;
         // pre_die($cartera);
         $data = [
             'title' => 'Ver Cliente',

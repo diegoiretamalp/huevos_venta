@@ -148,9 +148,9 @@ class Ventas_model extends Model
             'v.total_venta AS "total_venta", ' .
             'SUM(DISTINCT pv.monto_pago_actual) AS "total_pagado"');
 
-        $ventasDetalle->join('vi_pagos_venta pv', 'pv.venta_id = v.id', 'left');
-        $ventasDetalle->join('vi_productos_venta prve', 'prve.venta_id = v.id', 'left');
-        $ventasDetalle->join('vi_productos p', 'p.id = prve.producto_id', 'left');
+        $ventasDetalle->join('pagos_venta pv', 'pv.venta_id = v.id', 'left');
+        $ventasDetalle->join('productos_venta prve', 'prve.venta_id = v.id', 'left');
+        $ventasDetalle->join('productos p', 'p.id = prve.producto_id', 'left');
 
         if (!empty($where)) {
             $ventasDetalle->where($where);

@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xl-3 col-md-6">
+        <div class="col-xl-2 col-md-6">
             <div class="ms-card card-gradient-success ms-widget ms-infographics-widget">
                 <div class="ms-card-body media text-center">
                     <div class="media-body">
@@ -21,7 +21,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-md-6">
+        <div class="col-xl-2 col-md-6">
             <div class="ms-card card-gradient-warning ms-widget ms-infographics-widget">
                 <div class="ms-card-body media text-center">
                     <div class="media-body">
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-md-6">
+        <div class="col-xl-2 col-md-6">
             <div class="ms-card card-gradient-danger ms-widget ms-infographics-widget">
                 <div class="ms-card-body media text-center">
                     <div class="media-body">
@@ -41,12 +41,32 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-md-6">
+        <div class="col-xl-2 col-md-6">
             <div class="ms-card card-gradient-info ms-widget ms-infographics-widget">
                 <div class="ms-card-body media text-center">
                     <div class="media-body">
-                        <h1 class="text-white">Total Compras</h1>
+                        <h1 class="text-white">N° Compras</h1>
                         <p class="ms-card-change"> <?= !empty($ventas) ? count($ventas) : 0 ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-6">
+            <div class="ms-card card-gradient-info ms-widget ms-infographics-widget">
+                <div class="ms-card-body media text-center">
+                    <div class="media-body">
+                        <h1 class="text-white">Precio Favorito</h1>
+                        <p class="ms-card-change"> <?= !empty($cliente) ? (!empty($cliente->precio_favorito) ? formatear_numero(soloNumeros($cliente->precio_favorito)) : '0') : 0 ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-6">
+            <div class="ms-card card-gradient-info ms-widget ms-infographics-widget">
+                <div class="ms-card-body media text-center">
+                    <div class="media-body">
+                        <h1 class="text-white">Producto Favorito</h1>
+                        <p class="ms-card-change"> <?= !empty($cliente->nombre_producto) ? $cliente->nombre_producto : 0 ?></p>
                     </div>
                 </div>
             </div>
@@ -85,7 +105,7 @@
                                                         <i class="far fa-money-bill-alt pr-2" style="font-size: 20px;"></i> Total Pagado: <?= !empty($venta->total_pagado) ? formatear_numero($venta->total_pagado) : '$0' ?>
                                                     </span>
                                                     <span>
-                                                        <a href="<?= base_url('ventas/detalle/'. $venta->id) ?>" class="btn btn-info"><i class="fas fa-info-circle"></i> Ver Detalle</a>
+                                                        <a href="<?= base_url('ventas/detalle/' . $venta->id) ?>" class="btn btn-info"><i class="fas fa-info-circle"></i> Ver Detalle</a>
                                                     </span>
                                                 </div>
                                             </div>
