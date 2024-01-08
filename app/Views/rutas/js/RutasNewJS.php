@@ -12,14 +12,12 @@
         })
         $('#btn_cargar_clientes').click(function() {
             //console.log('kie');
-            let comuna_id = $('#comuna_id').val();
-            let region_id = $('#region_id').val();
-            let sector_id = $('#sector_id').val();
-            obtenerClientesPorComuna(comuna_id, region_id, sector_id);
+            let grupo_id = $('#grupo_id').val();
+            obtenerClientesPorGrupo(grupo_id);
         });
 
         $('#btn_cargar_cliente').click(function() {
-            CargarCliente($('#cliente_id').val());
+            CargarCliente($('#grupo_id').val());
         });
 
         $('#btn_finalizar').click(function() {
@@ -139,15 +137,13 @@
 
     }
 
-    function obtenerClientesPorComuna(comuna_id, region_id, sector_id) {
+    function obtenerClientesPorGrupo(grupo_id) {
         // Realiza una solicitud AJAX para obtener los clientes de la comuna
         $.ajax({
-            url: '<?= base_url('clientes/obtener-clientes-ruta') ?>', // Nombre de tu archivo PHP
+            url: '<?= base_url('clientes/obtener-clientes-grupo') ?>', // Nombre de tu archivo PHP
             method: 'POST',
             data: {
-                comuna_id: comuna_id,
-                region_id: region_id,
-                sector_id: sector_id
+                grupo_id: grupo_id,
             },
             dataType: 'json',
             success: function(resp) {
@@ -177,9 +173,6 @@
         // document.getElementById('body_clientes').innerHTML = ``;
         clientes.forEach(function(cliente, vuelta_actual) {
 
-            // var item = document.createElement('li');
-            // item.id = 'licliente_' + cliente.id;
-
             // Verifica si el cliente ya existe en clientes_ruta
             const clienteExistente = clientes_ruta.find((c) => c.id === cliente.id);
 
@@ -192,71 +185,41 @@
                 };
                 clientes_ruta.push(c_ruta);
 
-                // var options = '';
-                // for (let index = 1; index <= clientes_ruta.length; index++) {
-                //     options += `<option value="${index}" ${nuevaPosicion == index ? 'selected' : ''}>${index}</option>`;
-                // }
-
-                //         item.innerHTML = `
-                //     <div class="ms-btn-icon btn-pill icon d-flex justify-content-around" style="width: 60px;">
-                //         <select class="form-control" disabled name="posicion_${cliente.id}" id="posicion_${cliente.id}">
-                //             ${options}
-                //         </select>
-                //     </div>
-                //     <i role="button" style="position:absolute; right:0;top:0; max-width:50px; color:red; cursor: pointer;"  class="fas fa-times-circle fa-2x"></i>
-                //     <br>
-                //     <br>
-                //     <h6>${cliente.nombre} <span class="badge badge-warning">Pendiente</span> <span role="button" id="btn_ver_deuda" onclick="VerDeudasCliente(${cliente.id})" style="cursor: pointer;" class="badge badge-danger">Ver Deuda</span></h6>
-                //     <span> <i class="material-icons">event</i><b>Ultima Compra: </b></span>
-                //     <div class="row">
-                //         <div class="col-4">
-                //             <p class="fs-14"><b>Categoria Favorita: </b>${cliente.nombre_producto_favorito}</p>
-                //             <p class="fs-14"><b>Precio Favorito: </b>${cliente.precio_favorito}</p>
-                //         </div>
-                //         <div class="col-6">
-                //             <p class="fs-14"><b>Total Deuda: </b>${cliente.total_deuda}</p>
-                //             <p class="fs-14"><b>Direccion: </b>${cliente.direccion} <a href="#" target="_blank"> <i class="fas fa-share-square"></i> Abrir Maps</a></p>
-                //         </div>
-                //     </div>
-                // `;
-                // <b class="p-3" style="position: absolute;">${vuelta_actual+1}</b>
-                // const total_pagado = cliente.total_venta - cliente.total_deuda;
-                // console.log(total_pagado);
                 url_ver_detalle = `<?= base_url('clientes/ver/') ?>${cliente.id}`
                 itemm = `<div class="col-12 col-sm-6 col-md-4 col-xl-3" id="card_${cliente.id}">
-                                    <div class="ms-card">
-                                        <div class="ms-card-header text-center">
-                                                <b class="text-danger" onclick=EliminarClienteRuta(${cliente.id}) style="margin-left: 90%; cursor: pointer;"><i class="fas fa-times-circle fa-2x"></i></b>
-                                                <h6 class="text-center">${cliente.nombre}</h6>
-                                        </div>
-                                        <div class="ms-card-body text-center">
-                                            <h6>
-                                                <i class="far fa-money-bill-alt p-2"></i> Precio Favorito: <b>${cliente.precio_favorito}</b>
-                                            </h6>
-                                            <h6>
-                                                <i class="fas fa-egg p-2"></i> Producto Favorito: <b>${cliente.nombre_producto_favorito}</b>
-                                            </h6>
-                                            <h6 class="text-danger">
-                                                <i class="far fa-money-bill-alt p-2"></i> Deuda Pendiente: <b>${cliente.total_deuda}</b>
-                                            </h6>
+                            <div class="ms-card">
+                                <div class="ms-card-header text-center">
+                                        <b class="text-danger" onclick=EliminarClienteRuta(${cliente.id}) style="margin-left: 90%; cursor: pointer;"><i class="fas fa-times-circle fa-2x"></i></b>
+                                        <h6 class="text-center">${cliente.nombre}</h6>
+                                </div>
+                                <div class="ms-card-body text-center">
+                                    <h6>
+                                        <i class="far fa-money-bill-alt p-2"></i> Precio Favorito: <b>${cliente.precio_favorito}</b>
+                                    </h6>
+                                    <h6>
+                                        <i class="fas fa-egg p-2"></i> Producto Favorito: <b>${cliente.nombre_producto_favorito}</b>
+                                    </h6>
+                                    <h6 class="text-danger">
+                                        <i class="far fa-money-bill-alt p-2"></i> Deuda Pendiente: <b>${cliente.total_deuda}</b>
+                                    </h6>
 
 
-                                            <div class="button-group2 d-flex justify-content-center">
-                                                <a class="buttonSpecial" target="_blank" href="${url_ver_detalle}" style="background-color: #374eae; color: white;">Ver Detalle</a>
-                                                <button class="buttonSpecial" type="button" onclick="VerDeudasCliente(${cliente.id})" style="background-color: red; color: white;">Ver Deudas</button>
-                                            </div>
-                                            <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nunc velit, dictum eget nulla a, sollicitudin rhoncus orci. Vivamus nec commodo turpis.</p> -->
-                                        </div>
-                                        <div class="ms-card-footer text-disabled d-flex">
-                                            <div class="ms-card-options">
-                                                <i class="fas fa-box    "></i> ${cliente.cajas_total}
-                                            </div>
-                                            <div class="ms-card-options" style="color: green;">
-                                                + ${cliente.total_pagado}
-                                            </div>
-                                        </div>
+                                    <div class="button-group2 d-flex justify-content-center">
+                                        <a class="buttonSpecial" target="_blank" href="${url_ver_detalle}" style="background-color: #374eae; color: white;">Ver Detalle</a>
+                                        <button class="buttonSpecial" type="button" onclick="VerDeudasCliente(${cliente.id})" style="background-color: red; color: white;">Ver Deudas</button>
                                     </div>
-                                </div>`;
+                                    <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nunc velit, dictum eget nulla a, sollicitudin rhoncus orci. Vivamus nec commodo turpis.</p> -->
+                                </div>
+                                <div class="ms-card-footer text-disabled d-flex">
+                                    <div class="ms-card-options">
+                                        <i class="fas fa-box    "></i> ${cliente.cajas_total}
+                                    </div>
+                                    <div class="ms-card-options" style="color: green;">
+                                        + ${cliente.total_pagado}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
                 // lista.appendChild(itemm);
                 document.getElementById('body_clientes').innerHTML += itemm;
             }

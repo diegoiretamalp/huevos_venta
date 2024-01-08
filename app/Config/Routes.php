@@ -137,6 +137,8 @@ $routes->post('clientes/cargar-primera-venta', 'RutasController::CargarPrimeraVe
 $routes->post('clientes/obtener-cliente/(:num)', 'RutasController::ObtenerClienteRuta/$1', ['filter' => 'auth']);
 $routes->get('clientes/obtener-deudas/(:num)', 'RutasController::CargarDeudaCliente/$1', ['filter' => 'auth']);
 $routes->post('clientes/obtener-clientes-ruta', 'RutasController::ObtenerClientesRuta', ['filter' => 'auth']);
+$routes->post('clientes/obtener-clientes-grupo', 'RutasController::ObtenerClientesGrupo', ['filter' => 'auth']);
+
 
 #RUTAS DE MANTENEDOR DE RUTAS
 $routes->get('grupos/listado', 'GruposController::index', ['filter' => 'auth']);

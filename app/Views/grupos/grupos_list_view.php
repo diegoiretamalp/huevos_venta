@@ -11,6 +11,8 @@
         </div>
         <div class="col-12">
             <div class="card card-body table-responsive">
+                <a href="<?= base_url('grupos/nuevo') ?>" class="btn btn-sm btn-info" style="width: 10%;"> <i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo Grupo</a>
+                <br>
                 <table id="data-table" class="table table-hover w-100 dataTable no-footer">
                     <thead>
                         <tr role="row">
@@ -24,13 +26,14 @@
                     <tbody>
                         <?php if (!empty($grupos)) : ?>
                             <?php foreach ($grupos as $grupo) : ?>
-                                <tr>
+                                <tr id="row_<?= $grupo->id ?>">
                                     <td><?= !empty($grupo->id) ? $grupo->id : 'Sin Información' ?></td>
                                     <td><?= !empty($grupo->nombre) ? strUpper($grupo->nombre) : 'Sin Información' ?></td>
                                     <td><?= !empty($grupo->clientes) ? strUpper($grupo->clientes) : 'Sin Información' ?></td>
                                     <td><?= !empty($grupo->estado) ? ($grupo->estado == 1 ? 'ACTIVO' : 'INACTIVO') : '' ?></td>
                                     <td style="white-space: nowrap;" class="text-center">
                                         <a href="<?= base_url('grupos/editar/' . $grupo->id) ?>" class="btn btn-sm btn-info"><i class="fas fa-edit"></i> Editar Grupo</a>
+                                        <button class="btn btn-sm btn-danger" onclick="EliminarGrupo(<?= $grupo->id ?>)"><i class="fas fa-trash"></i> Eliminar Grupo</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

@@ -427,7 +427,7 @@ class RutasController extends BaseController
     public function ObtenerClientesRuta()
     {
         $comuna_id = $this->request->getPost('comuna_id');
-        // $region_id = $this->request->getPost('region_id');
+        $cliente_id = $this->request->getPost('cliente_id');
         // $sector_id = $this->request->getPost('sector_id');
         if (is_numeric($comuna_id)) {
             $where = [
@@ -436,9 +436,9 @@ class RutasController extends BaseController
                 // 'c.region_id' => !empty($region_id) ? $region_id : '',
                 'c.comuna_id' => !empty($comuna_id) ? $comuna_id : '',
             ];
-            // if (!empty($sector_id)) {
-            //     $where['c.sector_id'] = $sector_id;
-            // }
+            if (!empty($cliente_id)) {
+                $where['c.id'] = $cliente_id;
+            }
             $clientes = $this->Rutas_model->GetClientesRutaComuna($where);
             if (!empty($clientes)) {
                 foreach ($clientes as $c) {
@@ -789,5 +789,69 @@ class RutasController extends BaseController
         header('Content-Type: application/json');
         echo json_encode($rsp);
         exit;
+    }
+
+    public function ObtenerClientesGrupo()
+    {
+        $grupo_id = $this->request->getPost('grupo_id');
+        if (is_numeric($grupo_id)) {
+            $where = [
+                'id' => $grupo_id,
+                'estado' => true,
+                'deleted' => false,
+            ];
+            if (!empty($cliente_id)) {
+                $where['c.id'] = $cliente_id;
+            }
+            $grupo = GetRowObjectByWhere('grupos', $where);
+
+            if (!empty($grupo)) {
+                $clientes_grupo = GetObjectByWhere('grupo_clientes', ['estado' => true, 'deleted' => false, 'grupo_id' => $grupo_id]);
+                $clientes_return = [];
+                foreach ($clientes_grupo as $c) {
+                    $cliente = GetRowObjectByWhere('clientes', ['id' => $c->cliente_id]);
+                    if (!empty($cliente)) {
+                        $total_deuda = $this->Ventas_model->GetTotalDeudaCliente($cliente->id);
+                        $total_venta = $this->Ventas_model->GetTotalVentaCliente($cliente->id);
+                        // $total_venta = $this->Ventas_model->GetTotalCajasVendidas($c->id);
+                        $cliente->total_deuda = !empty($total_deuda) ? ($total_deuda) : 0;
+                        $cliente->total_venta = !empty($total_venta->total_venta) ? ($total_venta->total_venta) : 0;
+                        $cliente->cajas_total = !empty($total_venta->cajas_total) ? ($total_venta->cajas_total) : 0;
+                        $cliente->total_pagado = formatear_numero($cliente->total_venta - $cliente->total_deuda);
+                        $cliente->total_deuda = formatear_numero($cliente->total_deuda);
+                        $cliente->total_venta = formatear_numero($cliente->total_venta);
+                        $cliente->precio_favorito = !empty($cliente->precio_favorito) ? formatear_numero($cliente->precio_favorito) : 0;
+                        $cliente->nombre_producto_favorito = !empty($cliente->producto_id) ? (GetRowObjectByWhere('productos', ['id' =>$cliente->producto_id]))->nombre: 'Sin Información';
+                    }
+                    $clientes_return[] = $cliente;
+                }
+
+
+                if (!empty($grupo)) {
+                    $rsp = [
+                        'tipo' => 'success',
+                        'msg' => 'Clientes cargados con éxito.',
+                        'data' => $clientes_return
+                    ];
+                } else {
+                    $rsp = [
+                        'tipo' => 'warning',
+                        'msg' => 'No se han encontrado clientes para la comuna seleccionada'
+                    ];
+                }
+            } else {
+                $rsp = [
+                    'tipo' => 'warning',
+                    'msg' => 'No se han encontrado clientes para la comuna seleccionada'
+                ];
+            }
+        } else {
+            $rsp = [
+                'tipo' => 'error',
+                'msg' => 'Solo se permite la comuna de forma numerica'
+            ];
+        }
+
+        return json_encode($rsp);
     }
 }

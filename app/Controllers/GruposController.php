@@ -39,15 +39,19 @@ class GruposController extends BaseController
             // $this->session->setflashdata("error", "Se encontraron los siguientes errores: " . implode(", ", $validate));
             // $this->session->setflashdata("errores", $post);
             // return redirect('grupos/nuevo');
-            if (!empty($post['clientes'])) {
+            if (!empty($post['clientes_grupo'])) {
+                // pre($post);
+                // pre_die();
                 $new_grupo = [
                     'nombre' => !empty($post['nombre']) ? $post['nombre'] : null,
                     'created_at' => getTimestamp(),
                 ];
                 $grupo_id = InsertRowTable('grupos', $new_grupo);
-                foreach ($post['clientes'] as $key) {
+
+                $clientes = json_decode($post['clientes_grupo']);
+                foreach ($clientes as $key) {
                     $cliente_grupo = [
-                        'cliente_id' => !empty($key['cliente_id']) ? $key['cliente_id'] : null,
+                        'cliente_id' => !empty($key->id) ? $key->id : null,
                         'grupo_id' => $grupo_id,
                         'created_at' => getTimestamp(),
                     ];
@@ -84,6 +88,143 @@ class GruposController extends BaseController
             ]
         ];
         return view('layout/layout_main_view', $data);
+    }
+    public function EditarGrupo($grupo_id)
+    {
+        if (!is_numeric($grupo_id)) {
+            $this->session->setflashdata("error_title", "Error de Validación");
+            $this->session->setflashdata("error", "Grupo no existe o fué eliminado.");
+            return redirect('grupos/listado');
+        }
+        $grupo = GetRowObjectByWhere('grupos', ['estado' => true, 'deleted' => false, 'id' => $grupo_id]);
+        if (empty($grupo)) {
+            $this->session->setflashdata("error_title", "Error de Validación");
+            $this->session->setflashdata("error", "Grupo no existe o fué eliminado.");
+            return redirect('grupos/listado');
+        }
+        $post = $this->request->getPost();
+        if (!empty($post)) {
+            $clientes_grupo = json_decode($post['clientes_grupo']);
+            // pre_die($clientes_grupo);
+            if (!empty($post['clientes_grupo'])) {
+                $update_grupo = [
+                    'nombre' => !empty($post['nombre']) ? $post['nombre'] : null,
+                    'updated_at' => getTimestamp(),
+                ];
+                $update_id = UpdateRowTableByWhere('grupos', $update_grupo, ['id' => $grupo->id]);
+                $update_grupo_clientes = [
+                    'grupo_id' => $grupo->id,
+                    'estado' => false,
+                    'deleted' => true,
+                    'updated_at' => getTimestamp(),
+                    'deleted_at' => getTimestamp(),
+                ];
+                $update_clientes_id = UpdateRowTableByWhere('grupo_clientes', $update_grupo_clientes, ['grupo_id' => $grupo->id]);
+
+                $clientes_grupo = json_decode($post['clientes_grupo']);
+                // pre_die($clientes_grupo);
+                foreach ($clientes_grupo as $key) {
+                    $cliente_grupo = [
+                        'cliente_id' => !empty($key->id) ? $key->id : null,
+                        'grupo_id' => $grupo->id,
+                        'created_at' => getTimestamp(),
+                    ];
+                    InsertRowTable('grupo_clientes', $cliente_grupo);
+                }
+                if ($update_id > 0 && $update_clientes_id > 0) {
+                    $this->session->setflashdata("success_title", "Mantenedor de Grupos");
+                    $this->session->setflashdata("success", "Se ha creado el Grupo con éxito!");
+                    return redirect('grupos/listado');
+                } else {
+                    $this->session->setflashdata("error_title", "Error de Validación");
+                    $this->session->setflashdata("error", "Se encontraron los siguientes errores: ");
+                    $this->session->setflashdata("errores", $post);
+                    return redirect('grupos/nuevo');
+                }
+            } else {
+                $this->session->setflashdata("error_title", "Mantenedor de Grupos");
+                $this->session->setflashdata("error", "Error al crear el grupo!");
+                return redirect('grupos/nuevo');
+            }
+        }
+
+        $clientes = GetObjectByWhere('clientes', ['estado' => true, 'eliminado' => false]);
+        $comunas = GetObjectByWhere('comunas', ['estado' => true]);
+        // pre_die($grupo);
+
+        $clientes_grupo = GetObjectByWhere('grupo_clientes', ['estado' => true, 'deleted' => false, 'grupo_id' => $grupo->id]);
+        $clientes_grupo_return = [];
+        if (!empty($clientes_grupo)) {
+            foreach ($clientes_grupo as $key) {
+                $cliente = GetRowObjectByWhere('clientes', ['estado' => true, 'eliminado' => false, 'id' => $key->cliente_id]);
+                if (!empty($cliente)) {
+                    $cliente_data = [
+                        'id' => $cliente->id,
+                        'posicion' => 1,
+                        'cliente_data' => $cliente,
+                    ];
+                    $clientes_grupo_return[] = $cliente_data;
+                }
+            }
+        }
+        // pre_die($clientes_grupo_return);
+        $data = [
+            'title' => 'Editar Grupo',
+            'main_view' => 'grupos/grupos_edit_view',
+            'action' => base_url('grupos/editar/' . $grupo->id),
+            'clientes' => !empty($clientes) ? $clientes : [],
+            'comunas' => !empty($comunas) ? $comunas : [],
+            'grupo' => !empty($grupo) ? $grupo : [],
+            'clientes_grupo' => !empty($clientes_grupo_return) ? $clientes_grupo_return : [],
+            'js_content' => [
+                '0' => 'layout/js/generalJS',
+                '1' => 'grupos/js/GruposEditJS'
+            ]
+        ];
+        return view('layout/layout_main_view', $data);
+    }
+
+    public function EliminarGrupo()
+    {
+        $post = $this->request->getPost();
+
+        if (!empty($post)) {
+            $id = $post['grupo_id'];
+            $where = [
+                'id' => $id,
+                'deleted' => false,
+            ];
+
+            $arr_data = [
+                'deleted' => true,
+                'deleted_at' => getTimestamp(),
+            ];
+
+            $grupo = GetRowObjectByWhere('grupos', $where);
+
+            if (empty($grupo)) {
+                echo false;
+            } else {
+                $clientes_grupo = GetObjectByWhere('grupo_clientes', ['grupo_id' => $grupo->id, 'deleted' => false]);
+                $deleted = UpdateRowTableByWhere('grupos', $arr_data, $where);
+                if ($deleted) {
+                    if ($clientes_grupo) {
+                        $arr_cli = [
+                            'deleted' => true,
+                            'estado' => false,
+                            'updated_at' => getTimestamp(),
+                            'deleted_at' => getTimestamp(),
+                        ];
+                        $deleted_clientes = UpdateRowTableByWhere('grupo_clientes', $arr_cli, ['grupo_id' => $grupo->id]);
+                    }
+                    echo true;
+                } else {
+                    echo false;
+                }
+            }
+        } else {
+            echo false;
+        }
     }
 
     // private function ValidaFields($data)
