@@ -81,7 +81,7 @@
                                             <?php endif; ?>
                                         </select>
                                     </div>
-                                    <div class="col-xl-3">
+                                    <!-- <div class="col-xl-3">
                                         <label for="sector_id">Sector</label>
                                         <select class="form-control" name="sector_id" id="sector_id">
                                             <option value="0">Todas</option>
@@ -106,18 +106,6 @@
                                     <div class="col-xl-2 mt-auto">
                                         <button type="button" id="btn_cargar_clientes" class="btn btn-sm btn-secondary"> Cargar</button>
                                     </div>
-                                    <!-- <div class="col-xl-4">
-                                        <label for="cliente_id">Seleccionar Clientes</label>
-                                        <select class="form-control" name="cliente_id" id="cliente_id">
-                                            <option value="0">Seleccionar</option>
-                                            <?php if (!empty($clientes)) : ?>
-                                                <?php foreach ($clientes as $cliente) : ?>
-                                                    <option value="<?= $cliente->id ?>"><?= $cliente->nombre . ' ' . $cliente->apellido_paterno . ' ' . $cliente->apellido_materno ?></option>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-                                        </select>
-                                    </div> -->
-
                                     <!-- <div class="col-xl-2 d-flex justify-content-center align-content-center">
                                         <button type="button" id="btn_cargar_cliente" class="btn btn-sm btn-secondary">Cargar</button>
                                     </div> -->

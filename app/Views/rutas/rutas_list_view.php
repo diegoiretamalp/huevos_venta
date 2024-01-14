@@ -35,7 +35,7 @@
                     <tbody>
                         <?php if (!empty($rutas)) : $count = 1; ?>
                             <?php foreach ($rutas as $ruta) : $count++; ?>
-                                <tr>
+                                <tr id="row_<?= $ruta->id ?>">
                                     <td class="text-center"><?= $count ?></td>
                                     <td colspan="2">
                                         <div class="row">
@@ -81,6 +81,8 @@
                                     <td class="text-center" style="white-space: nowrap;"><?= !empty($ruta->fecha_ruta) ? ordenar_fechaHumano($ruta->fecha_ruta) : 'Sin Información' ?></td>
                                     <td class="text-center">
                                         <a href="<?= base_url('rutas/ver/') . $ruta->id ?>" class="btn btn-sm btn-secondary "><i class="fas fa-eye fs-16"> Ver</i></a>
+                                        <button type="button" onclick="EliminarRuta(<?= $ruta->id ?>)" class="btn btn-sm btn-danger btn_deleted "><i class="fa fa-trash"></i> Eliminar
+                                        </button>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

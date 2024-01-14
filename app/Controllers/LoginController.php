@@ -146,14 +146,16 @@ class LoginController extends BaseController
         $session = session();
 
         $session->destroy();
-        $data = array(
-            'title' => 'Su sesión a Expirado',
-            'action' => base_url('sesion-finalizada'),
-            'alerta' => 'Esto debido a Inactividad o Inicio de Sesión desde otro dispositivo',
-            'main_view' => 'login/session_finalizada_view'
-        );
+        return redirect('login');
 
-        return view('layout/layout_nologin_view', $data);
+        // $data = array(
+        //     'title' => 'Su sesión a Expirado',
+        //     'action' => base_url('sesion-finalizada'),
+        //     'alerta' => 'Esto debido a Inactividad o Inicio de Sesión desde otro dispositivo',
+        //     'main_view' => 'login/session_finalizada_view'
+        // );
+
+        // return view('layout/layout_nologin_view', $data);
     }
     public function logout()
     {

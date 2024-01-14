@@ -4,3 +4,4 @@ composer.lock
 /writable/
 .idea/*
 .vscode/sftp.json
+composer.lock

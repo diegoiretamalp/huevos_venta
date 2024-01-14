@@ -68,7 +68,8 @@ class RutasController extends BaseController
             'main_view' => 'rutas/rutas_list_view',
             'rutas' => !empty($rutas) ? $rutas  : [],
             'js_content' => [
-                '0' => 'layout/js/generalJS'
+                '0' => 'layout/js/generalJS',
+                '1' => 'rutas/js/RutasJS'
             ]
         ];
         return view('layout/layout_main_view', $data);
@@ -302,10 +303,50 @@ class RutasController extends BaseController
     public function EliminarRuta()
     {
         $post = $this->request->getPost();
-        $data = [
-            'main_view' => 'rutas/rutas_new_view'
-        ];
-        return view('layout/layout_main_view', $data);
+
+        if (!empty($post)) {
+            $id = $post['ruta_id'];
+            $where = [
+                'id' => $id,
+                'eliminado' => false,
+            ];
+
+            $arr_data = [
+                'eliminado' => true,
+                'deleted_at' => getTimestamp(),
+            ];
+
+            $ruta = $this->Rutas_model->getRutaWhere($where);
+
+            if (empty($ruta)) {
+                echo false;
+            } else {
+                $deleted = $this->Rutas_model->deleteRuta($arr_data, $id);
+                if ($deleted) {
+
+                    $ventas = GetObjectByWhere('ventas', ['ruta_id' => $ruta->id, 'eliminado' => false]);
+                    // $ventas_total = count($ventas);
+                    $count = 0;
+                    if (!empty($ventas)) {
+                        foreach ($ventas as $key) {
+                            $valida = UpdateRowTableByWhere('ventas', ['estado' => false, 'eliminado' => true, 'deleted_at' => getTimestamp()], ['id' => $key->id]);
+                            if ($valida > 0) {
+                                $count++;
+                            }
+                        }
+                        if ($count > 0) {
+                            echo true;
+                        }
+                    } else {
+                        echo true;
+                    }
+                } else {
+                    echo false;
+                }
+            }
+        } else {
+            echo false;
+        }
     }
 
     public function ObtenerCliente()
@@ -444,6 +485,9 @@ class RutasController extends BaseController
             if (!empty($cliente_id)) {
                 $where['c.id'] = $cliente_id;
             }
+            // if (!empty($sector_id)) {
+            //     $where['c.sector_id'] = $sector_id;
+            // }
             $clientes = $this->Rutas_model->GetClientesRutaComuna($where);
             if (!empty($clientes)) {
                 foreach ($clientes as $c) {

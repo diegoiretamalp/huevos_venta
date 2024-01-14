@@ -26,22 +26,6 @@ $errores = $session->getFlashdata('errores');
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="col-md-4 mb-3">
-                            <label for="apellido_paterno">Apellido Paterno</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="apellido_paterno" name="apellido_paterno" placeholder="Ingrese Apellido Paterno..." value="<?= !empty($errores) ? $errores['apellido_paterno'] : (!empty($post) ? $post['apellido_paterno'] : '') ?>">
-                                <div id="invalid_apellido_paterno">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="apellido_materno">Apellido Materno</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="apellido_materno" name="apellido_materno" placeholder="Ingrese Apellido Materno..." value="<?= !empty($errores) ? $errores['apellido_materno'] : (!empty($post) ? $post['apellido_materno'] : '') ?>">
-                                <div id="invalid_apellido_materno">
-                                </div>
-                            </div>
-                        </div> -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="rut_factura">Rut a Facturar</label>
@@ -60,7 +44,6 @@ $errores = $session->getFlashdata('errores');
                         </div>
                     </div>
                     <div class="form-row">
-                        
                         <div class="col-md-4 mb-3">
                             <label for="celular">Celular</label>
                             <div class="input-group">
@@ -89,6 +72,7 @@ $errores = $session->getFlashdata('errores');
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                             </select>
+			    <span id="invalid_comuna_id" class="text-danger"></span>
                         </div>
                         <div class="col-xl-4">
                             <label for="sector_id">Sector</label>
@@ -100,8 +84,8 @@ $errores = $session->getFlashdata('errores');
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                             </select>
+			   <span id="invalid_sector_id" class="text-danger"></span>
                         </div>
-                        
                         <div class="col-md-4 mb-4">
                             <label for="direccion">Direccion</label>
                             <div class="input-group">
@@ -114,23 +98,20 @@ $errores = $session->getFlashdata('errores');
                     <div class="form-row">
                         <div class="col-md-4 mb-4">
                             <label for="producto_id">Producto</label>
-                            <div class="input-group">
                                 <select name="producto_id" id="producto_id" class="form-control">
                                     <option value="0">Seleccionar</option>
                                     <?php foreach ($productos as $producto) : ?>
                                         <option <?= !empty($errores) ? ($errores['producto_id'] == $producto->id ? 'selected' : '') : (!empty($post) ? ($post['producto_id'] == $producto->id ? 'selected' : '') : '') ?> value="<?= $producto->id ?>"><?= $producto->nombre ?></option>
                                     <?php endforeach; ?>
                                 </select>
-                                <div id="invalid_sector_id">
-                                </div>
-                            </div>
+                                <span id="invalid_producto_id" class="text-danger"></span>
                         </div>
                         <div class="col-md-4 mb-4">
                             <label for="tipo_huevo">Tipo</label>
                             <div class="input-group">
                                 <select name="tipo_huevo" id="tipo_huevo" class="form-control">
                                     <option value="c">Color</option>
-                                    <option value="b">Blanco</option>
+                                    <option value="b" selected>Blanco</option>
                                 </select>
                                 <div id="invalid_tipo_huevo">
                                 </div>

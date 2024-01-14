@@ -3,6 +3,8 @@
     let lista = document.querySelector('#body_clientes');
     console.log(lista);
     $(document).ready(function() {
+        $('#cliente_id').select2();
+        // $('#')
         $('#fecha_ruta').focus(function() {
             console.log('siu');
             var dateInput = document.getElementById('fecha_ruta');
@@ -50,15 +52,15 @@
         $('#comuna_id').change(function() {
             // Obtiene el valor seleccionado de la comuna
             var comunaId = $(this).val();
-
+            console.log(comunaId);
             // Oculta todos los sectores
-            $('#sector_id option').hide();
+            $('#cliente_id option').hide();
 
             // Muestra solo los sectores que pertenecen a la comuna seleccionada
-            $('#sector_id option[comuna-data="' + comunaId + '"]').show();
+            $('#cliente_id option[comuna-data="' + comunaId + '"]').show();
 
             // Selecciona la opción "Todas" por defecto en el campo de sector
-            $('#sector_id').val(0);
+            $('#cliente_id').val(0);
         });
 
 
@@ -143,7 +145,9 @@
             url: '<?= base_url('clientes/obtener-clientes-grupo') ?>', // Nombre de tu archivo PHP
             method: 'POST',
             data: {
+
                 grupo_id: grupo_id,
+
             },
             dataType: 'json',
             success: function(resp) {

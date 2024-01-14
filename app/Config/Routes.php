@@ -139,15 +139,13 @@ $routes->get('clientes/obtener-deudas/(:num)', 'RutasController::CargarDeudaClie
 $routes->post('clientes/obtener-clientes-ruta', 'RutasController::ObtenerClientesRuta', ['filter' => 'auth']);
 $routes->post('clientes/obtener-clientes-grupo', 'RutasController::ObtenerClientesGrupo', ['filter' => 'auth']);
 
-
-#RUTAS DE MANTENEDOR DE RUTAS
+#RUTAS DE MANTENEDOR DE GRUPOS
 $routes->get('grupos/listado', 'GruposController::index', ['filter' => 'auth']);
 $routes->get('grupos/nuevo', 'GruposController::NuevoGrupo', ['filter' => 'auth']);
 $routes->post('grupos/nuevo', 'GruposController::NuevoGrupo', ['filter' => 'auth']);
 $routes->get('grupos/editar/(:num)', 'GruposController::EditarGrupo/$1', ['filter' => 'auth']);
 $routes->post('grupos/editar/(:num)', 'GruposController::EditarGrupo/$1', ['filter' => 'auth']);
 $routes->post('grupos/eliminar', 'GruposController::EliminarGrupo', ['filter' => 'auth']);
-
 
 /*
  * --------------------------------------------------------------------
