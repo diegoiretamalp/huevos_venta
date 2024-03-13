@@ -14,8 +14,11 @@ class UsuariosController extends BaseController
     public function index()
     {
 
+        $empresa_id = $_SESSION['userdata']['empresa_id'];
+
         $where_usuarios = [
-            'u.eliminado' => false
+            'u.eliminado' => false,
+            // 'u.empresa_id' => $empresa_id
             //'mostrar' => true,
         ];
         /*if(USUARIO_ROL == 2){
@@ -37,6 +40,7 @@ class UsuariosController extends BaseController
     public function NuevoUsuario()
     {
         $post = $this->request->getPost();
+        // $empresa_id = $_SESSION['userdata']['empresa_id'];
 
         if (!empty($post)) {
             if ($validate = $this->validateFields($post)) {
@@ -53,6 +57,7 @@ class UsuariosController extends BaseController
                     'email' => !empty($post['email']) ? $post['email'] : NULL,
                     'estado' => true,
                     'perfil_id' => !empty($post['perfil_id']) ? $post['perfil_id'] : NULL,
+                    'empresa_id' => !empty($post['empresa_id']) ? $post['empresa_id'] : NULL,
                     'direccion' => !empty($post['direccion']) ? $post['direccion'] : NULL,
                     'password' => sha1(1234),
                     'validate_password' => FALSE,
@@ -75,9 +80,14 @@ class UsuariosController extends BaseController
         $where_perfiles = [
             'estado' => true,
         ];
+        $where_empresas = [
+            'estado' => true,
+            'deleted' => false,
+        ];
         if (USUARIO_ROL == 2) {
             $where_perfiles['mostrar'] = true;
         }
+        $empresas = GetObjectByWhere('empresas', $where_empresas);
         $perfiles = GetObjectByWhere('perfiles', $where_perfiles);
 
         $data = [
@@ -86,6 +96,7 @@ class UsuariosController extends BaseController
             'main_view' => 'usuarios/usuarios_new_view',
             'usuarios' => !empty($usuario) ? $usuario : [],
             'perfiles' => !empty($perfiles) ? $perfiles : [],
+            'empresas' => !empty($empresas) ? $empresas : [],
             'js_content' => [
                 '0' => 'layout/js/generalJS',
                 '1' => 'usuarios/js/UsuariosJS'
@@ -113,6 +124,7 @@ class UsuariosController extends BaseController
                     'estado' => !empty($post['estado']) ? true : false,
                     'perfil_id' => !empty($post['perfil_id']) ? $post['perfil_id'] : NULL,
                     'direccion' => !empty($post['direccion']) ? $post['direccion'] : NULL,
+                    'empresa_id' => !empty($post['empresa_id']) ? $post['empresa_id'] : NULL,
                     'updated_at' => getTimestamp()
                 ];
                 $id_usuario = $this->Usuarios_model->updateUsuario($array_update, $id);
@@ -130,6 +142,12 @@ class UsuariosController extends BaseController
         }
 
 
+        $where_empresas = [
+            'estado' => true,
+            'deleted' => false,
+        ];
+
+        $empresas = GetObjectByWhere('empresas', $where_empresas);
         $perfiles = GetObjectByWhere('perfiles', ['estado' => true]);
         $usuarios = $this->Usuarios_model->getUsuario($id);
 
@@ -139,6 +157,7 @@ class UsuariosController extends BaseController
             'action' => base_url('usuarios/editar/' . $id),
             'perfiles' => !empty($perfiles) ? $perfiles : [],
             'usuarios' => !empty($usuarios) ? $usuarios : [],
+            'empresas' => !empty($empresas) ? $empresas : [],
             'main_view' => 'usuarios/usuarios_edit_view',
             'js_content' => [
                 '0' => 'layout/js/generalJS',

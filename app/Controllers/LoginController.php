@@ -63,6 +63,7 @@ class LoginController extends BaseController
                             'token_usuario' => $token,
                             'habilitado' => true,
                             'perfil' => $usuario->perfil_id,
+                            'empresa_id' => $usuario->empresa_id,
                         ];
 
                         $_SESSION['userdata'] = $data;

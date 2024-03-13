@@ -103,9 +103,6 @@ $routes->post('usuarios/editar/(:num)', 'UsuariosController::EditarUsuario/$1', 
 $routes->post('usuarios/eliminar', 'UsuariosController::EliminarUsuario', ['filter' => ['auth', 'rutasFilter']]);
 
 
-
-
-
 #RUTAS DE MANTENEDOR DE SECTORES
 $routes->get('sectores/listado', 'SectoresController::index', ['filter' => ['auth', 'rutasFilter']]);
 $routes->get('sectores/nuevo', 'SectoresController::NuevoSector', ['filter' => ['auth', 'rutasFilter']]);

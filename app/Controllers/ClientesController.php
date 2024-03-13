@@ -16,9 +16,11 @@ class ClientesController extends BaseController
     public function index()
     {
 
+        $empresa_id = $_SESSION['userdata']['empresa_id'];
         $where_clientes = [
             'cli.estado' => true,
-            'cli.eliminado' => false
+            'cli.eliminado' => false,
+            'cli.empresa_id' => $empresa_id
         ];
         $clientes = $this->Clientes_model->getClientes($where_clientes);
         if (!empty($clientes)) {

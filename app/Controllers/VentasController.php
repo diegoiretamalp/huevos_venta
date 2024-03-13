@@ -16,9 +16,13 @@ class VentasController extends BaseController
     }
     public function index()
     {
+        
+        $empresa_id = $_SESSION['userdata']['empresa_id'];
+
         $where = [
             'v.estado' => true,
             'v.eliminado' => false,
+            'v.empresa_id' => $empresa_id,
         ];
         $ventas = $this->Ventas_model->GetVentasDetalle($where);
         // pre_die($ventas);

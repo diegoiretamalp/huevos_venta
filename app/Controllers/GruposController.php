@@ -12,10 +12,12 @@ class GruposController extends BaseController
     }
     public function index()
     {
+        $empresa_id = $_SESSION['userdata']['empresa_id'];
 
         $where_grupos = [
             'estado' => true,
             'deleted' => false,
+            'empresa_id' => $empresa_id,
         ];
         $grupos = GetObjectByWhere('grupos', $where_grupos);
         // $comunas = GetObjectByWhere('comunas', ['estado' => true]);

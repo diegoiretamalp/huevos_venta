@@ -78,7 +78,6 @@ $errores = $session->getFlashdata('errores');
                         </div>
                     </div>
                 </div>
-
                 <div class="form-row">
 
                     <div class="col-md-2 mb-3"></div>
@@ -94,26 +93,18 @@ $errores = $session->getFlashdata('errores');
                             </div>
                         </div>
                     </div>
-
-                </div>
-
-
-                <div class="form-row">
-
-                    <div class="col-md-2 mb-3"></div>
-
-                    <div class="col-md-4 mb-4">
-                        <label for="estado">Estado</label>
+                    <div class="col-md-4 mb-3">
+                        <label for="empresa_id">Empresas</label>
                         <div class="input-group">
-                            <select name="estado" id="estado" class="form-control">
-                                <option value="0" <?= !empty($errores) ? ($errores['estado'] == '0' ? 'selected' : '') : (!empty($usuarios) ? ($usuarios->estado == '0' ? 'selected' : '') : '') ?>>Inactivo</option>
-                                <option value="1" <?= !empty($errores) ? ($errores['estado'] == '1' ? 'selected' : '') : (!empty($usuarios) ? ($usuarios->estado == '1' ? 'selected' : '') : '') ?>>Activo</option>
+                            <select name="empresa_id" id="empresa_id" class="form-control">
+                                <?php foreach ($empresas as $empresa) : ?>
+                                    <option <?= !empty($errores) ? ($errores['empresa_id'] == $empresa->id ? 'selected' : '') : '' ?> value="<?= $empresa->id ?>"><?= $empresa->nombre ?></option>
+                                <?php endforeach; ?>
                             </select>
-                            <div id="invalid_estado">
+                            <div id="invalid_empresa_id">
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="form-row">
                     <div class="col-2"></div>

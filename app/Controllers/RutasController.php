@@ -16,11 +16,16 @@ class RutasController extends BaseController
     }
     public function index()
     {
+        $empresa_id = $_SESSION['userdata']['empresa_id'];
+        // pre_die($session);
         $rutas_where = [
             'estado' => true,
             'eliminado' => false,
+            'empresa_id' => $empresa_id,
         ];
+        // pre($rutas_where);
         $rutas = $this->Rutas_model->getRutas($rutas_where);
+        // pre_die($rutas);
         if (!empty($rutas)) {
             foreach ($rutas as $ruta) {
                 $ventas = $this->Ventas_model->getVentasRuta($ruta->id);
@@ -76,6 +81,7 @@ class RutasController extends BaseController
     }
     public function NuevaRuta()
     {
+        $empresa_id = $_SESSION['userdata']['empresa_id'];
         $post = $this->request->getPost();
         if (!empty($post)) {
 
@@ -86,6 +92,7 @@ class RutasController extends BaseController
                 'fecha_ruta' => !empty($post['fecha_ruta']) ? ordenar_fechaServidor($post['fecha_ruta']) : NULL,
                 'comuna_id' => !empty($post['comuna_id']) ? $post['comuna_id'] : NULL,
                 'estado' => 1,
+                'empresa_id' => $empresa_id,
                 'created_at' => getTimestamp(),
             ];
             $ruta_id = $this->Rutas_model->insertRuta($new_ruta);
@@ -98,7 +105,8 @@ class RutasController extends BaseController
                             'ruta_id' => $ruta_id,
                             'posicion' => $cliente->posicion,
                             'venta' => false,
-                            'estado_cliente_ruta_id' => 2
+                            'estado_cliente_ruta_id' => 2,
+                            'created_at' => getTimestamp()
                         ];
                         #ESTADOS CLIENTE RUTE
                         #1 FINALIZADO
@@ -131,11 +139,13 @@ class RutasController extends BaseController
         $where_clientes = [
             'cli.estado' => true,
             'cli.eliminado' => false,
+            'cli.empresa_id' => $empresa_id,
         ];
         $where_repartidores = [
             'estado' => true,
             'eliminado' => false,
             'perfil_id' => 4,
+            'empresa_id' => $empresa_id,
         ];
 
         $productos = $this->Productos_model->getProductos($where_productos);
@@ -167,6 +177,8 @@ class RutasController extends BaseController
     public function VerRuta($id)
     {
         $post = $this->request->getPost();
+        $empresa_id = $_SESSION['userdata']['empresa_id'];
+
         $where_productos = [
             'estado' => true,
             'eliminado' => false,
