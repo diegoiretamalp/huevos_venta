@@ -81,16 +81,16 @@ class LoginController extends BaseController
                 }
             }
         }
-
+        // pre_die("asd");
         $data = [
-            'main_view' => 'login/login_new_view',
+            'main_view' => 'login/login_new2_view',
             'js_content' => [
                 '0' => 'login/js/validate_rut',
                 // '0' => 'layout/js/generalJS',
                 '1' => 'login/js/LoginJS'
             ]
         ];
-        return view('layout/layout_nologin_view', $data);
+        return view('layout/layout_nologin2_view', $data);
     }
 
     public function restablecerContrasenia($token)

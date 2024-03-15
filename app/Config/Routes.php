@@ -48,6 +48,9 @@ $routes->get('logout', 'LoginController::logout');
 $routes->set404Override(static function () {
     echo '<script>window.location.href = "' . base_url('/') . '";</script>';
 });
+#############################RUTAS PARA REGISTRO######################################
+$routes->get('registro', 'RegistroController::index');
+$routes->post('registro', 'RegistroController::index');
 // $routes->set404Override('App\ErroresController::error404', ['filter' => 'auth']);
 
 

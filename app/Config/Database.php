@@ -29,7 +29,7 @@ class Database extends Config
         'hostname' => 'localhost',
         'username' => 'root',
         'password' => '',
-        'database' => 'huevos_ventas1',
+        'database' => 'ventas_inventario',
         'DBDriver' => 'MySQLi',
         'DBPrefix' => 'hv_',
         'pConnect' => false,

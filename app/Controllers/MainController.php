@@ -10,7 +10,7 @@ class MainController extends BaseController
             'title' => 'Menu',
             'main_view' => 'layout/menu_view'
         ];
-        return view('layout/layout_main_view', $data);
+        return view('layout/layout_main2_view', $data);
     }
     public function iconos()
     {

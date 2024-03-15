@@ -47,10 +47,12 @@
             }
         }
 
-        /* PASO N° 1 */
+
         $("#iniciar_sesion").click(function() {
             let rut = $("#rut").val();
             let password = $("#password").val();
+            console.log(rut);
+            console.log(password);
 
             let rut_val = validaCampos(rut, 'rut');
             let password_val = validaCampos(password, 'password');

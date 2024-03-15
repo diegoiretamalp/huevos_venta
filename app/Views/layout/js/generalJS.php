@@ -1,13 +1,13 @@
 <script>
     $(document).ready(function() {
-        $('#data-table').DataTable();
+        // $('#data-table').DataTable();
     });
 
-    function validaCampos(texto, id, tipo = 'texto', obligatorio = true, msg = "Campo Obligatorio") {
+    function validaCampos(texto, id, tipo = 'texto_min', obligatorio = true, msg = "Campo Obligatorio") {
         const $campo = $('#' + id);
 
         const limpiarCampo = (color, mensaje) => {
-            $campo.css('border-color', color);
+            $campo.css('border-color', color + (color === 'green' ? ' !important' : ''));
             $("#invalid_" + id).text(mensaje);
             if (color == 'green') {
                 return 1;
@@ -36,6 +36,11 @@
             return cel !== false ? campoValido() : limpiarCampo('red', 'N° Incorrecto. Ej: +569XXXXXXXX');
         };
 
+        const validarRut = () => {
+            let valRut = Rut(texto, id);
+            return valRut !== false ? campoValido() : limpiarCampo('red', 'Rut incorrecto. Ej: 12.345.678-9');
+        }
+
         // Agrega más funciones de validación según sea necesario
 
         if ($campo.length) {
@@ -60,6 +65,9 @@
 
                     case 'celular':
                         return validarCelular();
+                        break;
+                    case 'rut':
+                        return validarRut();
                         break;
 
                     case 'select':
@@ -87,9 +95,22 @@
 
                     case 'password':
                         // Validar la fortaleza de la contraseña según tus criterios
-                        const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-                        return strongPasswordRegex.test(texto) ? campoValido() : limpiarCampo('red', 'Contraseña débil');
+                        return texto.length > 4 ? campoValido() : limpiarCampo('red', 'La contraseña debe tener más de 4 caracteres');
                         break;
+                    case 'password_confirm':
+                        // Validar la fortaleza de la contraseña según tus criterios
+                        var password = $('#password').val();
+                        if(texto.length > 4 ){
+                            if(texto === password ){
+                                return campoValido()
+                            }else{
+                                return limpiarCampo('red', 'La contraseñas no coinciden.')
+                            }
+                        }else{
+                            return limpiarCampo('red', 'La contraseña debe tener más de 4 caracteres')
+                        }
+                        break;
+
 
                     case 'fecha':
                         // Utiliza una expresión regular para validar el formato de fecha (ejemplo: yyyy/mm/dd)
